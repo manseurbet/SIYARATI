@@ -773,6 +773,176 @@
         transform: translateY(-1px);
       }
 
+      .alert-summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        padding: 18px;
+        border: 1px solid #f0c5c5;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #fff7f7, #ffffff);
+        box-shadow: 0 5px 14px rgba(164, 66, 66, 0.08);
+      }
+
+      .alert-summary.is-clear {
+        border-color: #c9e6d7;
+        background: linear-gradient(135deg, #f5fcf8, #ffffff);
+      }
+
+      .alert-summary-icon {
+        display: grid;
+        width: 68px;
+        height: 68px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 18px;
+        color: #c84747;
+        background: #ffe2e2;
+      }
+
+      .alert-summary.is-clear .alert-summary-icon {
+        color: #318a65;
+        background: #dcf5e8;
+      }
+
+      .alert-summary-label {
+        display: block;
+        margin-bottom: 3px;
+        color: #8c6b6b;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .alert-summary.is-clear .alert-summary-label {
+        color: #5d8b73;
+      }
+
+      .alert-count {
+        display: block;
+        color: #bf3e3e;
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+      }
+
+      .alert-summary.is-clear .alert-count {
+        color: #318a65;
+      }
+
+      .alert-summary-copy {
+        margin: 8px 0 0;
+        color: #705d5d;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .alert-summary.is-clear .alert-summary-copy {
+        color: #61806f;
+      }
+
+      .alerts-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .alert-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 15px 16px;
+        border: 1px solid #d5dde6;
+        border-left: 5px solid #aab8c8;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .alert-item.is-urgent {
+        border-color: #f0c5c5;
+        border-left-color: #d54d4d;
+        background: #fff8f8;
+      }
+
+      .alert-item.is-expired {
+        border-color: #e4b2b2;
+        border-left-color: #a92f2f;
+        background: #fff1f1;
+      }
+
+      .alert-item-copy {
+        min-width: 0;
+      }
+
+      .alert-item-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .alert-item-date {
+        margin: 5px 0 0;
+        color: #718196;
+        font-size: 12px;
+      }
+
+      .alert-item-status {
+        flex: 0 0 auto;
+        padding: 7px 9px;
+        border-radius: 999px;
+        color: #65768a;
+        background: #eef3f7;
+        font-size: 11px;
+        font-weight: 750;
+        text-align: center;
+      }
+
+      .alert-item.is-urgent .alert-item-status,
+      .alert-item.is-expired .alert-item-status {
+        color: #b13d3d;
+        background: #ffe1e1;
+      }
+
+      .alerts-empty {
+        padding: 20px 16px;
+        border: 1px dashed #cbd5df;
+        border-radius: 13px;
+        color: #7a899b;
+        background: rgba(255, 255, 255, 0.62);
+        font-size: 13px;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .sound-button {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 16px;
+        border: 1px solid #b6c3d0;
+        border-radius: 11px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 750;
+        transition: border-color 160ms ease, background 160ms ease;
+      }
+
+      .sound-button:hover,
+      .sound-button:focus-visible {
+        border-color: #7f97b5;
+        background: #f7fafc;
+        outline: none;
+      }
+
       @media (max-width: 430px) {
         .detail-grid {
           grid-template-columns: 1fr;
@@ -867,7 +1037,7 @@
             <span class="card-footer">Gérer les rappels <span class="arrow">↗</span></span>
           </button>
 
-          <button class="menu-card card-alerts" type="button" data-label="Alertes">
+          <button class="menu-card card-alerts" type="button" data-screen="alerts">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1111,6 +1281,44 @@
           <button class="save-button" type="submit">Enregistrer mes rappels</button>
         </form>
       </section>
+
+      <section id="alerts-screen" class="screen is-hidden" aria-labelledby="alerts-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Surveillance</p>
+            <h1 class="detail-title" id="alerts-title">Alertes</h1>
+            <p class="detail-intro">Les échéances à moins de 24 heures apparaissent ici en priorité.</p>
+          </div>
+        </div>
+
+        <div class="alert-summary is-clear" id="alert-summary">
+          <div class="alert-summary-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m10.3 4.1-7 12.2A1.8 1.8 0 0 0 4.86 19h14.28a1.8 1.8 0 0 0 1.56-2.7l-7-12.2a1.8 1.8 0 0 0-3.12 0Z" />
+              <path d="M12 9v4.2M12 16.3h.01" />
+            </svg>
+          </div>
+          <div>
+            <span class="alert-summary-label">Échéances urgentes</span>
+            <strong class="alert-count" id="alert-count">0</strong>
+            <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
+          </div>
+        </div>
+
+        <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
+
+        <button class="sound-button" id="sound-test-button" type="button">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M11 5 6.5 9H3v6h3.5L11 19V5ZM15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13" />
+          </svg>
+          Tester la sonnerie
+        </button>
+      </section>
     </main>
 
     <div class="toast" role="status" aria-live="polite"></div>
@@ -1125,7 +1333,18 @@
         "personal-info": document.querySelector("#personal-info-screen"),
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
         reminders: document.querySelector("#reminders-screen"),
+        alerts: document.querySelector("#alerts-screen"),
       };
+
+      const REMINDERS_STORAGE_KEY = "siyarati-reminders";
+      const reminderDefinitions = [
+        { key: "insurance-date", label: "Assurance" },
+        { key: "sticker-date", label: "Vignette" },
+        { key: "technical-inspection-date", label: "Contrôle technique" },
+        { key: "oil-change-date", label: "Dernière vidange" },
+      ];
+      let lastUrgentSignature = "";
+      let soundUnlocked = false;
 
       function showToast(message) {
         toast.textContent = message;
@@ -1138,7 +1357,137 @@
         Object.entries(screens).forEach(([screenName, screen]) => {
           screen.classList.toggle("is-hidden", screenName !== name);
         });
+        if (name === "alerts") {
+          checkAlerts({ playSound: true });
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function getSavedReminders() {
+        try {
+          return JSON.parse(localStorage.getItem(REMINDERS_STORAGE_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function getReminderEntries() {
+        const savedReminders = getSavedReminders();
+
+        return reminderDefinitions
+          .filter(({ key }) => savedReminders[key])
+          .map(({ key, label }) => {
+            const date = new Date(`${savedReminders[key]}T00:00:00`);
+            const hoursRemaining = (date.getTime() - Date.now()) / (1000 * 60 * 60);
+            const status = hoursRemaining < 0 ? "expired" : hoursRemaining <= 24 ? "urgent" : "upcoming";
+
+            return {
+              key,
+              label,
+              value: savedReminders[key],
+              date,
+              hoursRemaining,
+              status,
+            };
+          })
+          .sort((first, second) => first.date - second.date);
+      }
+
+      function formatReminderDate(date) {
+        return new Intl.DateTimeFormat("fr-FR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }).format(date);
+      }
+
+      function getReminderStatusLabel(entry) {
+        if (entry.status === "expired") {
+          return "Expiré";
+        }
+
+        if (entry.status === "urgent") {
+          const hours = Math.max(1, Math.ceil(entry.hoursRemaining));
+          return `Dans ${hours} h`;
+        }
+
+        return "À venir";
+      }
+
+      function renderAlerts(entries) {
+        const summary = document.querySelector("#alert-summary");
+        const count = document.querySelector("#alert-count");
+        const summaryCopy = document.querySelector("#alert-summary-copy");
+        const alertsList = document.querySelector("#alerts-list");
+        const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
+        summary.classList.toggle("is-clear", activeEntries.length === 0);
+        count.textContent = activeEntries.length;
+
+        if (activeEntries.length === 0) {
+          summaryCopy.textContent = entries.length
+            ? "Aucune échéance dans les prochaines 24 heures."
+            : "Ajoutez vos dates dans Rappels pour activer la surveillance.";
+        } else {
+          summaryCopy.textContent = `${activeEntries.length} échéance${activeEntries.length > 1 ? "s" : ""} à traiter.`;
+        }
+
+        if (!entries.length) {
+          alertsList.innerHTML = '<div class="alerts-empty">Aucune date enregistrée pour le moment. Rendez-vous dans <strong>Rappels</strong> pour ajouter vos échéances.</div>';
+          return;
+        }
+
+        alertsList.innerHTML = entries
+          .map((entry) => `
+            <article class="alert-item is-${entry.status}">
+              <div class="alert-item-copy">
+                <h3 class="alert-item-title">${entry.label}</h3>
+                <p class="alert-item-date">Échéance : ${formatReminderDate(entry.date)}</p>
+              </div>
+              <span class="alert-item-status">${getReminderStatusLabel(entry)}</span>
+            </article>
+          `)
+          .join("");
+      }
+
+      function checkAlerts(options = {}) {
+        const entries = getReminderEntries();
+        const urgentEntries = entries.filter((entry) => entry.status === "urgent");
+        const urgentSignature = urgentEntries.map((entry) => `${entry.key}:${entry.value}`).join("|");
+
+        renderAlerts(entries);
+
+        const shouldPlaySound =
+          urgentEntries.length &&
+          (options.playSound || (soundUnlocked && urgentSignature !== lastUrgentSignature));
+
+        if (shouldPlaySound) {
+          playAlertTone();
+        }
+
+        lastUrgentSignature = urgentSignature;
+      }
+
+      function playAlertTone() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) {
+          return;
+        }
+
+        const audioContext = new AudioContext();
+        const gain = audioContext.createGain();
+        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.75);
+        gain.connect(audioContext.destination);
+
+        [0, 0.2, 0.4].forEach((offset, index) => {
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.value = index === 2 ? 880 : 660;
+          oscillator.connect(gain);
+          oscillator.start(audioContext.currentTime + offset);
+          oscillator.stop(audioContext.currentTime + offset + 0.16);
+        });
       }
 
       document.querySelectorAll("[data-screen]").forEach((control) => {
@@ -1167,8 +1516,32 @@
 
       document.querySelector("#reminders-form").addEventListener("submit", (event) => {
         event.preventDefault();
+        const reminders = Object.fromEntries(new FormData(event.currentTarget).entries());
+        localStorage.setItem(REMINDERS_STORAGE_KEY, JSON.stringify(reminders));
+        checkAlerts();
         showToast("Les rappels ont été enregistrés.");
       });
+
+      document.querySelector("#sound-test-button").addEventListener("click", () => {
+        soundUnlocked = true;
+        playAlertTone();
+        showToast("Sonnerie d’alerte activée.");
+      });
+
+      document.addEventListener("pointerdown", () => {
+        soundUnlocked = true;
+      });
+
+      const savedReminders = getSavedReminders();
+      Object.entries(savedReminders).forEach(([fieldName, value]) => {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+          field.value = value;
+        }
+      });
+
+      checkAlerts();
+      window.setInterval(() => checkAlerts(), 60000);
     </script>
   </body>
 </html>
