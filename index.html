@@ -649,6 +649,86 @@
         line-height: 1.5;
       }
 
+      .personal-form {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .form-field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .form-field.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-field label {
+        color: #53677d;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .form-field input,
+      .form-field select {
+        width: 100%;
+        min-height: 46px;
+        padding: 0 13px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      }
+
+      .form-field input:focus,
+      .form-field select:focus {
+        border-color: #7f97b5;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(83, 108, 143, 0.12);
+      }
+
+      .form-field input::placeholder {
+        color: #a3afbd;
+      }
+
+      .save-button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border: 0;
+        border-radius: 11px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 750;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      .save-button:hover,
+      .save-button:focus-visible {
+        background: #435b7e;
+        outline: none;
+        transform: translateY(-1px);
+      }
+
       @media (max-width: 430px) {
         .detail-grid {
           grid-template-columns: 1fr;
@@ -656,6 +736,14 @@
 
         .detail-card {
           min-height: 176px;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-field.full-width {
+          grid-column: auto;
         }
       }
     </style>
@@ -789,7 +877,7 @@
         </div>
 
         <div class="detail-grid">
-          <button class="detail-card toast-card" type="button" data-label="Infos personnelles">
+          <button class="detail-card" type="button" data-screen="personal-info">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -818,6 +906,67 @@
           </button>
         </div>
       </section>
+
+      <section id="personal-info-screen" class="screen is-hidden" aria-labelledby="personal-info-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour aux informations">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon espace</p>
+            <h1 class="detail-title" id="personal-info-title">Infos personnelles</h1>
+            <p class="detail-intro">Renseignez vos informations pour compléter votre profil conducteur.</p>
+          </div>
+        </div>
+
+        <form class="personal-form" id="personal-info-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="driver-last-name">Nom conducteur</label>
+              <input id="driver-last-name" name="driver-last-name" type="text" placeholder="Votre nom" autocomplete="family-name" required />
+            </div>
+
+            <div class="form-field">
+              <label for="driver-first-name">Prénom</label>
+              <input id="driver-first-name" name="driver-first-name" type="text" placeholder="Votre prénom" autocomplete="given-name" required />
+            </div>
+
+            <div class="form-field">
+              <label for="birth-date">Date de naissance</label>
+              <input id="birth-date" name="birth-date" type="date" autocomplete="bday" required />
+            </div>
+
+            <div class="form-field">
+              <label for="blood-type">Groupe sanguin</label>
+              <select id="blood-type" name="blood-type" required>
+                <option value="" selected disabled>Sélectionner</option>
+                <option value="A+">A+</option>
+                <option value="A-">A-</option>
+                <option value="B+">B+</option>
+                <option value="B-">B-</option>
+                <option value="AB+">AB+</option>
+                <option value="AB-">AB-</option>
+                <option value="O+">O+</option>
+                <option value="O-">O-</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="driver-address">Adresse</label>
+              <input id="driver-address" name="driver-address" type="text" placeholder="Votre adresse complète" autocomplete="street-address" required />
+            </div>
+
+            <div class="form-field full-width">
+              <label for="phone-number">Numéro de téléphone</label>
+              <input id="phone-number" name="phone-number" type="tel" placeholder="+213 5 00 00 00 00" autocomplete="tel" required />
+            </div>
+          </div>
+
+          <button class="save-button" type="submit">Enregistrer mes informations</button>
+        </form>
+      </section>
     </main>
 
     <div class="toast" role="status" aria-live="polite"></div>
@@ -829,6 +978,7 @@
       const screens = {
         home: document.querySelector("#home-screen"),
         "vehicle-info": document.querySelector("#vehicle-info-screen"),
+        "personal-info": document.querySelector("#personal-info-screen"),
       };
 
       function showToast(message) {
@@ -857,6 +1007,11 @@
 
       document.querySelector(".profile-button").addEventListener("click", () => {
         showToast("Profil — cette rubrique sera bientôt disponible.");
+      });
+
+      document.querySelector("#personal-info-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        showToast("Vos informations personnelles ont été enregistrées.");
       });
     </script>
   </body>
