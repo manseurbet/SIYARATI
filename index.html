@@ -1,0 +1,534 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1424" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233f73ff'/%3E%3Cpath d='M14 40h36l3-13a5 5 0 0 0-5-6H16a5 5 0 0 0-5 6l3 13Zm7-19 3-8h16l3 8M20 40v5m24-5v5M15 31h34' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <title>AutoCare — Accueil</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #08111f;
+        --surface: rgba(20, 34, 56, 0.86);
+        --surface-strong: #162640;
+        --stroke: rgba(255, 255, 255, 0.1);
+        --text: #f6f9ff;
+        --muted: #8da0bc;
+        --blue: #58a6ff;
+        --green: #49d39d;
+        --orange: #ffb866;
+        --red: #ff7785;
+        --violet: #9b8cff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 85% 0%, rgba(79, 142, 255, 0.16), transparent 31%),
+          radial-gradient(circle at 0% 42%, rgba(74, 211, 157, 0.08), transparent 26%),
+          var(--bg);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .app-shell {
+        width: min(100%, 560px);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 24px 18px 30px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #2c80ff, #5b55dd);
+        box-shadow: 0 10px 24px rgba(54, 98, 255, 0.28);
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .profile-button {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid var(--stroke);
+        border-radius: 50%;
+        color: var(--text);
+        background: rgba(255, 255, 255, 0.06);
+        cursor: pointer;
+        transition: transform 160ms ease, background 160ms ease;
+      }
+
+      .profile-button:hover,
+      .profile-button:focus-visible {
+        background: rgba(255, 255, 255, 0.12);
+        transform: translateY(-1px);
+        outline: none;
+      }
+
+      .hero {
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 360px;
+        margin: 0;
+        font-size: clamp(30px, 8vw, 44px);
+        line-height: 1.02;
+        letter-spacing: -0.06em;
+      }
+
+      .intro {
+        max-width: 390px;
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .vehicle-card {
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        padding: 18px;
+        border: 1px solid rgba(125, 170, 255, 0.2);
+        border-radius: 22px;
+        background:
+          linear-gradient(110deg, rgba(43, 95, 167, 0.52), rgba(23, 38, 64, 0.86)),
+          var(--surface);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+      }
+
+      .vehicle-card::after {
+        position: absolute;
+        top: -55px;
+        right: -26px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(88, 166, 255, 0.18);
+        content: "";
+        filter: blur(2px);
+      }
+
+      .vehicle-copy,
+      .vehicle-status {
+        position: relative;
+        z-index: 1;
+      }
+
+      .vehicle-label {
+        margin: 0 0 4px;
+        color: #b8cbed;
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .vehicle-name {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+      }
+
+      .vehicle-meta {
+        margin: 5px 0 0;
+        color: #b3c5e3;
+        font-size: 12px;
+      }
+
+      .vehicle-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 11px;
+        border: 1px solid rgba(73, 211, 157, 0.2);
+        border-radius: 999px;
+        color: #a9f4d6;
+        background: rgba(25, 102, 74, 0.35);
+        font-size: 11px;
+        font-weight: 750;
+        white-space: nowrap;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 4px rgba(73, 211, 157, 0.12);
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 12px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: 15px;
+        letter-spacing: -0.02em;
+      }
+
+      .section-heading span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .menu-card {
+        display: flex;
+        min-height: 170px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 16px;
+        border: 1px solid var(--stroke);
+        border-radius: 22px;
+        color: var(--text);
+        text-align: left;
+        background: linear-gradient(160deg, rgba(25, 42, 68, 0.96), rgba(14, 27, 47, 0.9));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+        cursor: pointer;
+        transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .menu-card:hover,
+      .menu-card:focus-visible {
+        border-color: rgba(255, 255, 255, 0.24);
+        outline: none;
+        transform: translateY(-3px);
+        box-shadow: 0 17px 34px rgba(0, 0, 0, 0.23);
+      }
+
+      .menu-card:active {
+        transform: translateY(-1px) scale(0.99);
+      }
+
+      .icon-badge {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border-radius: 16px;
+      }
+
+      .card-info .icon-badge {
+        color: var(--blue);
+        background: rgba(88, 166, 255, 0.13);
+      }
+
+      .card-reminders .icon-badge {
+        color: var(--orange);
+        background: rgba(255, 184, 102, 0.13);
+      }
+
+      .card-alerts .icon-badge {
+        color: var(--red);
+        background: rgba(255, 119, 133, 0.13);
+      }
+
+      .card-help .icon-badge {
+        color: var(--violet);
+        background: rgba(155, 140, 255, 0.13);
+      }
+
+      .menu-card h3 {
+        margin: 22px 0 6px;
+        font-size: 17px;
+        letter-spacing: -0.03em;
+      }
+
+      .menu-card p {
+        min-height: 38px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        color: #afbdd2;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .arrow {
+        display: grid;
+        width: 25px;
+        height: 25px;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .footnote {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 26px 0 0;
+        color: #71839f;
+        font-size: 11px;
+      }
+
+      .footnote svg {
+        color: var(--green);
+      }
+
+      .toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        width: min(100% - 36px, 430px);
+        margin: auto;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 14px;
+        color: #eaf2ff;
+        background: rgba(20, 34, 56, 0.95);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(12px);
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (min-width: 600px) {
+        .app-shell {
+          padding-top: 36px;
+          padding-bottom: 40px;
+        }
+
+        .menu-grid {
+          gap: 16px;
+        }
+
+        .menu-card {
+          min-height: 188px;
+          padding: 19px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+              <path d="M7 9.35 8.3 6h7.4L17 9.35" />
+              <path d="M7 17v2M17 17v2M5 13h14" />
+            </svg>
+          </div>
+          <div>
+            <p class="brand-name">AutoCare</p>
+            <p class="brand-subtitle">Votre voiture, simplement.</p>
+          </div>
+        </div>
+        <button class="profile-button" type="button" aria-label="Ouvrir le profil">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.2" />
+            <path d="M5.5 19.2c1.5-2.8 3.65-4.2 6.5-4.2s5 1.4 6.5 4.2" />
+          </svg>
+        </button>
+      </header>
+
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Tableau de bord</p>
+        <h1 id="page-title">Bonjour, prêt à prendre la route&nbsp;?</h1>
+        <p class="intro">Retrouvez rapidement toutes les informations importantes pour votre véhicule.</p>
+      </section>
+
+      <section class="vehicle-card" aria-label="Véhicule sélectionné">
+        <div class="vehicle-copy">
+          <p class="vehicle-label">Véhicule principal</p>
+          <p class="vehicle-name">Peugeot 208</p>
+          <p class="vehicle-meta">Essence · 2021 · 48 260 km</p>
+        </div>
+        <div class="vehicle-status"><span class="status-dot"></span> Tout est en ordre</div>
+      </section>
+
+      <section aria-labelledby="services-title">
+        <div class="section-heading">
+          <h2 id="services-title">Que souhaitez-vous consulter&nbsp;?</h2>
+          <span>4 services</span>
+        </div>
+
+        <div class="menu-grid">
+          <button class="menu-card card-info" type="button" data-label="Infos véhicule">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="8.5" />
+                  <path d="M12 10.8v5.2M12 7.5h.01" />
+                </svg>
+              </div>
+              <h3>Infos véhicule</h3>
+              <p>Consultez les données et caractéristiques de votre voiture.</p>
+            </div>
+            <span class="card-footer">Voir les détails <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-reminders" type="button" data-label="Rappels">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 9a6 6 0 0 0-12 0c0 7-2.5 7.2-2.5 8.5h17C20.5 16.2 18 16 18 9Z" />
+                  <path d="M10 20h4" />
+                </svg>
+              </div>
+              <h3>Rappels</h3>
+              <p>Entretiens, contrôles et échéances à ne pas oublier.</p>
+            </div>
+            <span class="card-footer">Gérer les rappels <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-alerts" type="button" data-label="Alertes">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="m10.3 4.1-7 12.2A1.8 1.8 0 0 0 4.86 19h14.28a1.8 1.8 0 0 0 1.56-2.7l-7-12.2a1.8 1.8 0 0 0-3.12 0Z" />
+                  <path d="M12 9v4.2M12 16.3h.01" />
+                </svg>
+              </div>
+              <h3>Alertes</h3>
+              <p>Visualisez les anomalies et les points à surveiller.</p>
+            </div>
+            <span class="card-footer">Voir les alertes <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-help" type="button" data-label="Dépannage">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                  <path d="m15.5 15.5 3.8 3.8M18.3 14.2l1.5-1.5" />
+                </svg>
+              </div>
+              <h3>Dépannage</h3>
+              <p>Obtenez de l’aide rapidement en cas de problème.</p>
+            </div>
+            <span class="card-footer">Besoin d’aide <span class="arrow">↗</span></span>
+          </button>
+        </div>
+      </section>
+
+      <p class="footnote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        Vos données sont protégées
+      </p>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const toast = document.querySelector(".toast");
+      let toastTimer;
+
+      document.querySelectorAll(".menu-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          toast.textContent = `${card.dataset.label} — cette rubrique sera bientôt disponible.`;
+          toast.classList.add("show");
+          window.clearTimeout(toastTimer);
+          toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+        });
+      });
+
+      document.querySelector(".profile-button").addEventListener("click", () => {
+        toast.textContent = "Profil — cette rubrique sera bientôt disponible.";
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+      });
+    </script>
+  </body>
+</html>
