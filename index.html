@@ -724,6 +724,32 @@
         font-weight: 700;
       }
 
+      .form-field textarea {
+        width: 100%;
+        min-height: 118px;
+        padding: 12px 13px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        resize: vertical;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 13px;
+        line-height: 1.5;
+        outline: none;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      }
+
+      .form-field textarea:focus {
+        border-color: #7f97b5;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(83, 108, 143, 0.12);
+      }
+
+      .form-field textarea::placeholder {
+        color: #a3afbd;
+      }
+
       .save-button {
         display: inline-flex;
         min-height: 46px;
@@ -827,7 +853,7 @@
             <span class="card-footer">Voir les détails <span class="arrow">↗</span></span>
           </button>
 
-          <button class="menu-card card-reminders" type="button" data-label="Rappels">
+          <button class="menu-card card-reminders" type="button" data-screen="reminders">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1039,6 +1065,52 @@
           <button class="save-button" type="submit">Enregistrer mon véhicule</button>
         </form>
       </section>
+
+      <section id="reminders-screen" class="screen is-hidden" aria-labelledby="reminders-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Suivi du véhicule</p>
+            <h1 class="detail-title" id="reminders-title">Rappels</h1>
+            <p class="detail-intro">Ajoutez les prochaines échéances et gardez l’historique de vos réparations.</p>
+          </div>
+        </div>
+
+        <form class="personal-form" id="reminders-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="insurance-date">Date d’assurance</label>
+              <input id="insurance-date" name="insurance-date" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="sticker-date">Date de vignette</label>
+              <input id="sticker-date" name="sticker-date" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="technical-inspection-date">Contrôle technique</label>
+              <input id="technical-inspection-date" name="technical-inspection-date" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="oil-change-date">Dernière vidange</label>
+              <input id="oil-change-date" name="oil-change-date" type="date" required />
+            </div>
+
+            <div class="form-field full-width">
+              <label for="repair-notes">Notes des réparations effectuées</label>
+              <textarea id="repair-notes" name="repair-notes" placeholder="Décrivez les réparations, pièces changées ou remarques utiles."></textarea>
+            </div>
+          </div>
+
+          <button class="save-button" type="submit">Enregistrer mes rappels</button>
+        </form>
+      </section>
     </main>
 
     <div class="toast" role="status" aria-live="polite"></div>
@@ -1052,6 +1124,7 @@
         "vehicle-info": document.querySelector("#vehicle-info-screen"),
         "personal-info": document.querySelector("#personal-info-screen"),
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
+        reminders: document.querySelector("#reminders-screen"),
       };
 
       function showToast(message) {
@@ -1090,6 +1163,11 @@
       document.querySelector("#vehicle-details-form").addEventListener("submit", (event) => {
         event.preventDefault();
         showToast("Les informations du véhicule ont été enregistrées.");
+      });
+
+      document.querySelector("#reminders-form").addEventListener("submit", (event) => {
+        event.preventDefault();
+        showToast("Les rappels ont été enregistrés.");
       });
     </script>
   </body>
