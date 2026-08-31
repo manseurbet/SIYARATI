@@ -943,6 +943,94 @@
         outline: none;
       }
 
+      .help-actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .help-action {
+        display: flex;
+        min-height: 78px;
+        align-items: center;
+        gap: 13px;
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        color: #2b3c52;
+        text-align: left;
+        text-decoration: none;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+        cursor: pointer;
+        font: inherit;
+        transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .help-action:hover,
+      .help-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        transform: translateY(-2px);
+        box-shadow: 0 9px 18px rgba(43, 60, 82, 0.12);
+      }
+
+      .help-action-icon {
+        display: grid;
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 14px;
+        color: #536c8f;
+        background: #eef3f7;
+      }
+
+      .help-action-copy {
+        display: grid;
+        flex: 1;
+        gap: 4px;
+      }
+
+      .help-action-copy strong {
+        font-size: 15px;
+      }
+
+      .help-action-copy small {
+        color: #76869a;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .help-action-chevron {
+        color: #536c77;
+        font-size: 18px;
+      }
+
+      .help-action.emergency {
+        border-color: #efc8cc;
+      }
+
+      .help-action.emergency .help-action-icon {
+        color: #b44d59;
+        background: #fff1f2;
+      }
+
+      .help-action-result {
+        margin: -3px 4px 2px;
+        color: #536c8f;
+        font-size: 12px;
+      }
+
+      .help-action-result[hidden] {
+        display: none;
+      }
+
+      .help-action-result a {
+        color: inherit;
+        font-weight: 750;
+      }
+
       #home-screen .menu-card {
         min-height: 132px;
       }
@@ -1073,7 +1161,7 @@
             <span class="card-footer">Voir les alertes <span class="arrow">↗</span></span>
           </button>
 
-          <button class="menu-card card-help" type="button" data-label="Dépannage">
+          <button class="menu-card card-help" type="button" data-screen="troubleshooting">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1351,6 +1439,68 @@
           Tester la sonnerie
         </button>
       </section>
+
+      <section id="troubleshooting-screen" class="screen is-hidden" aria-labelledby="troubleshooting-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Assistance</p>
+            <h1 class="detail-title" id="troubleshooting-title">Dépannage</h1>
+            <p class="detail-intro">Accédez rapidement à votre position et aux appels d’urgence.</p>
+          </div>
+        </div>
+
+        <div class="help-actions" aria-label="Actions de dépannage">
+          <button class="help-action" id="location-action" type="button">
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>1. Ma position</strong>
+              <small id="location-status">Partager ma position en cas de besoin</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">↗</span>
+          </button>
+          <div class="help-action-result" id="location-result" hidden>
+            <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
+          </div>
+
+          <button class="help-action" id="tow-action" type="button">
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                <path d="m15.5 15.5 3.8 3.8" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>2. Appeler dépanneur</strong>
+              <small id="tow-status">Le numéro sera enregistré au premier appel</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">☎</span>
+          </button>
+
+          <a class="help-action emergency" href="tel:14" aria-label="Appeler les secours au 14">
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s7-3.5 7-9.2V5.4L12 3 5 5.4v6.4C5 17.5 12 21 12 21Z" />
+                <path d="M12 8v5M12 16h.01" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>3. Appeler secours</strong>
+              <small>Protection Civile · 14</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">☎</span>
+          </a>
+        </div>
+      </section>
     </main>
 
     <div class="toast" role="status" aria-live="polite"></div>
@@ -1366,10 +1516,12 @@
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
         reminders: document.querySelector("#reminders-screen"),
         alerts: document.querySelector("#alerts-screen"),
+        troubleshooting: document.querySelector("#troubleshooting-screen"),
       };
 
       const REMINDERS_STORAGE_KEY = "siyarati-reminders";
       const VEHICLE_STORAGE_KEY = "siyarati-vehicle";
+      const TOW_STORAGE_KEY = "siyarati-tow-number";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -1557,6 +1709,60 @@
 
       document.querySelector(".profile-button").addEventListener("click", () => {
         showToast("Profil — cette rubrique sera bientôt disponible.");
+      });
+
+      const locationAction = document.querySelector("#location-action");
+      const locationStatus = document.querySelector("#location-status");
+      const locationResult = document.querySelector("#location-result");
+      const locationMapLink = document.querySelector("#location-map-link");
+      const towAction = document.querySelector("#tow-action");
+      const towStatus = document.querySelector("#tow-status");
+
+      locationAction.addEventListener("click", () => {
+        if (!navigator.geolocation) {
+          locationStatus.textContent = "La géolocalisation n’est pas disponible sur cet appareil.";
+          return;
+        }
+
+        locationStatus.textContent = "Recherche de votre position…";
+        locationResult.hidden = true;
+        navigator.geolocation.getCurrentPosition(
+          ({ coords }) => {
+            const latitude = coords.latitude.toFixed(5);
+            const longitude = coords.longitude.toFixed(5);
+            locationStatus.textContent = `Position trouvée : ${latitude}, ${longitude}`;
+            locationMapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
+            locationResult.hidden = false;
+            showToast("Votre position a été trouvée.");
+          },
+          () => {
+            locationStatus.textContent = "Position inaccessible. Autorisez la localisation puis réessayez.";
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 },
+        );
+      });
+
+      const savedTowNumber = localStorage.getItem(TOW_STORAGE_KEY);
+      if (savedTowNumber) {
+        towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
+      }
+
+      towAction.addEventListener("click", () => {
+        const savedNumber = localStorage.getItem(TOW_STORAGE_KEY) || "";
+        const enteredNumber = window.prompt("Entrez le numéro du dépanneur", savedNumber);
+        if (enteredNumber === null) {
+          return;
+        }
+
+        const phoneNumber = enteredNumber.replace(/[^\d+]/g, "");
+        if (!/^\+?\d{8,15}$/.test(phoneNumber)) {
+          showToast("Numéro de dépanneur invalide.");
+          return;
+        }
+
+        localStorage.setItem(TOW_STORAGE_KEY, phoneNumber);
+        towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
+        window.location.href = `tel:${phoneNumber}`;
       });
 
       document.querySelector("#personal-info-form").addEventListener("submit", (event) => {
