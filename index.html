@@ -943,6 +943,98 @@
         outline: none;
       }
 
+      .reminder-section {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .reminder-section-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 17px;
+      }
+
+      .reminder-section-intro {
+        margin: 0;
+        color: #76869a;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .reminder-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .reminder-tag {
+        padding: 7px 9px;
+        border-radius: 999px;
+        color: #536c8f;
+        background: #eef3f7;
+        font-size: 11px;
+        font-weight: 750;
+      }
+
+      .custom-reminder-form {
+        margin-top: 2px;
+      }
+
+      .custom-reminder-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .custom-reminder-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .custom-reminder-copy {
+        min-width: 0;
+      }
+
+      .custom-reminder-copy strong {
+        display: block;
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .custom-reminder-copy small {
+        display: block;
+        margin-top: 4px;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .remove-reminder-button {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid #e5c5c8;
+        border-radius: 9px;
+        color: #b44d59;
+        background: #fff7f7;
+        cursor: pointer;
+        font-size: 17px;
+      }
+
+      .remove-reminder-button:hover,
+      .remove-reminder-button:focus-visible {
+        border-color: #c98b91;
+        outline: none;
+      }
+
       .help-actions {
         display: grid;
         gap: 12px;
@@ -1400,6 +1492,68 @@
 
           <button class="save-button" type="submit">Enregistrer mes rappels</button>
         </form>
+
+        <section class="reminder-section" aria-labelledby="maintenance-reminders-title">
+          <div>
+            <h2 class="reminder-section-title" id="maintenance-reminders-title">Rappels d’entretien</h2>
+            <p class="reminder-section-intro">Planifiez les révisions par date ou par kilométrage pour ne rien oublier.</p>
+          </div>
+          <div class="reminder-tags" aria-label="Catégories de rappels">
+            <span class="reminder-tag">Révision</span>
+            <span class="reminder-tag">Pneus</span>
+            <span class="reminder-tag">Freins</span>
+            <span class="reminder-tag">Batterie</span>
+            <span class="reminder-tag">Filtres</span>
+            <span class="reminder-tag">Contrôle</span>
+            <span class="reminder-tag">Assurance</span>
+            <span class="reminder-tag">Vignette</span>
+          </div>
+
+          <form class="personal-form custom-reminder-form" id="custom-reminder-form">
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="custom-reminder-category">Catégorie</label>
+                <select id="custom-reminder-category" name="category" required>
+                  <option value="" selected disabled>Choisir</option>
+                  <option value="Entretien">Entretien</option>
+                  <option value="Révision">Révision</option>
+                  <option value="Pneus">Pneus</option>
+                  <option value="Freins">Freins</option>
+                  <option value="Batterie">Batterie</option>
+                  <option value="Filtres">Filtres</option>
+                  <option value="Contrôle">Contrôle</option>
+                  <option value="Assurance">Assurance</option>
+                  <option value="Vignette">Vignette</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-title">Rappel</label>
+                <input id="custom-reminder-title" name="title" type="text" placeholder="Ex. Remplacer les plaquettes" required />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-date">Date d’échéance</label>
+                <input id="custom-reminder-date" name="date" type="date" />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-mileage">Kilométrage cible</label>
+                <input id="custom-reminder-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 60000" />
+              </div>
+
+              <div class="form-field full-width">
+                <label for="custom-reminder-notes">Notes</label>
+                <textarea id="custom-reminder-notes" name="notes" placeholder="Ajoutez une pièce ou une remarque utile."></textarea>
+              </div>
+            </div>
+
+            <button class="save-button" type="submit">Ajouter ce rappel</button>
+          </form>
+
+          <div class="custom-reminder-list" id="custom-reminder-list" aria-live="polite"></div>
+        </section>
       </section>
 
       <section id="alerts-screen" class="screen is-hidden" aria-labelledby="alerts-title">
@@ -1522,6 +1676,7 @@
       const REMINDERS_STORAGE_KEY = "siyarati-reminders";
       const VEHICLE_STORAGE_KEY = "siyarati-vehicle";
       const TOW_STORAGE_KEY = "siyarati-tow-number";
+      const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -1564,11 +1719,25 @@
         }
       }
 
+      function getSavedCustomReminders() {
+        try {
+          const reminders = JSON.parse(localStorage.getItem(CUSTOM_REMINDERS_STORAGE_KEY) || "[]");
+          return Array.isArray(reminders) ? reminders : [];
+        } catch {
+          return [];
+        }
+      }
+
       function formatMileage(value) {
         const mileage = Number(value);
         return Number.isFinite(mileage) && mileage >= 0
           ? `${new Intl.NumberFormat("fr-FR").format(mileage)} km`
           : "48 260 km";
+      }
+
+      function getCurrentMileage() {
+        const mileage = Number(getSavedVehicle()["current-mileage"]);
+        return Number.isFinite(mileage) && mileage >= 0 ? mileage : null;
       }
 
       function updateMileageDisplay(value) {
@@ -1580,8 +1749,7 @@
 
       function getReminderEntries() {
         const savedReminders = getSavedReminders();
-
-        return reminderDefinitions
+        const fixedEntries = reminderDefinitions
           .filter(({ key }) => savedReminders[key])
           .map(({ key, label }) => {
             const date = new Date(`${savedReminders[key]}T00:00:00`);
@@ -1594,10 +1762,43 @@
               value: savedReminders[key],
               date,
               hoursRemaining,
+              mileageRemaining: null,
               status,
             };
-          })
-          .sort((first, second) => first.date - second.date);
+          });
+
+        const currentMileage = getCurrentMileage();
+        const customEntries = getSavedCustomReminders().map((reminder) => {
+          const date = reminder.date ? new Date(`${reminder.date}T00:00:00`) : null;
+          const targetMileage = reminder.mileage ? Number(reminder.mileage) : null;
+          const hoursRemaining = date ? (date.getTime() - Date.now()) / (1000 * 60 * 60) : null;
+          const mileageRemaining = targetMileage !== null && currentMileage !== null
+            ? targetMileage - currentMileage
+            : null;
+          const status = date
+            ? hoursRemaining < 0 ? "expired" : hoursRemaining <= 24 ? "urgent" : "upcoming"
+            : mileageRemaining !== null && mileageRemaining <= 100
+              ? mileageRemaining < 0 ? "expired" : "urgent"
+              : "upcoming";
+
+          return {
+            key: `custom-${reminder.id}`,
+            label: reminder.title,
+            category: reminder.category,
+            value: reminder.date || reminder.mileage,
+            date,
+            targetMileage,
+            hoursRemaining,
+            mileageRemaining,
+            status,
+          };
+        });
+
+        return [...fixedEntries, ...customEntries].sort((first, second) => {
+          const firstTarget = first.date ? first.date.getTime() : first.targetMileage ?? Number.POSITIVE_INFINITY;
+          const secondTarget = second.date ? second.date.getTime() : second.targetMileage ?? Number.POSITIVE_INFINITY;
+          return firstTarget - secondTarget;
+        });
       }
 
       function formatReminderDate(date) {
@@ -1614,11 +1815,68 @@
         }
 
         if (entry.status === "urgent") {
+          if (entry.mileageRemaining !== null) {
+            return `Dans ${Math.max(1, Math.ceil(entry.mileageRemaining))} km`;
+          }
           const hours = Math.max(1, Math.ceil(entry.hoursRemaining));
           return `Dans ${hours} h`;
         }
 
         return "À venir";
+      }
+
+      function formatReminderTarget(entry) {
+        if (entry.date) {
+          return `Échéance : ${formatReminderDate(entry.date)}`;
+        }
+
+        if (entry.targetMileage !== null) {
+          return `À ${formatMileage(entry.targetMileage)}`;
+        }
+
+        return "Échéance à définir";
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formatCustomReminderTarget(reminder) {
+        const targets = [];
+        if (reminder.date) {
+          targets.push(formatReminderDate(new Date(`${reminder.date}T00:00:00`)));
+        }
+        if (reminder.mileage) {
+          targets.push(formatMileage(reminder.mileage));
+        }
+        return targets.join(" · ");
+      }
+
+      function renderCustomReminders() {
+        const list = document.querySelector("#custom-reminder-list");
+        const reminders = getSavedCustomReminders();
+
+        if (!reminders.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucun rappel personnalisé ajouté pour le moment.</p>';
+          return;
+        }
+
+        list.innerHTML = reminders
+          .map((reminder) => `
+            <article class="custom-reminder-item">
+              <div class="custom-reminder-copy">
+                <strong>${escapeHtml(reminder.title)}</strong>
+                <small>${escapeHtml(reminder.category)} · ${escapeHtml(formatCustomReminderTarget(reminder))}</small>
+              </div>
+              <button class="remove-reminder-button" type="button" data-remove-reminder="${escapeHtml(reminder.id)}" aria-label="Supprimer ${escapeHtml(reminder.title)}">×</button>
+            </article>
+          `)
+          .join("");
       }
 
       function renderAlerts(entries) {
@@ -1647,8 +1905,8 @@
           .map((entry) => `
             <article class="alert-item is-${entry.status}">
               <div class="alert-item-copy">
-                <h3 class="alert-item-title">${entry.label}</h3>
-                <p class="alert-item-date">Échéance : ${formatReminderDate(entry.date)}</p>
+                <h3 class="alert-item-title">${escapeHtml(entry.label)}</h3>
+                <p class="alert-item-date">${formatReminderTarget(entry)}</p>
               </div>
               <span class="alert-item-status">${getReminderStatusLabel(entry)}</span>
             </article>
@@ -1789,6 +2047,48 @@
         showToast("Les rappels ont été enregistrés.");
       });
 
+      const customReminderForm = document.querySelector("#custom-reminder-form");
+      const customReminderList = document.querySelector("#custom-reminder-list");
+
+      customReminderForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const reminder = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+        if (!reminder.date && !reminder.mileage) {
+          showToast("Ajoutez une date ou un kilométrage cible.");
+          return;
+        }
+
+        const savedReminders = getSavedCustomReminders();
+        savedReminders.push({
+          id: `${Date.now()}-${savedReminders.length + 1}`,
+          category: reminder.category,
+          title: reminder.title.trim(),
+          date: reminder.date,
+          mileage: reminder.mileage,
+          notes: reminder.notes.trim(),
+        });
+        localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(savedReminders));
+        event.currentTarget.reset();
+        renderCustomReminders();
+        checkAlerts();
+        showToast("Le rappel a été ajouté.");
+      });
+
+      customReminderList.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-reminder]");
+        if (!removeButton) {
+          return;
+        }
+
+        const reminderId = removeButton.dataset.removeReminder;
+        const remainingReminders = getSavedCustomReminders().filter(({ id }) => id !== reminderId);
+        localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(remainingReminders));
+        renderCustomReminders();
+        checkAlerts();
+        showToast("Le rappel a été supprimé.");
+      });
+
       document.querySelector("#sound-test-button").addEventListener("click", () => {
         soundUnlocked = true;
         playAlertTone();
@@ -1816,6 +2116,7 @@
       });
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
+      renderCustomReminders();
       checkAlerts();
       window.setInterval(() => checkAlerts(), 60000);
     </script>
