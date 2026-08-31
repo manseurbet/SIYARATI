@@ -1106,6 +1106,128 @@
         white-space: nowrap;
       }
 
+      .report-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .report-stat {
+        padding: 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .report-stat-label {
+        display: block;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .report-stat-value {
+        display: block;
+        margin-top: 6px;
+        color: #2b3c52;
+        font-size: 21px;
+        letter-spacing: -0.04em;
+      }
+
+      .report-panel {
+        margin-bottom: 14px;
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .report-panel-title {
+        margin: 0 0 14px;
+        color: #2b3c52;
+        font-size: 16px;
+      }
+
+      .report-bars {
+        display: grid;
+        gap: 12px;
+      }
+
+      .report-bar-row {
+        display: grid;
+        gap: 6px;
+      }
+
+      .report-bar-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #53677d;
+        font-size: 12px;
+      }
+
+      .report-bar-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eef3f7;
+      }
+
+      .report-bar-fill {
+        height: 100%;
+        min-width: 5px;
+        border-radius: inherit;
+        background: #536c8f;
+      }
+
+      .report-recent-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .report-recent-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid #edf1f5;
+      }
+
+      .report-recent-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .report-recent-copy {
+        min-width: 0;
+      }
+
+      .report-recent-copy strong {
+        display: block;
+        overflow: hidden;
+        color: #2b3c52;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .report-recent-copy small {
+        display: block;
+        margin-top: 3px;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .report-recent-amount {
+        flex: 0 0 auto;
+        color: #2b3c52;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
       .help-actions {
         display: grid;
         gap: 12px;
@@ -1405,6 +1527,20 @@
             </div>
             <span class="card-footer">Voir les dépenses <span class="arrow">↗</span></span>
           </button>
+
+          <button class="detail-card" type="button" data-screen="reports">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 19V10M12 19V5M19 19v-7" />
+                  <path d="M3.5 19.5h17" />
+                </svg>
+              </div>
+              <h3>Rapports</h3>
+              <p>Analysez l’entretien et les montants enregistrés.</p>
+            </div>
+            <span class="card-footer">Voir les rapports <span class="arrow">↗</span></span>
+          </button>
         </div>
       </section>
 
@@ -1431,6 +1567,42 @@
         </div>
 
         <div class="expense-list" id="expense-list" aria-live="polite"></div>
+      </section>
+
+      <section id="reports-screen" class="screen is-hidden" aria-labelledby="reports-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour à Documents">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Analyse du véhicule</p>
+            <h1 class="detail-title" id="reports-title">Rapports</h1>
+            <p class="detail-intro">Suivez l’entretien et les montants enregistrés à partir de vos rappels.</p>
+          </div>
+        </div>
+
+        <div class="report-summary-grid">
+          <div class="report-stat">
+            <span class="report-stat-label">Total enregistré</span>
+            <strong class="report-stat-value" id="report-total">0 DA</strong>
+          </div>
+          <div class="report-stat">
+            <span class="report-stat-label">Rappels avec montant</span>
+            <strong class="report-stat-value" id="report-count">0</strong>
+          </div>
+        </div>
+
+        <section class="report-panel" aria-labelledby="report-category-title">
+          <h2 class="report-panel-title" id="report-category-title">Répartition par catégorie</h2>
+          <div class="report-bars" id="report-bars" aria-live="polite"></div>
+        </section>
+
+        <section class="report-panel" aria-labelledby="report-recent-title">
+          <h2 class="report-panel-title" id="report-recent-title">Derniers rappels enregistrés</h2>
+          <div class="report-recent-list" id="report-recent-list" aria-live="polite"></div>
+        </section>
       </section>
 
       <section id="personal-info-screen" class="screen is-hidden" aria-labelledby="personal-info-title">
@@ -1750,6 +1922,7 @@
         reminders: document.querySelector("#reminders-screen"),
         alerts: document.querySelector("#alerts-screen"),
         expenses: document.querySelector("#expenses-screen"),
+        reports: document.querySelector("#reports-screen"),
         troubleshooting: document.querySelector("#troubleshooting-screen"),
       };
 
@@ -1782,6 +1955,9 @@
         }
         if (name === "expenses") {
           renderExpenses();
+        }
+        if (name === "reports") {
+          renderReports();
         }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -2005,6 +2181,66 @@
           .join("");
       }
 
+      function renderReports() {
+        const total = document.querySelector("#report-total");
+        const count = document.querySelector("#report-count");
+        const bars = document.querySelector("#report-bars");
+        const recentList = document.querySelector("#report-recent-list");
+        const expenses = getSavedCustomReminders().filter((reminder) => {
+          return reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0;
+        });
+        const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
+        const categoryTotals = expenses.reduce((categories, reminder) => {
+          categories[reminder.category] = (categories[reminder.category] || 0) + Number(reminder.amount);
+          return categories;
+        }, {});
+        const sortedCategories = Object.entries(categoryTotals).sort((first, second) => second[1] - first[1]);
+        const highestCategoryTotal = sortedCategories[0]?.[1] || 0;
+
+        total.textContent = formatAmount(totalAmount);
+        count.textContent = expenses.length;
+
+        if (!expenses.length) {
+          bars.innerHTML = '<p class="reminder-section-intro">Ajoutez un montant dans un rappel pour afficher le rapport.</p>';
+          recentList.innerHTML = '<p class="reminder-section-intro">Aucune donnée disponible pour le moment.</p>';
+          return;
+        }
+
+        bars.innerHTML = sortedCategories
+          .map(([category, amount]) => `
+            <div class="report-bar-row">
+              <div class="report-bar-heading">
+                <span>${escapeHtml(category)}</span>
+                <strong>${escapeHtml(formatAmount(amount))}</strong>
+              </div>
+              <div class="report-bar-track" role="img" aria-label="${escapeHtml(category)} : ${escapeHtml(formatAmount(amount))}">
+                <div class="report-bar-fill" style="width: ${Math.max(5, (amount / highestCategoryTotal) * 100)}%"></div>
+              </div>
+            </div>
+          `)
+          .join("");
+
+        recentList.innerHTML = expenses
+          .slice()
+          .reverse()
+          .slice(0, 5)
+          .map((expense) => {
+            const dateLabel = expense.date
+              ? formatReminderDate(new Date(`${expense.date}T00:00:00`))
+              : "Date non renseignée";
+            return `
+              <div class="report-recent-item">
+                <div class="report-recent-copy">
+                  <strong>${escapeHtml(expense.title)}</strong>
+                  <small>${escapeHtml(expense.category)} · ${escapeHtml(dateLabel)}</small>
+                </div>
+                <span class="report-recent-amount">${escapeHtml(formatAmount(expense.amount))}</span>
+              </div>
+            `;
+          })
+          .join("");
+      }
+
       function renderAlerts(entries) {
         const summary = document.querySelector("#alert-summary");
         const count = document.querySelector("#alert-count");
@@ -2184,11 +2420,14 @@
           title: reminder.title.trim(),
           date: reminder.date,
           mileage: reminder.mileage,
+          amount: reminder.amount,
           notes: reminder.notes.trim(),
         });
         localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(savedReminders));
         event.currentTarget.reset();
         renderCustomReminders();
+        renderExpenses();
+        renderReports();
         checkAlerts();
         showToast("Le rappel a été ajouté.");
       });
@@ -2204,6 +2443,7 @@
         localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(remainingReminders));
         renderCustomReminders();
         renderExpenses();
+        renderReports();
         checkAlerts();
         showToast("Le rappel a été supprimé.");
       });
@@ -2237,6 +2477,7 @@
 
       renderCustomReminders();
       renderExpenses();
+      renderReports();
       checkAlerts();
       window.setInterval(() => checkAlerts(), 60000);
     </script>
