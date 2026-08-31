@@ -1473,6 +1473,49 @@
             <span class="reminder-tag">Vignette</span>
           </div>
 
+          <form class="personal-form custom-reminder-form" id="custom-reminder-form">
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="custom-reminder-category">Catégorie</label>
+                <select id="custom-reminder-category" name="category" required>
+                  <option value="" selected disabled>Choisir</option>
+                  <option value="Entretien">Entretien</option>
+                  <option value="Révision">Révision</option>
+                  <option value="Pneus">Pneus</option>
+                  <option value="Freins">Freins</option>
+                  <option value="Batterie">Batterie</option>
+                  <option value="Filtres">Filtres</option>
+                  <option value="Contrôle">Contrôle</option>
+                  <option value="Assurance">Assurance</option>
+                  <option value="Vignette">Vignette</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-title">Rappel</label>
+                <input id="custom-reminder-title" name="title" type="text" placeholder="Ex. Remplacer les plaquettes" required />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-date">Date d’échéance</label>
+                <input id="custom-reminder-date" name="date" type="date" />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-mileage">Kilométrage cible</label>
+                <input id="custom-reminder-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 60000" />
+              </div>
+
+              <div class="form-field full-width">
+                <label for="custom-reminder-notes">Notes</label>
+                <textarea id="custom-reminder-notes" name="notes" placeholder="Ajoutez une pièce ou une remarque utile."></textarea>
+              </div>
+            </div>
+
+            <button class="save-button" type="submit">Ajouter ce rappel</button>
+          </form>
+
           <div class="custom-reminder-list" id="custom-reminder-list" aria-live="polite"></div>
         </section>
       </section>
@@ -1960,7 +2003,33 @@
         showToast("Les informations du véhicule ont été enregistrées.");
       });
 
+      const customReminderForm = document.querySelector("#custom-reminder-form");
       const customReminderList = document.querySelector("#custom-reminder-list");
+
+      customReminderForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const reminder = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+        if (!reminder.date && !reminder.mileage) {
+          showToast("Ajoutez une date ou un kilométrage cible.");
+          return;
+        }
+
+        const savedReminders = getSavedCustomReminders();
+        savedReminders.push({
+          id: `${Date.now()}-${savedReminders.length + 1}`,
+          category: reminder.category,
+          title: reminder.title.trim(),
+          date: reminder.date,
+          mileage: reminder.mileage,
+          notes: reminder.notes.trim(),
+        });
+        localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(savedReminders));
+        event.currentTarget.reset();
+        renderCustomReminders();
+        checkAlerts();
+        showToast("Le rappel a été ajouté.");
+      });
 
       customReminderList.addEventListener("click", (event) => {
         const removeButton = event.target.closest("[data-remove-reminder]");
