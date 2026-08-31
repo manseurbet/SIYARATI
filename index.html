@@ -1479,15 +1479,15 @@
                 <label for="custom-reminder-category">Catégorie</label>
                 <select id="custom-reminder-category" name="category" required>
                   <option value="" selected disabled>Choisir</option>
+                  <option value="Contrôle">Contrôle</option>
+                  <option value="Assurance">Assurance</option>
+                  <option value="Vignette">Vignette</option>
                   <option value="Entretien">Entretien</option>
                   <option value="Révision">Révision</option>
                   <option value="Pneus">Pneus</option>
                   <option value="Freins">Freins</option>
                   <option value="Batterie">Batterie</option>
                   <option value="Filtres">Filtres</option>
-                  <option value="Contrôle">Contrôle</option>
-                  <option value="Assurance">Assurance</option>
-                  <option value="Vignette">Vignette</option>
                   <option value="Autre">Autre</option>
                 </select>
               </div>
@@ -1505,6 +1505,11 @@
               <div class="form-field">
                 <label for="custom-reminder-mileage">Kilométrage cible</label>
                 <input id="custom-reminder-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 60000" />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-amount">Montant</label>
+                <input id="custom-reminder-amount" name="amount" type="number" min="0" step="0.01" placeholder="Ex. 7500 DA" />
               </div>
 
               <div class="form-field full-width">
@@ -1699,6 +1704,13 @@
           : "48 260 km";
       }
 
+      function formatAmount(value) {
+        const amount = Number(value);
+        return Number.isFinite(amount) && amount >= 0
+          ? `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(amount)} DA`
+          : "";
+      }
+
       function getCurrentMileage() {
         const mileage = Number(getSavedVehicle()["current-mileage"]);
         return Number.isFinite(mileage) && mileage >= 0 ? mileage : null;
@@ -1835,7 +1847,7 @@
             <article class="custom-reminder-item">
               <div class="custom-reminder-copy">
                 <strong>${escapeHtml(reminder.title)}</strong>
-                <small>${escapeHtml(reminder.category)} · ${escapeHtml(formatCustomReminderTarget(reminder))}</small>
+                <small>${escapeHtml(reminder.category)} · ${escapeHtml(formatCustomReminderTarget(reminder))}${reminder.amount ? ` · ${escapeHtml(formatAmount(reminder.amount))}` : ""}</small>
               </div>
               <button class="remove-reminder-button" type="button" data-remove-reminder="${escapeHtml(reminder.id)}" aria-label="Supprimer ${escapeHtml(reminder.title)}">×</button>
             </article>
