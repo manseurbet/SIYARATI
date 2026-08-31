@@ -1320,6 +1320,20 @@
             </div>
             <span class="card-footer">Voir le véhicule <span class="arrow">↗</span></span>
           </button>
+
+          <button class="detail-card" type="button" data-label="Dépenses">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
+                  <path d="M3.5 9.5h17M7 14h3M16.5 14h.01" />
+                </svg>
+              </div>
+              <h3>Dépenses</h3>
+              <p>Centralisez les frais liés à votre véhicule.</p>
+            </div>
+            <span class="card-footer">Voir les dépenses <span class="arrow">↗</span></span>
+          </button>
         </div>
       </section>
 
@@ -1935,7 +1949,7 @@
         control.addEventListener("click", () => showScreen(control.dataset.screen));
       });
 
-      document.querySelectorAll(".toast-card, .menu-card:not([data-screen])").forEach((card) => {
+      document.querySelectorAll(".toast-card, .menu-card:not([data-screen]), .detail-card:not([data-screen])").forEach((card) => {
         card.addEventListener("click", () => {
           showToast(`${card.dataset.label} — cette rubrique sera bientôt disponible.`);
         });
