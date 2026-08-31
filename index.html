@@ -1035,6 +1035,77 @@
         outline: none;
       }
 
+      .expense-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .expense-summary-label {
+        color: #76869a;
+        font-size: 12px;
+      }
+
+      .expense-summary-total {
+        display: block;
+        margin-top: 4px;
+        color: #2b3c52;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .expense-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .expense-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 14px 15px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .expense-item-category {
+        margin: 0 0 4px;
+        color: #536c8f;
+        font-size: 11px;
+        font-weight: 750;
+        text-transform: uppercase;
+      }
+
+      .expense-item-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .expense-item-date {
+        margin: 5px 0 0;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .expense-item-amount {
+        align-self: center;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
       .help-actions {
         display: grid;
         gap: 12px;
@@ -1321,7 +1392,7 @@
             <span class="card-footer">Voir le véhicule <span class="arrow">↗</span></span>
           </button>
 
-          <button class="detail-card" type="button" data-label="Dépenses">
+          <button class="detail-card" type="button" data-screen="expenses">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -1335,6 +1406,31 @@
             <span class="card-footer">Voir les dépenses <span class="arrow">↗</span></span>
           </button>
         </div>
+      </section>
+
+      <section id="expenses-screen" class="screen is-hidden" aria-labelledby="expenses-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour à Documents">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Documents</p>
+            <h1 class="detail-title" id="expenses-title">Dépenses</h1>
+            <p class="detail-intro">Retrouvez les montants associés aux rappels enregistrés.</p>
+          </div>
+        </div>
+
+        <div class="expense-summary">
+          <div>
+            <span class="expense-summary-label">Total des montants enregistrés</span>
+            <strong class="expense-summary-total" id="expense-total">0 DA</strong>
+          </div>
+          <span class="expense-summary-label" id="expense-count">0 rappel</span>
+        </div>
+
+        <div class="expense-list" id="expense-list" aria-live="polite"></div>
       </section>
 
       <section id="personal-info-screen" class="screen is-hidden" aria-labelledby="personal-info-title">
@@ -1653,6 +1749,7 @@
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
         reminders: document.querySelector("#reminders-screen"),
         alerts: document.querySelector("#alerts-screen"),
+        expenses: document.querySelector("#expenses-screen"),
         troubleshooting: document.querySelector("#troubleshooting-screen"),
       };
 
@@ -1682,6 +1779,9 @@
         });
         if (name === "alerts") {
           checkAlerts({ playSound: true });
+        }
+        if (name === "expenses") {
+          renderExpenses();
         }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
@@ -1866,6 +1966,42 @@
               <button class="remove-reminder-button" type="button" data-remove-reminder="${escapeHtml(reminder.id)}" aria-label="Supprimer ${escapeHtml(reminder.title)}">×</button>
             </article>
           `)
+          .join("");
+      }
+
+      function renderExpenses() {
+        const list = document.querySelector("#expense-list");
+        const total = document.querySelector("#expense-total");
+        const count = document.querySelector("#expense-count");
+        const expenses = getSavedCustomReminders().filter((reminder) => {
+          return reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0;
+        });
+        const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
+
+        total.textContent = formatAmount(totalAmount);
+        count.textContent = `${expenses.length} rappel${expenses.length > 1 ? "s" : ""}`;
+
+        if (!expenses.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucun montant enregistré depuis vos rappels.</p>';
+          return;
+        }
+
+        list.innerHTML = expenses
+          .map((expense) => {
+            const dateLabel = expense.date
+              ? formatReminderDate(new Date(`${expense.date}T00:00:00`))
+              : "Date non renseignée";
+            return `
+              <article class="expense-item">
+                <div>
+                  <p class="expense-item-category">${escapeHtml(expense.category)}</p>
+                  <h3 class="expense-item-title">${escapeHtml(expense.title)}</h3>
+                  <p class="expense-item-date">${escapeHtml(dateLabel)}</p>
+                </div>
+                <strong class="expense-item-amount">${escapeHtml(formatAmount(expense.amount))}</strong>
+              </article>
+            `;
+          })
           .join("");
       }
 
@@ -2067,6 +2203,7 @@
         const remainingReminders = getSavedCustomReminders().filter(({ id }) => id !== reminderId);
         localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(remainingReminders));
         renderCustomReminders();
+        renderExpenses();
         checkAlerts();
         showToast("Le rappel a été supprimé.");
       });
@@ -2099,6 +2236,7 @@
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
       renderCustomReminders();
+      renderExpenses();
       checkAlerts();
       window.setInterval(() => checkAlerts(), 60000);
     </script>
