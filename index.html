@@ -997,7 +997,7 @@
         <div class="vehicle-copy">
           <p class="vehicle-label">Véhicule principal</p>
           <p class="vehicle-name">Peugeot 208</p>
-          <p class="vehicle-meta">Essence · 2021 · 48 260 km</p>
+          <p class="vehicle-meta">Essence · 2021 · <span id="current-mileage-display">48 260 km</span></p>
         </div>
         <div class="vehicle-status"><span class="status-dot"></span> Tout est en ordre</div>
       </section>
@@ -1017,8 +1017,8 @@
                   <path d="M12 10.8v5.2M12 7.5h.01" />
                 </svg>
               </div>
-              <h3>Infos véhicule</h3>
-              <p>Consultez les données et caractéristiques de votre voiture.</p>
+              <h3>Documents</h3>
+              <p>Retrouvez vos documents et informations administratives.</p>
             </div>
             <span class="card-footer">Voir les détails <span class="arrow">↗</span></span>
           </button>
@@ -1085,7 +1085,7 @@
           </button>
           <div>
             <p class="detail-kicker">Mon espace</p>
-            <h1 class="detail-title" id="vehicle-info-title">Informations</h1>
+            <h1 class="detail-title" id="vehicle-info-title">Documents</h1>
             <p class="detail-intro">Choisissez les informations que vous souhaitez consulter.</p>
           </div>
         </div>
@@ -1227,6 +1227,11 @@
             </div>
 
             <div class="form-field full-width">
+              <label for="current-mileage">Kilométrage actuel</label>
+              <input id="current-mileage" name="current-mileage" type="number" min="0" step="1" placeholder="Ex. 48260" required />
+            </div>
+
+            <div class="form-field full-width">
               <label for="vehicle-photo">Photo du véhicule</label>
               <input id="vehicle-photo" name="vehicle-photo" type="file" accept="image/*" />
             </div>
@@ -1270,6 +1275,11 @@
             <div class="form-field">
               <label for="oil-change-date">Dernière vidange</label>
               <input id="oil-change-date" name="oil-change-date" type="date" required />
+            </div>
+
+            <div class="form-field">
+              <label for="oil-change-mileage">Kilométrage vidange</label>
+              <input id="oil-change-mileage" name="oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 45000" required />
             </div>
 
             <div class="form-field full-width">
@@ -1337,6 +1347,7 @@
       };
 
       const REMINDERS_STORAGE_KEY = "siyarati-reminders";
+      const VEHICLE_STORAGE_KEY = "siyarati-vehicle";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -1368,6 +1379,28 @@
           return JSON.parse(localStorage.getItem(REMINDERS_STORAGE_KEY) || "{}");
         } catch {
           return {};
+        }
+      }
+
+      function getSavedVehicle() {
+        try {
+          return JSON.parse(localStorage.getItem(VEHICLE_STORAGE_KEY) || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function formatMileage(value) {
+        const mileage = Number(value);
+        return Number.isFinite(mileage) && mileage >= 0
+          ? `${new Intl.NumberFormat("fr-FR").format(mileage)} km`
+          : "48 260 km";
+      }
+
+      function updateMileageDisplay(value) {
+        const mileageDisplay = document.querySelector("#current-mileage-display");
+        if (mileageDisplay) {
+          mileageDisplay.textContent = formatMileage(value);
         }
       }
 
@@ -1511,6 +1544,12 @@
 
       document.querySelector("#vehicle-details-form").addEventListener("submit", (event) => {
         event.preventDefault();
+        const form = event.currentTarget;
+        const vehicleDetails = Object.fromEntries(new FormData(form).entries());
+        const photoField = form.querySelector('[name="vehicle-photo"]');
+        vehicleDetails["vehicle-photo"] = photoField.files?.[0]?.name || "";
+        localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(vehicleDetails));
+        updateMileageDisplay(vehicleDetails["current-mileage"]);
         showToast("Les informations du véhicule ont été enregistrées.");
       });
 
@@ -1539,6 +1578,15 @@
           field.value = value;
         }
       });
+
+      const savedVehicle = getSavedVehicle();
+      Object.entries(savedVehicle).forEach(([fieldName, value]) => {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field && field.type !== "file") {
+          field.value = value;
+        }
+      });
+      updateMileageDisplay(savedVehicle["current-mileage"]);
 
       checkAlerts();
       window.setInterval(() => checkAlerts(), 60000);
