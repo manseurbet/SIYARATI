@@ -2054,6 +2054,16 @@
           <div class="help-action-result" id="location-result" hidden>
             <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
             <div class="location-share-controls">
+              <label for="location-reason">Motif de l’intervention</label>
+              <select id="location-reason" required>
+                <option value="" selected disabled>Choisissez un motif</option>
+                <option value="panne-essence">Panne d’essence</option>
+                <option value="panne-moteur">Panne moteur</option>
+                <option value="crevaison">Crevaison</option>
+                <option value="accident">Accident</option>
+                <option value="batterie">Batterie déchargée</option>
+                <option value="autre">Autre problème</option>
+              </select>
               <label for="location-share-mode">Mode d’envoi</label>
               <select id="location-share-mode">
                 <option value="whatsapp">WhatsApp</option>
@@ -2741,6 +2751,7 @@
       const locationStatus = document.querySelector("#location-status");
       const locationResult = document.querySelector("#location-result");
       const locationMapLink = document.querySelector("#location-map-link");
+      const locationReason = document.querySelector("#location-reason");
       const locationShareMode = document.querySelector("#location-share-mode");
       const sendLocationButton = document.querySelector("#send-location-button");
       const locationShareStatus = document.querySelector("#location-share-status");
@@ -2757,6 +2768,7 @@
         locationStatus.textContent = "Recherche de votre position…";
         locationResult.hidden = true;
         currentLocationMapUrl = "";
+        locationReason.value = "";
         locationShareStatus.textContent = "";
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
@@ -2781,7 +2793,14 @@
           return;
         }
 
-        const message = `Ma position : ${currentLocationMapUrl}`;
+        if (!locationReason.value) {
+          locationShareStatus.textContent = "Choisissez le motif avant d’envoyer votre position.";
+          locationReason.focus();
+          return;
+        }
+
+        const selectedReason = locationReason.options[locationReason.selectedIndex].textContent;
+        const message = `Motif : ${selectedReason}\nMa position : ${currentLocationMapUrl}`;
         const shareMode = locationShareMode.value;
         if (shareMode === "whatsapp") {
           window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
@@ -2789,7 +2808,7 @@
         } else if (shareMode === "sms") {
           window.location.href = `sms:?body=${encodeURIComponent(message)}`;
         } else {
-          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentLocationMapUrl)}`, "_blank", "noopener");
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentLocationMapUrl)}&quote=${encodeURIComponent(message)}`, "_blank", "noopener");
           locationShareStatus.textContent = "Facebook a été ouvert.";
         }
       });
