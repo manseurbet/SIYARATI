@@ -1918,16 +1918,16 @@
             </svg>
           </div>
           <div>
-            <span class="alert-summary-label">Échéances urgentes</span>
+            <span class="alert-summary-label">Notifications actives</span>
             <strong class="alert-count" id="alert-count">0</strong>
             <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
           </div>
         </div>
 
         <div class="alert-stages" aria-label="Niveaux d’alerte">
-          <span class="alert-stage"><span class="alert-stage-dot is-safe"></span><strong>Vert</strong> · de 7 à 3 jours</span>
-          <span class="alert-stage"><span class="alert-stage-dot is-warning"></span><strong>Orange</strong> · de 3 à 2 jours</span>
-          <span class="alert-stage"><span class="alert-stage-dot is-critical"></span><strong>Rouge</strong> · 2 jours ou moins</span>
+          <span class="alert-stage"><span class="alert-stage-dot is-safe"></span><strong>Vert</strong> · 7 à 3 jours ou 300 à 201 km</span>
+          <span class="alert-stage"><span class="alert-stage-dot is-warning"></span><strong>Orange</strong> · 3 à 2 jours ou 200 à 101 km</span>
+          <span class="alert-stage"><span class="alert-stage-dot is-critical"></span><strong>Rouge</strong> · 2 jours ou moins ou 100 km ou moins</span>
         </div>
 
         <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
@@ -2200,6 +2200,33 @@
         return "upcoming";
       }
 
+      function getMileageAlertStatus(mileageRemaining) {
+        if (mileageRemaining < 0) {
+          return "expired";
+        }
+        if (mileageRemaining <= 100) {
+          return "critical";
+        }
+        if (mileageRemaining <= 200) {
+          return "warning";
+        }
+        if (mileageRemaining <= 300) {
+          return "safe";
+        }
+        return "upcoming";
+      }
+
+      function getMostUrgentAlertStatus(...statuses) {
+        const priority = {
+          upcoming: 0,
+          safe: 1,
+          warning: 2,
+          critical: 3,
+          expired: 4,
+        };
+        return statuses.sort((first, second) => priority[second] - priority[first])[0] || "upcoming";
+      }
+
       function getReminderEntries() {
         const savedReminders = getSavedReminders();
         const fixedEntries = reminderDefinitions
@@ -2228,11 +2255,9 @@
           const mileageRemaining = targetMileage !== null && currentMileage !== null
             ? targetMileage - currentMileage
             : null;
-          const status = date
-            ? getAlertStatus(hoursRemaining)
-            : mileageRemaining !== null && mileageRemaining <= 100
-              ? mileageRemaining < 0 ? "expired" : "critical"
-              : "upcoming";
+          const dateStatus = date ? getAlertStatus(hoursRemaining) : "upcoming";
+          const mileageStatus = mileageRemaining !== null ? getMileageAlertStatus(mileageRemaining) : "upcoming";
+          const status = getMostUrgentAlertStatus(dateStatus, mileageStatus);
 
           return {
             key: `custom-${reminder.id}`,
@@ -2243,6 +2268,8 @@
             targetMileage,
             hoursRemaining,
             mileageRemaining,
+            dateStatus,
+            mileageStatus,
             status,
           };
         });
@@ -2268,26 +2295,29 @@
         }
 
         if (entry.status === "critical" || entry.status === "warning" || entry.status === "safe") {
-          if (entry.mileageRemaining !== null) {
-            return `Dans ${Math.max(1, Math.ceil(entry.mileageRemaining))} km`;
+          const targets = [];
+          if (entry.hoursRemaining !== null && entry.hoursRemaining !== undefined && entry.dateStatus === entry.status) {
+            const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
+            targets.push(`Dans ${days} jour${days > 1 ? "s" : ""}`);
           }
-          const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
-          return `Dans ${days} jour${days > 1 ? "s" : ""}`;
+          if (entry.mileageRemaining !== null && entry.mileageStatus === entry.status) {
+            targets.push(`Dans ${Math.max(0, Math.ceil(entry.mileageRemaining))} km`);
+          }
+          return targets.join(" · ") || "À venir";
         }
 
         return "À venir";
       }
 
       function formatReminderTarget(entry) {
+        const targets = [];
         if (entry.date) {
-          return `Échéance : ${formatReminderDate(entry.date)}`;
+          targets.push(`Échéance : ${formatReminderDate(entry.date)}`);
         }
-
         if (entry.targetMileage !== null) {
-          return `À ${formatMileage(entry.targetMileage)}`;
+          targets.push(`Objectif : ${formatMileage(entry.targetMileage)}`);
         }
-
-        return "Échéance à définir";
+        return targets.join(" · ") || "Échéance à définir";
       }
 
       function escapeHtml(value) {
@@ -2452,7 +2482,7 @@
 
         if (activeEntries.length === 0) {
           summaryCopy.textContent = entries.length
-            ? "Aucune échéance dans les prochaines 24 heures."
+            ? "Aucune échéance dans les 7 prochains jours ou à moins de 300 km."
             : "Ajoutez vos dates dans Rappels pour activer la surveillance.";
         } else {
           summaryCopy.textContent = `${activeEntries.length} échéance${activeEntries.length > 1 ? "s" : ""} à traiter.`;
@@ -2604,6 +2634,7 @@
         localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(vehicleDetails));
         updateVehicleDisplay(vehicleDetails);
         updateMileageDisplay(vehicleDetails["current-mileage"]);
+        checkAlerts();
         showToast("Les informations du véhicule ont été enregistrées.");
       });
 
