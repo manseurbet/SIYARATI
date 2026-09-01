@@ -2916,7 +2916,7 @@
           return;
         }
 
-        const message = `Motif : ${selectedBreakdownReason}\nMa position : ${currentLocationMapUrl}`;
+        const message = `🚨 JE SUIS EN PANNE\n${selectedBreakdownReason}\n📍 Ma position : ${currentLocationMapUrl}`;
         const shareMode = locationShareMode.value;
         if (shareMode === "whatsapp") {
           window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
