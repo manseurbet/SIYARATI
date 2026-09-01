@@ -165,7 +165,11 @@
         filter: blur(2px);
       }
 
-      .vehicle-copy,
+      .vehicle-copy {
+        position: relative;
+        z-index: 3;
+      }
+
       .vehicle-status {
         position: relative;
         z-index: 1;
@@ -192,16 +196,21 @@
       }
 
       .vehicle-management-toggle {
-        min-height: 28px;
-        padding: 4px 8px;
+        display: grid;
+        width: 34px;
+        height: 30px;
+        place-items: center;
+        padding: 0;
         border: 1px solid rgba(125, 170, 255, 0.35);
-        border-radius: 8px;
+        border-radius: 9px;
         color: #d9e3ef;
         background: rgba(43, 95, 167, 0.34);
         cursor: pointer;
         font: inherit;
-        font-size: 10px;
-        font-weight: 750;
+      }
+
+      .vehicle-management-toggle svg {
+        display: block;
       }
 
       .vehicle-management-toggle:hover,
@@ -212,11 +221,12 @@
 
       .vehicle-management-menu {
         position: absolute;
-        top: 34px;
+        top: 37px;
         right: 0;
         z-index: 4;
         display: grid;
-        min-width: 178px;
+        width: max-content;
+        min-width: 214px;
         gap: 3px;
         padding: 6px;
         border: 1px solid #d5dde6;
@@ -230,16 +240,18 @@
       }
 
       .vehicle-management-menu button {
-        padding: 9px 10px;
+        min-height: 38px;
+        padding: 9px 12px;
         border: 0;
         border-radius: 7px;
         color: #53677d;
         background: transparent;
         cursor: pointer;
         font: inherit;
-        font-size: 11px;
+        font-size: 12px;
         font-weight: 700;
         text-align: left;
+        white-space: nowrap;
       }
 
       .vehicle-management-menu button:hover,
@@ -572,6 +584,8 @@
       }
 
       .vehicle-management-toggle {
+        display: grid;
+        place-items: center;
         border-color: #d5dde6;
         color: #53677d;
         background: #f8fafb;
@@ -1697,7 +1711,13 @@
           <div class="vehicle-label-row">
             <p class="vehicle-label">Véhicule principal</p>
             <div class="vehicle-management">
-              <button class="vehicle-management-toggle" id="vehicle-management-toggle" type="button" aria-expanded="false" aria-controls="vehicle-management-menu">Gérer</button>
+              <button class="vehicle-management-toggle" id="vehicle-management-toggle" type="button" aria-label="Ouvrir le menu du véhicule" title="Options du véhicule" aria-expanded="false" aria-controls="vehicle-management-menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <circle cx="5" cy="12" r="1.7" />
+                  <circle cx="12" cy="12" r="1.7" />
+                  <circle cx="19" cy="12" r="1.7" />
+                </svg>
+              </button>
               <div class="vehicle-management-menu" id="vehicle-management-menu" hidden>
                 <button type="button" data-vehicle-action="add">1. Ajouter véhicule</button>
                 <button type="button" data-vehicle-action="delete">2. Supprimer véhicule</button>
