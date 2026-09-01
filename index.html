@@ -171,6 +171,12 @@
         z-index: 1;
       }
 
+      .vehicle-label-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
       .vehicle-label {
         margin: 0 0 4px;
         color: #b8cbed;
@@ -178,6 +184,73 @@
         font-weight: 650;
         letter-spacing: 0.09em;
         text-transform: uppercase;
+      }
+
+      .vehicle-management {
+        position: relative;
+        margin-top: -5px;
+      }
+
+      .vehicle-management-toggle {
+        min-height: 28px;
+        padding: 4px 8px;
+        border: 1px solid rgba(125, 170, 255, 0.35);
+        border-radius: 8px;
+        color: #d9e3ef;
+        background: rgba(43, 95, 167, 0.34);
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .vehicle-management-toggle:hover,
+      .vehicle-management-toggle:focus-visible {
+        border-color: rgba(255, 255, 255, 0.65);
+        outline: none;
+      }
+
+      .vehicle-management-menu {
+        position: absolute;
+        top: 34px;
+        right: 0;
+        z-index: 4;
+        display: grid;
+        min-width: 178px;
+        gap: 3px;
+        padding: 6px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        background: #ffffff;
+        box-shadow: 0 10px 24px rgba(43, 60, 82, 0.2);
+      }
+
+      .vehicle-management-menu[hidden] {
+        display: none;
+      }
+
+      .vehicle-management-menu button {
+        padding: 9px 10px;
+        border: 0;
+        border-radius: 7px;
+        color: #53677d;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        font-size: 11px;
+        font-weight: 700;
+        text-align: left;
+      }
+
+      .vehicle-management-menu button:hover,
+      .vehicle-management-menu button:focus-visible {
+        color: #2b3c52;
+        background: #eef3f7;
+        outline: none;
+      }
+
+      .vehicle-management-menu button[data-vehicle-action="delete"] {
+        color: #b44d59;
       }
 
       .vehicle-name {
@@ -496,6 +569,17 @@
 
       .vehicle-label {
         color: #8290a2;
+      }
+
+      .vehicle-management-toggle {
+        border-color: #d5dde6;
+        color: #53677d;
+        background: #f8fafb;
+      }
+
+      .vehicle-management-toggle:hover,
+      .vehicle-management-toggle:focus-visible {
+        border-color: #9eafc3;
       }
 
       .vehicle-name {
@@ -1610,7 +1694,17 @@
 
       <section class="vehicle-card" aria-label="Véhicule sélectionné">
         <div class="vehicle-copy">
-          <p class="vehicle-label">Véhicule principal</p>
+          <div class="vehicle-label-row">
+            <p class="vehicle-label">Véhicule principal</p>
+            <div class="vehicle-management">
+              <button class="vehicle-management-toggle" id="vehicle-management-toggle" type="button" aria-expanded="false" aria-controls="vehicle-management-menu">Gérer</button>
+              <div class="vehicle-management-menu" id="vehicle-management-menu" hidden>
+                <button type="button" data-vehicle-action="add">1. Ajouter véhicule</button>
+                <button type="button" data-vehicle-action="delete">2. Supprimer véhicule</button>
+                <button type="button" data-vehicle-action="edit">3. Modifier véhicule</button>
+              </div>
+            </div>
+          </div>
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
           <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
         </div>
@@ -2943,11 +3037,12 @@
       });
 
       const vehicleBrandField = document.querySelector("#vehicle-category");
+      const vehicleDetailsForm = document.querySelector("#vehicle-details-form");
       vehicleBrandField.addEventListener("change", (event) => {
         populateVehicleModels(event.currentTarget.value);
       });
 
-      document.querySelector("#vehicle-details-form").addEventListener("submit", (event) => {
+      vehicleDetailsForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const form = event.currentTarget;
         const vehicleDetails = Object.fromEntries(new FormData(form).entries());
@@ -2958,6 +3053,89 @@
         updateMileageDisplay(vehicleDetails["current-mileage"]);
         checkAlerts();
         showToast("Les informations du véhicule ont été enregistrées.");
+      });
+
+      function prepareVehicleForm(vehicle = {}) {
+        vehicleDetailsForm.reset();
+        Object.entries(vehicle).forEach(([fieldName, value]) => {
+          const field = vehicleDetailsForm.querySelector(`[name="${fieldName}"]`);
+          if (field && field.type !== "file" && fieldName !== "vehicle-model") {
+            field.value = value;
+          }
+        });
+
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
+        vehicleBrandField.value = brand;
+        populateVehicleModels(brand, vehicle["vehicle-model"] || "");
+      }
+
+      const vehicleManagement = document.querySelector(".vehicle-management");
+      const vehicleManagementToggle = document.querySelector("#vehicle-management-toggle");
+      const vehicleManagementMenu = document.querySelector("#vehicle-management-menu");
+
+      function closeVehicleManagementMenu() {
+        vehicleManagementMenu.hidden = true;
+        vehicleManagementToggle.setAttribute("aria-expanded", "false");
+      }
+
+      vehicleManagementToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = !vehicleManagementMenu.hidden;
+        vehicleManagementMenu.hidden = isOpen;
+        vehicleManagementToggle.setAttribute("aria-expanded", String(!isOpen));
+      });
+
+      vehicleManagementMenu.addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-vehicle-action]");
+        if (!actionButton) {
+          return;
+        }
+
+        const action = actionButton.dataset.vehicleAction;
+        const savedVehicle = getSavedVehicle();
+        closeVehicleManagementMenu();
+
+        if (action === "add") {
+          if (Object.keys(savedVehicle).length) {
+            showToast("Un véhicule est déjà enregistré. Choisissez Modifier véhicule.");
+            return;
+          }
+          prepareVehicleForm();
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "edit") {
+          if (!Object.keys(savedVehicle).length) {
+            showToast("Aucun véhicule enregistré. Choisissez Ajouter véhicule.");
+            return;
+          }
+          prepareVehicleForm(savedVehicle);
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "delete") {
+          if (!Object.keys(savedVehicle).length) {
+            showToast("Aucun véhicule à supprimer.");
+            return;
+          }
+          if (!window.confirm("Supprimer le véhicule principal et ses informations ?")) {
+            return;
+          }
+          localStorage.removeItem(VEHICLE_STORAGE_KEY);
+          prepareVehicleForm();
+          updateVehicleDisplay();
+          updateMileageDisplay("");
+          checkAlerts();
+          showToast("Le véhicule a été supprimé.");
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!vehicleManagement.contains(event.target)) {
+          closeVehicleManagementMenu();
+        }
       });
 
       const customReminderForm = document.querySelector("#custom-reminder-form");
