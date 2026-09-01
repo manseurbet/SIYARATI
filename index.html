@@ -207,12 +207,34 @@
         white-space: nowrap;
       }
 
+      .vehicle-status.is-warning {
+        border-color: rgba(245, 181, 67, 0.35);
+        color: #ffe0a0;
+        background: rgba(145, 91, 20, 0.42);
+      }
+
+      .vehicle-status.is-critical {
+        border-color: rgba(255, 126, 126, 0.35);
+        color: #ffd0d0;
+        background: rgba(139, 42, 42, 0.45);
+      }
+
       .status-dot {
         width: 7px;
         height: 7px;
         border-radius: 50%;
         background: var(--green);
         box-shadow: 0 0 0 4px rgba(73, 211, 157, 0.12);
+      }
+
+      .vehicle-status.is-warning .status-dot {
+        background: #f5b543;
+        box-shadow: 0 0 0 4px rgba(245, 181, 67, 0.14);
+      }
+
+      .vehicle-status.is-critical .status-dot {
+        background: #ff7e7e;
+        box-shadow: 0 0 0 4px rgba(255, 126, 126, 0.14);
       }
 
       .section-heading {
@@ -1450,7 +1472,10 @@
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
           <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
         </div>
-        <div class="vehicle-status"><span class="status-dot"></span> Tout est en ordre</div>
+        <div class="vehicle-status" id="vehicle-alert-status" aria-label="Notifications des alertes">
+          <span class="status-dot"></span>
+          <span id="vehicle-alert-status-text">Notifications des alertes · 0</span>
+        </div>
       </section>
 
       <section aria-labelledby="services-title">
@@ -2394,12 +2419,25 @@
           .join("");
       }
 
+      function updateVehicleAlertStatus(entries) {
+        const status = document.querySelector("#vehicle-alert-status");
+        const statusText = document.querySelector("#vehicle-alert-status-text");
+        const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
+        const hasCriticalAlert = activeEntries.some((entry) => entry.status === "critical" || entry.status === "expired");
+        const hasWarningAlert = activeEntries.some((entry) => entry.status === "warning");
+
+        status.classList.toggle("is-warning", !hasCriticalAlert && hasWarningAlert);
+        status.classList.toggle("is-critical", hasCriticalAlert);
+        statusText.textContent = `Notifications des alertes · ${activeEntries.length}`;
+      }
+
       function renderAlerts(entries) {
         const summary = document.querySelector("#alert-summary");
         const count = document.querySelector("#alert-count");
         const summaryCopy = document.querySelector("#alert-summary-copy");
         const alertsList = document.querySelector("#alerts-list");
         const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
+        updateVehicleAlertStatus(entries);
         summary.classList.toggle("is-clear", activeEntries.length === 0);
         count.textContent = activeEntries.length;
 
