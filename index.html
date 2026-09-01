@@ -1692,6 +1692,13 @@
               </select>
             </div>
 
+            <div class="form-field full-width">
+              <label for="vehicle-model">Modèle</label>
+              <select id="vehicle-model" name="vehicle-model" required disabled>
+                <option value="" selected>Choisir d’abord une marque</option>
+              </select>
+            </div>
+
             <div class="form-field">
               <label for="vehicle-registration">Matricule</label>
               <input id="vehicle-registration" name="vehicle-registration" type="text" placeholder="Ex. 123456-16-00" required />
@@ -1929,6 +1936,62 @@
       ];
       let lastUrgentSignature = "";
       let soundUnlocked = false;
+      const vehicleModels = {
+        Audi: ["A1", "A3", "A4", "A6", "Q2", "Q3", "Q5", "Q7"],
+        BMW: ["Série 1", "Série 2", "Série 3", "Série 5", "X1", "X3", "X5"],
+        Chery: ["Tiggo 2 Pro", "Tiggo 4 Pro", "Tiggo 7 Pro", "Tiggo 8 Pro"],
+        Chevrolet: ["Spark", "Aveo", "Cruze", "Captiva"],
+        "Citroën": ["C3", "C4", "C-Elysée", "Berlingo"],
+        Dacia: ["Sandero", "Logan", "Duster", "Stepway", "Dokker", "Lodgy"],
+        DFSK: ["Glory 500", "Glory 580", "K01"],
+        Dongfeng: ["S50", "SX5", "Rich"],
+        Fiat: ["500", "Panda", "Tipo", "Argo", "Doblo", "Ducato"],
+        Ford: ["Fiesta", "Focus", "Ranger", "Transit", "Kuga", "EcoSport"],
+        Geely: ["Emgrand", "Coolray", "GX3 Pro", "Geometry C"],
+        "Great Wall": ["Wingle 5", "Wingle 7", "Poer", "M4"],
+        Haval: ["Jolion", "H6"],
+        Hyundai: ["i10", "i20", "Accent", "Elantra", "Grand i10", "Creta", "Tucson", "Santa Fe"],
+        Isuzu: ["D-Max", "NPR", "NKR"],
+        JAC: ["JS2", "JS3", "JS4", "J7", "X200", "X250"],
+        JMC: ["Vigus", "Carry", "N720"],
+        Kia: ["Picanto", "Rio", "Cerato", "Carens", "Sportage", "Sorento"],
+        Mahindra: ["KUV100", "Scorpio", "Thar", "Bolero"],
+        "Mercedes-Benz": ["Classe A", "Classe C", "Classe E", "GLA", "GLC", "Sprinter"],
+        Mitsubishi: ["Lancer", "ASX", "Outlander", "L200", "Canter"],
+        Nissan: ["Micra", "Sunny", "Qashqai", "X-Trail", "Navara", "Patrol"],
+        Opel: ["Corsa", "Astra", "Crossland", "Grandland", "Combo"],
+        Peugeot: ["108", "208", "301", "308", "408", "2008", "3008", "5008", "Partner", "Expert"],
+        Renault: ["Clio", "Symbol", "Logan", "Fluence", "Mégane", "Captur", "Arkana", "Kangoo", "Master"],
+        Seat: ["Ibiza", "Leon", "Arona", "Ateca"],
+        Skoda: ["Fabia", "Octavia", "Scala", "Kamiq", "Karoq", "Kodiaq"],
+        Suzuki: ["Alto", "Swift", "Celerio", "Vitara", "Jimny", "Carry"],
+        Toyota: ["Yaris", "Corolla", "Etios", "Aygo", "RAV4", "Hilux", "Land Cruiser", "Proace"],
+        Volkswagen: ["Polo", "Golf", "Passat", "Tiguan", "T-Roc", "Caddy", "Transporter"],
+        Autre: ["Autre modèle"],
+      };
+
+      function populateVehicleModels(brand, selectedModel = "") {
+        const modelField = document.querySelector("#vehicle-model");
+        const models = vehicleModels[brand] || [];
+        modelField.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = brand ? "Choisir un modèle" : "Choisir d’abord une marque";
+        placeholder.selected = !selectedModel;
+        placeholder.disabled = true;
+        modelField.appendChild(placeholder);
+
+        models.forEach((model) => {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          option.selected = model === selectedModel;
+          modelField.appendChild(option);
+        });
+
+        modelField.disabled = !brand || models.length === 0;
+      }
 
       function showToast(message) {
         toast.textContent = message;
@@ -2379,6 +2442,11 @@
         showToast("Vos informations personnelles ont été enregistrées.");
       });
 
+      const vehicleBrandField = document.querySelector("#vehicle-category");
+      vehicleBrandField.addEventListener("change", (event) => {
+        populateVehicleModels(event.currentTarget.value);
+      });
+
       document.querySelector("#vehicle-details-form").addEventListener("submit", (event) => {
         event.preventDefault();
         const form = event.currentTarget;
@@ -2458,10 +2526,15 @@
       const savedVehicle = getSavedVehicle();
       Object.entries(savedVehicle).forEach(([fieldName, value]) => {
         const field = document.querySelector(`[name="${fieldName}"]`);
-        if (field && field.type !== "file") {
+        if (field && field.type !== "file" && fieldName !== "vehicle-model") {
           field.value = value;
         }
       });
+      const savedBrandIsAvailable = [...vehicleBrandField.options].some((option) => option.value === vehicleBrandField.value);
+      if (!savedBrandIsAvailable && savedVehicle["vehicle-brand"]) {
+        vehicleBrandField.value = savedVehicle["vehicle-brand"];
+      }
+      populateVehicleModels(vehicleBrandField.value, savedVehicle["vehicle-model"]);
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
       renderCustomReminders();
