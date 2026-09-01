@@ -1326,6 +1326,62 @@
         gap: 12px;
       }
 
+      .breakdown-reasons {
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .breakdown-reasons h2 {
+        margin: 0 0 12px;
+        color: #2b3c52;
+        font-size: 16px;
+      }
+
+      .breakdown-reason-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .breakdown-reason {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 10px;
+        border: 1px solid #e0e6ed;
+        border-radius: 11px;
+        color: #53677d;
+        background: #f8fafb;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 750;
+        text-align: left;
+        transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+      }
+
+      .breakdown-reason span:first-child {
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .breakdown-reason:hover,
+      .breakdown-reason:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .breakdown-reason.is-selected {
+        border-color: #536c8f;
+        color: #2b3c52;
+        background: #eef3f7;
+        box-shadow: 0 0 0 2px rgba(83, 108, 143, 0.12);
+      }
+
       .help-action {
         display: flex;
         min-height: 78px;
@@ -1343,6 +1399,24 @@
         cursor: pointer;
         font: inherit;
         transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .help-action:disabled {
+        color: #91a0b0;
+        background: #f4f7f9;
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+
+      .help-action:disabled .help-action-icon {
+        color: #91a0b0;
+        background: #e9eef3;
+      }
+
+      .help-action:disabled:hover {
+        border-color: #d5dde6;
+        transform: none;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
       }
 
       .help-action:hover,
@@ -1481,6 +1555,10 @@
       }
 
       @media (max-width: 430px) {
+        .breakdown-reason-list {
+          grid-template-columns: 1fr;
+        }
+
         .detail-grid {
           grid-template-columns: 1fr;
         }
@@ -2031,14 +2109,48 @@
             </svg>
           </button>
           <div>
-            <p class="detail-kicker">Assistance</p>
-            <h1 class="detail-title" id="troubleshooting-title">Dépannage</h1>
-            <p class="detail-intro">Accédez rapidement à votre position et aux appels d’urgence.</p>
+            <p class="detail-kicker">🚨 JE SUIS EN PANNE</p>
+            <h1 class="detail-title" id="troubleshooting-title">Quel est le problème ?</h1>
+            <p class="detail-intro">Choisissez le motif, puis partagez votre position pour recevoir de l’aide.</p>
           </div>
         </div>
 
         <div class="help-actions" aria-label="Actions de dépannage">
-          <button class="help-action" id="location-action" type="button">
+          <section class="breakdown-reasons" aria-labelledby="breakdown-reasons-title">
+            <h2 id="breakdown-reasons-title">Quel est le problème ?</h2>
+            <div class="breakdown-reason-list" role="radiogroup" aria-label="Motif de la panne">
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Batterie">
+                <span aria-hidden="true">🔋</span>
+                <span>Batterie</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Crevaison">
+                <span aria-hidden="true">🛞</span>
+                <span>Crevaison</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Carburant">
+                <span aria-hidden="true">⛽</span>
+                <span>Carburant</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Surchauffe">
+                <span aria-hidden="true">🌡️</span>
+                <span>Surchauffe</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Panne moteur">
+                <span aria-hidden="true">🔧</span>
+                <span>Panne moteur</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Accident">
+                <span aria-hidden="true">🚗</span>
+                <span>Accident</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Je ne sais pas">
+                <span aria-hidden="true">❓</span>
+                <span>Je ne sais pas</span>
+              </button>
+            </div>
+          </section>
+
+          <button class="help-action" id="location-action" type="button" disabled>
             <span class="help-action-icon" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
@@ -2046,24 +2158,14 @@
               </svg>
             </span>
             <span class="help-action-copy">
-              <strong>1. Envoyer ma position</strong>
-              <small id="location-status">Partager ma position en cas de besoin</small>
+              <strong>📍 Ma position</strong>
+              <small id="location-status">Sélectionnez d’abord le problème</small>
             </span>
             <span class="help-action-chevron" aria-hidden="true">↗</span>
           </button>
           <div class="help-action-result" id="location-result" hidden>
             <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
             <div class="location-share-controls">
-              <label for="location-reason">Motif de l’intervention</label>
-              <select id="location-reason" required>
-                <option value="" selected disabled>Choisissez un motif</option>
-                <option value="panne-essence">Panne d’essence</option>
-                <option value="panne-moteur">Panne moteur</option>
-                <option value="crevaison">Crevaison</option>
-                <option value="accident">Accident</option>
-                <option value="batterie">Batterie déchargée</option>
-                <option value="autre">Autre problème</option>
-              </select>
               <label for="location-share-mode">Mode d’envoi</label>
               <select id="location-share-mode">
                 <option value="whatsapp">WhatsApp</option>
@@ -2751,15 +2853,37 @@
       const locationStatus = document.querySelector("#location-status");
       const locationResult = document.querySelector("#location-result");
       const locationMapLink = document.querySelector("#location-map-link");
-      const locationReason = document.querySelector("#location-reason");
       const locationShareMode = document.querySelector("#location-share-mode");
       const sendLocationButton = document.querySelector("#send-location-button");
       const locationShareStatus = document.querySelector("#location-share-status");
+      const breakdownReasonButtons = document.querySelectorAll(".breakdown-reason");
       const towAction = document.querySelector("#tow-action");
       const towStatus = document.querySelector("#tow-status");
       let currentLocationMapUrl = "";
+      let selectedBreakdownReason = "";
+
+      breakdownReasonButtons.forEach((reasonButton) => {
+        reasonButton.addEventListener("click", () => {
+          selectedBreakdownReason = reasonButton.dataset.reason;
+          breakdownReasonButtons.forEach((button) => {
+            const isSelected = button === reasonButton;
+            button.classList.toggle("is-selected", isSelected);
+            button.setAttribute("aria-checked", String(isSelected));
+          });
+          locationAction.disabled = false;
+          locationStatus.textContent = `Motif choisi : ${selectedBreakdownReason} · appuyez pour partager`;
+          locationResult.hidden = true;
+          currentLocationMapUrl = "";
+          locationShareStatus.textContent = "";
+        });
+      });
 
       locationAction.addEventListener("click", () => {
+        if (!selectedBreakdownReason) {
+          locationStatus.textContent = "Sélectionnez d’abord le problème.";
+          return;
+        }
+
         if (!navigator.geolocation) {
           locationStatus.textContent = "La géolocalisation n’est pas disponible sur cet appareil.";
           return;
@@ -2768,7 +2892,6 @@
         locationStatus.textContent = "Recherche de votre position…";
         locationResult.hidden = true;
         currentLocationMapUrl = "";
-        locationReason.value = "";
         locationShareStatus.textContent = "";
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
@@ -2793,14 +2916,7 @@
           return;
         }
 
-        if (!locationReason.value) {
-          locationShareStatus.textContent = "Choisissez le motif avant d’envoyer votre position.";
-          locationReason.focus();
-          return;
-        }
-
-        const selectedReason = locationReason.options[locationReason.selectedIndex].textContent;
-        const message = `Motif : ${selectedReason}\nMa position : ${currentLocationMapUrl}`;
+        const message = `Motif : ${selectedBreakdownReason}\nMa position : ${currentLocationMapUrl}`;
         const shareMode = locationShareMode.value;
         if (shareMode === "whatsapp") {
           window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
