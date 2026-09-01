@@ -1409,6 +1409,55 @@
         font-weight: 750;
       }
 
+      .location-share-controls {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #e5ebf1;
+      }
+
+      .location-share-controls label {
+        color: #53677d;
+        font-size: 11px;
+        font-weight: 750;
+      }
+
+      .location-share-controls select {
+        width: 100%;
+        min-height: 42px;
+        padding: 0 11px;
+        border: 1px solid #d5dde6;
+        border-radius: 10px;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .share-location-button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 10px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .share-location-button:hover,
+      .share-location-button:focus-visible {
+        background: #435b7e;
+        outline: none;
+      }
+
+      .location-share-status {
+        margin: 0;
+        color: #76869a;
+        font-size: 11px;
+      }
+
       #home-screen .menu-card {
         min-height: 132px;
       }
@@ -1997,13 +2046,23 @@
               </svg>
             </span>
             <span class="help-action-copy">
-              <strong>1. Ma position</strong>
+              <strong>1. Envoyer ma position</strong>
               <small id="location-status">Partager ma position en cas de besoin</small>
             </span>
             <span class="help-action-chevron" aria-hidden="true">↗</span>
           </button>
           <div class="help-action-result" id="location-result" hidden>
             <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
+            <div class="location-share-controls">
+              <label for="location-share-mode">Mode d’envoi</label>
+              <select id="location-share-mode">
+                <option value="whatsapp">WhatsApp</option>
+                <option value="sms">SMS</option>
+                <option value="facebook">Facebook</option>
+              </select>
+              <button class="share-location-button" id="send-location-button" type="button">Envoyer ma position</button>
+              <p class="location-share-status" id="location-share-status"></p>
+            </div>
           </div>
 
           <button class="help-action" id="tow-action" type="button">
@@ -2682,8 +2741,12 @@
       const locationStatus = document.querySelector("#location-status");
       const locationResult = document.querySelector("#location-result");
       const locationMapLink = document.querySelector("#location-map-link");
+      const locationShareMode = document.querySelector("#location-share-mode");
+      const sendLocationButton = document.querySelector("#send-location-button");
+      const locationShareStatus = document.querySelector("#location-share-status");
       const towAction = document.querySelector("#tow-action");
       const towStatus = document.querySelector("#tow-status");
+      let currentLocationMapUrl = "";
 
       locationAction.addEventListener("click", () => {
         if (!navigator.geolocation) {
@@ -2693,12 +2756,15 @@
 
         locationStatus.textContent = "Recherche de votre position…";
         locationResult.hidden = true;
+        currentLocationMapUrl = "";
+        locationShareStatus.textContent = "";
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
             const latitude = coords.latitude.toFixed(5);
             const longitude = coords.longitude.toFixed(5);
             locationStatus.textContent = `Position trouvée : ${latitude}, ${longitude}`;
-            locationMapLink.href = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
+            currentLocationMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
+            locationMapLink.href = currentLocationMapUrl;
             locationResult.hidden = false;
             showToast("Votre position a été trouvée.");
           },
@@ -2707,6 +2773,25 @@
           },
           { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 },
         );
+      });
+
+      sendLocationButton.addEventListener("click", () => {
+        if (!currentLocationMapUrl) {
+          locationShareStatus.textContent = "Trouvez votre position avant de l’envoyer.";
+          return;
+        }
+
+        const message = `Ma position : ${currentLocationMapUrl}`;
+        const shareMode = locationShareMode.value;
+        if (shareMode === "whatsapp") {
+          window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+          locationShareStatus.textContent = "WhatsApp a été ouvert.";
+        } else if (shareMode === "sms") {
+          window.location.href = `sms:?body=${encodeURIComponent(message)}`;
+        } else {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentLocationMapUrl)}`, "_blank", "noopener");
+          locationShareStatus.textContent = "Facebook a été ouvert.";
+        }
       });
 
       const savedTowNumber = localStorage.getItem(TOW_STORAGE_KEY);
