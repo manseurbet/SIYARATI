@@ -1391,8 +1391,8 @@
       <section class="vehicle-card" aria-label="Véhicule sélectionné">
         <div class="vehicle-copy">
           <p class="vehicle-label">Véhicule principal</p>
-          <p class="vehicle-name">Peugeot 208</p>
-          <p class="vehicle-meta">Essence · 2021 · <span id="current-mileage-display">48 260 km</span></p>
+          <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
+          <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
         </div>
         <div class="vehicle-status"><span class="status-dot"></span> Tout est en ordre</div>
       </section>
@@ -2065,6 +2065,27 @@
         }
       }
 
+      function updateVehicleDisplay(vehicle = {}) {
+        const nameDisplay = document.querySelector("#vehicle-name-display");
+        const metaDisplay = document.querySelector("#vehicle-meta-display");
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
+        const model = vehicle["vehicle-model"] || "";
+        const vehicleName = [brand, model].filter(Boolean).join(" ");
+        const details = [];
+
+        if (vehicle["vehicle-registration"]) {
+          details.push(vehicle["vehicle-registration"]);
+        }
+        if (vehicle["current-mileage"] !== undefined && vehicle["current-mileage"] !== "") {
+          details.push(formatMileage(vehicle["current-mileage"]));
+        }
+
+        nameDisplay.textContent = vehicleName || "Aucun véhicule enregistré";
+        metaDisplay.textContent = details.length
+          ? details.join(" · ")
+          : "Ajoutez votre véhicule dans Documents";
+      }
+
       function getReminderEntries() {
         const savedReminders = getSavedReminders();
         const fixedEntries = reminderDefinitions
@@ -2454,6 +2475,7 @@
         const photoField = form.querySelector('[name="vehicle-photo"]');
         vehicleDetails["vehicle-photo"] = photoField.files?.[0]?.name || "";
         localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(vehicleDetails));
+        updateVehicleDisplay(vehicleDetails);
         updateMileageDisplay(vehicleDetails["current-mileage"]);
         showToast("Les informations du véhicule ont été enregistrées.");
       });
@@ -2535,6 +2557,7 @@
         vehicleBrandField.value = savedVehicle["vehicle-brand"];
       }
       populateVehicleModels(vehicleBrandField.value, savedVehicle["vehicle-model"]);
+      updateVehicleDisplay(savedVehicle);
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
       renderCustomReminders();
