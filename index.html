@@ -711,6 +711,12 @@
         font-weight: 750;
       }
 
+      .field-optional {
+        color: #91a0b0;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
       .form-field input,
       .form-field select {
         width: 100%;
@@ -1790,6 +1796,28 @@
             </div>
 
             <div class="form-field">
+              <label for="vehicle-year">Année</label>
+              <input id="vehicle-year" name="vehicle-year" type="number" min="1950" max="2030" step="1" placeholder="Ex. 2021" required />
+            </div>
+
+            <div class="form-field">
+              <label for="engine-type">Motorisation</label>
+              <select id="engine-type" name="engine-type" required>
+                <option value="" selected disabled>Choisir</option>
+                <option value="Essence">Essence</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybride">Hybride</option>
+                <option value="Électrique">Électrique</option>
+                <option value="GPL">GPL</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="engine-details">Précision du moteur <span class="field-optional">(facultatif)</span></label>
+              <input id="engine-details" name="engine-details" type="text" placeholder="Ex. 1.5 dCi, 1.2 PureTech, 2.0 TDI…" />
+            </div>
+
+            <div class="form-field">
               <label for="vehicle-registration">Matricule</label>
               <input id="vehicle-registration" name="vehicle-registration" type="text" placeholder="Ex. 123456-16-00" required />
             </div>
@@ -1802,6 +1830,11 @@
             <div class="form-field full-width">
               <label for="current-mileage">Kilométrage actuel</label>
               <input id="current-mileage" name="current-mileage" type="number" min="0" step="1" placeholder="Ex. 48260" required />
+            </div>
+
+            <div class="form-field full-width">
+              <label for="last-oil-change-mileage">Kilométrage de la dernière vidange <span class="field-optional">(facultatif)</span></label>
+              <input id="last-oil-change-mileage" name="last-oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 35000" />
             </div>
 
             <div class="form-field full-width">
@@ -1893,6 +1926,7 @@
           </form>
 
           <div class="custom-reminder-list" id="custom-reminder-list" aria-live="polite"></div>
+          <p class="reminder-section-intro manufacturer-note">Les alertes d’entretien constructeur apparaissent automatiquement dans Alertes après l’enregistrement de la marque, du modèle, de l’année, de la motorisation et du kilométrage.</p>
         </section>
       </section>
 
@@ -2065,6 +2099,38 @@
         Volkswagen: ["Polo", "Golf", "Passat", "Tiguan", "T-Roc", "Caddy", "Transporter"],
         Autre: ["Autre modèle"],
       };
+      const manufacturerMaintenanceProfiles = {
+        Audi: { default: 15000, Électrique: 30000 },
+        BMW: { default: 15000, Électrique: 30000 },
+        Chery: { default: 10000, Électrique: 30000 },
+        Chevrolet: { default: 15000, Électrique: 30000 },
+        "Citroën": { default: 15000, Électrique: 30000 },
+        Dacia: { default: 15000, Électrique: 30000 },
+        DFSK: { default: 10000, Électrique: 30000 },
+        Dongfeng: { default: 10000, Électrique: 30000 },
+        Fiat: { default: 15000, Électrique: 30000 },
+        Ford: { default: 15000, Électrique: 30000 },
+        Geely: { default: 15000, Électrique: 30000 },
+        "Great Wall": { default: 10000, Électrique: 30000 },
+        Haval: { default: 10000, Électrique: 30000 },
+        Hyundai: { default: 15000, Électrique: 30000 },
+        Isuzu: { default: 10000, Électrique: 30000 },
+        JAC: { default: 10000, Électrique: 30000 },
+        JMC: { default: 10000, Électrique: 30000 },
+        Kia: { default: 15000, Électrique: 30000 },
+        Mahindra: { default: 10000, Électrique: 30000 },
+        "Mercedes-Benz": { default: 15000, Électrique: 30000 },
+        Mitsubishi: { default: 15000, Électrique: 30000 },
+        Nissan: { default: 15000, Électrique: 30000 },
+        Opel: { default: 15000, Électrique: 30000 },
+        Peugeot: { default: 15000, Électrique: 30000 },
+        Renault: { default: 15000, Électrique: 30000 },
+        Seat: { default: 15000, Électrique: 30000 },
+        Skoda: { default: 15000, Électrique: 30000 },
+        Suzuki: { default: 10000, Électrique: 30000 },
+        Toyota: { default: 15000, Électrique: 30000 },
+        Volkswagen: { default: 15000, Électrique: 30000 },
+      };
 
       function populateVehicleModels(brand, selectedModel = "") {
         const modelField = document.querySelector("#vehicle-model");
@@ -2172,6 +2238,12 @@
         if (vehicle["vehicle-registration"]) {
           details.push(vehicle["vehicle-registration"]);
         }
+        if (vehicle["vehicle-year"]) {
+          details.push(vehicle["vehicle-year"]);
+        }
+        if (vehicle["engine-type"]) {
+          details.push(vehicle["engine-type"]);
+        }
         if (vehicle["current-mileage"] !== undefined && vehicle["current-mileage"] !== "") {
           details.push(formatMileage(vehicle["current-mileage"]));
         }
@@ -2227,6 +2299,47 @@
         return statuses.sort((first, second) => priority[second] - priority[first])[0] || "upcoming";
       }
 
+      function getManufacturerMaintenanceEntries() {
+        const vehicle = getSavedVehicle();
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"];
+        const model = vehicle["vehicle-model"];
+        const engineType = vehicle["engine-type"];
+        const profile = manufacturerMaintenanceProfiles[brand];
+        const currentMileage = getCurrentMileage();
+
+        if (!brand || !model || !engineType || !profile || currentMileage === null) {
+          return [];
+        }
+
+        const interval = profile[engineType] || profile.default;
+        if (!interval) {
+          return [];
+        }
+
+        const lastServiceMileage = Number(vehicle["last-oil-change-mileage"]);
+        const baselineMileage = Number.isFinite(lastServiceMileage) && lastServiceMileage >= 0
+          ? lastServiceMileage
+          : currentMileage;
+        const targetMileage = baselineMileage + interval;
+        const mileageRemaining = targetMileage - currentMileage;
+        const mileageStatus = getMileageAlertStatus(mileageRemaining);
+
+        return [{
+          key: `manufacturer-service-${brand}-${model}`,
+          label: `Entretien constructeur · ${brand} ${model}`,
+          category: "Constructeur",
+          value: targetMileage,
+          date: null,
+          targetMileage,
+          hoursRemaining: null,
+          mileageRemaining,
+          dateStatus: "upcoming",
+          mileageStatus,
+          status: mileageStatus,
+          isAutomatic: true,
+        }];
+      }
+
       function getReminderEntries() {
         const savedReminders = getSavedReminders();
         const fixedEntries = reminderDefinitions
@@ -2243,6 +2356,8 @@
               date,
               hoursRemaining,
               mileageRemaining: null,
+              dateStatus: status,
+              mileageStatus: "upcoming",
               status,
             };
           });
@@ -2274,7 +2389,9 @@
           };
         });
 
-        return [...fixedEntries, ...customEntries].sort((first, second) => {
+        const manufacturerEntries = getManufacturerMaintenanceEntries();
+
+        return [...fixedEntries, ...customEntries, ...manufacturerEntries].sort((first, second) => {
           const firstTarget = first.date ? first.date.getTime() : first.targetMileage ?? Number.POSITIVE_INFINITY;
           const secondTarget = second.date ? second.date.getTime() : second.targetMileage ?? Number.POSITIVE_INFINITY;
           return firstTarget - secondTarget;
