@@ -862,12 +862,19 @@
         box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
       }
 
-      .alert-item.is-urgent {
-        border-color: #f0c5c5;
-        border-left-color: #d54d4d;
-        background: #fff8f8;
+      .alert-item.is-safe {
+        border-color: #c9e6d7;
+        border-left-color: #4ca875;
+        background: #f5fcf8;
       }
 
+      .alert-item.is-warning {
+        border-color: #f0d49e;
+        border-left-color: #d9952f;
+        background: #fffaf1;
+      }
+
+      .alert-item.is-critical,
       .alert-item.is-expired {
         border-color: #e4b2b2;
         border-left-color: #a92f2f;
@@ -902,10 +909,59 @@
         text-align: center;
       }
 
-      .alert-item.is-urgent .alert-item-status,
+      .alert-item.is-safe .alert-item-status {
+        color: #318a65;
+        background: #dcf5e8;
+      }
+
+      .alert-item.is-warning .alert-item-status {
+        color: #a76b16;
+        background: #ffedc5;
+      }
+
+      .alert-item.is-critical .alert-item-status,
       .alert-item.is-expired .alert-item-status {
         color: #b13d3d;
         background: #ffe1e1;
+      }
+
+      .alert-stages {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin: 0 0 16px;
+        padding: 12px 14px;
+        border: 1px solid #dbe3eb;
+        border-radius: 13px;
+        background: #f8fafc;
+        color: #66778b;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .alert-stage {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .alert-stage-dot {
+        width: 9px;
+        height: 9px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+      }
+
+      .alert-stage-dot.is-safe {
+        background: #4ca875;
+      }
+
+      .alert-stage-dot.is-warning {
+        background: #d9952f;
+      }
+
+      .alert-stage-dot.is-critical {
+        background: #c84747;
       }
 
       .alerts-empty {
@@ -1816,7 +1872,7 @@
           <div>
             <p class="detail-kicker">Surveillance</p>
             <h1 class="detail-title" id="alerts-title">Alertes</h1>
-            <p class="detail-intro">Les échéances à moins de 24 heures apparaissent ici en priorité.</p>
+            <p class="detail-intro">Les échéances changent de couleur selon le nombre de jours restants.</p>
           </div>
         </div>
 
@@ -1832,6 +1888,12 @@
             <strong class="alert-count" id="alert-count">0</strong>
             <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
           </div>
+        </div>
+
+        <div class="alert-stages" aria-label="Niveaux d’alerte">
+          <span class="alert-stage"><span class="alert-stage-dot is-safe"></span><strong>Vert</strong> · de 7 à 3 jours</span>
+          <span class="alert-stage"><span class="alert-stage-dot is-warning"></span><strong>Orange</strong> · de 3 à 2 jours</span>
+          <span class="alert-stage"><span class="alert-stage-dot is-critical"></span><strong>Rouge</strong> · 2 jours ou moins</span>
         </div>
 
         <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
@@ -2086,6 +2148,24 @@
           : "Ajoutez votre véhicule dans Documents";
       }
 
+      function getAlertStatus(hoursRemaining) {
+        if (hoursRemaining < 0) {
+          return "expired";
+        }
+
+        const daysRemaining = hoursRemaining / 24;
+        if (daysRemaining <= 2) {
+          return "critical";
+        }
+        if (daysRemaining <= 3) {
+          return "warning";
+        }
+        if (daysRemaining <= 7) {
+          return "safe";
+        }
+        return "upcoming";
+      }
+
       function getReminderEntries() {
         const savedReminders = getSavedReminders();
         const fixedEntries = reminderDefinitions
@@ -2093,7 +2173,7 @@
           .map(({ key, label }) => {
             const date = new Date(`${savedReminders[key]}T00:00:00`);
             const hoursRemaining = (date.getTime() - Date.now()) / (1000 * 60 * 60);
-            const status = hoursRemaining < 0 ? "expired" : hoursRemaining <= 24 ? "urgent" : "upcoming";
+            const status = getAlertStatus(hoursRemaining);
 
             return {
               key,
@@ -2115,9 +2195,9 @@
             ? targetMileage - currentMileage
             : null;
           const status = date
-            ? hoursRemaining < 0 ? "expired" : hoursRemaining <= 24 ? "urgent" : "upcoming"
+            ? getAlertStatus(hoursRemaining)
             : mileageRemaining !== null && mileageRemaining <= 100
-              ? mileageRemaining < 0 ? "expired" : "urgent"
+              ? mileageRemaining < 0 ? "expired" : "critical"
               : "upcoming";
 
           return {
@@ -2153,12 +2233,12 @@
           return "Expiré";
         }
 
-        if (entry.status === "urgent") {
+        if (entry.status === "critical" || entry.status === "warning" || entry.status === "safe") {
           if (entry.mileageRemaining !== null) {
             return `Dans ${Math.max(1, Math.ceil(entry.mileageRemaining))} km`;
           }
-          const hours = Math.max(1, Math.ceil(entry.hoursRemaining));
-          return `Dans ${hours} h`;
+          const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
+          return `Dans ${days} jour${days > 1 ? "s" : ""}`;
         }
 
         return "À venir";
@@ -2351,20 +2431,20 @@
 
       function checkAlerts(options = {}) {
         const entries = getReminderEntries();
-        const urgentEntries = entries.filter((entry) => entry.status === "urgent");
-        const urgentSignature = urgentEntries.map((entry) => `${entry.key}:${entry.value}`).join("|");
+        const criticalEntries = entries.filter((entry) => entry.status === "critical" || entry.status === "expired");
+        const criticalSignature = criticalEntries.map((entry) => `${entry.key}:${entry.value}`).join("|");
 
         renderAlerts(entries);
 
         const shouldPlaySound =
-          urgentEntries.length &&
-          (options.playSound || (soundUnlocked && urgentSignature !== lastUrgentSignature));
+          criticalEntries.length &&
+          (options.playSound || (soundUnlocked && criticalSignature !== lastUrgentSignature));
 
         if (shouldPlaySound) {
           playAlertTone();
         }
 
-        lastUrgentSignature = urgentSignature;
+        lastUrgentSignature = criticalSignature;
       }
 
       function playAlertTone() {
