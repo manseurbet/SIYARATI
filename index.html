@@ -680,6 +680,180 @@
         cursor: not-allowed;
       }
 
+      .smart-advice-panel {
+        margin-bottom: 22px;
+        padding: 16px;
+        border: 1px solid #d7dee7;
+        border-radius: 16px;
+        background: #f8fafb;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.06);
+      }
+
+      .smart-advice-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 11px;
+      }
+
+      .smart-advice-heading-icon {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border-radius: 9px;
+        color: #536c8f;
+        background: #e7eff5;
+        font-size: 16px;
+      }
+
+      .smart-advice-heading h2 {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+      }
+
+      .smart-advice-heading p {
+        margin: 2px 0 0;
+        color: #8090a5;
+        font-size: 11px;
+      }
+
+      .smart-advice-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .smart-advice-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid #dce4eb;
+        border-radius: 11px;
+        background: #ffffff;
+      }
+
+      .smart-advice-item.is-critical {
+        border-color: #efcaca;
+        background: #fff7f7;
+      }
+
+      .smart-advice-item.is-warning {
+        border-color: #efdcb5;
+        background: #fffaf0;
+      }
+
+      .smart-advice-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .smart-advice-copy strong,
+      .smart-advice-copy span {
+        display: block;
+      }
+
+      .smart-advice-copy strong {
+        color: #2b3c52;
+        font-size: 12px;
+      }
+
+      .smart-advice-copy span {
+        margin-top: 2px;
+        color: #718196;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .smart-advice-action {
+        flex: 0 0 auto;
+        padding: 7px 9px;
+        border: 1px solid #cbd7e2;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #f8fafb;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .smart-advice-action:hover,
+      .smart-advice-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        background: #eef3f7;
+      }
+
+      .alert-item-advice {
+        margin: 5px 0 0;
+        color: #536c8f;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .documents-guidance,
+      .history-insight {
+        margin: 12px 0 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #eef3f7;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .repair-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .repair-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .repair-item-copy {
+        min-width: 0;
+      }
+
+      .repair-item-copy strong,
+      .repair-item-copy small {
+        display: block;
+      }
+
+      .repair-item-copy strong {
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .repair-item-copy small {
+        margin-top: 4px;
+        color: #76869a;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .remove-repair-button {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border: 1px solid #e7c9ce;
+        border-radius: 8px;
+        color: #b44d59;
+        background: #fff7f8;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+      }
+
       .icon-badge,
       .card-info .icon-badge,
       .card-vehicle .icon-badge,
@@ -2190,6 +2364,17 @@
         </button>
       </section>
 
+       <section class="smart-advice-panel" aria-labelledby="smart-advice-title">
+         <div class="smart-advice-heading">
+           <span class="smart-advice-heading-icon" aria-hidden="true">✦</span>
+           <div>
+             <h2 id="smart-advice-title">À faire pour votre voiture</h2>
+             <p>SIYARATI surveille les prochaines échéances</p>
+           </div>
+         </div>
+         <div class="smart-advice-list" id="smart-advice-list" aria-live="polite"></div>
+       </section>
+
       <section aria-labelledby="services-title">
         <div class="section-heading">
           <h2 id="services-title">Que souhaitez-vous consulter&nbsp;?</h2>
@@ -2403,6 +2588,7 @@
             </article>
           </div>
           <p class="documents-upload-note">Formats acceptés : images et PDF.</p>
+          <p class="documents-guidance" id="documents-guidance" aria-live="polite"></p>
         </div>
       </section>
 
@@ -2436,7 +2622,7 @@
             <strong class="report-stat-value" id="report-total">0 DA</strong>
           </div>
           <div class="report-stat">
-            <span class="report-stat-label">Rappels avec montant</span>
+            <span class="report-stat-label">Opérations avec montant</span>
             <strong class="report-stat-value" id="report-count">0</strong>
           </div>
         </div>
@@ -2447,8 +2633,9 @@
         </section>
 
         <section class="report-panel" aria-labelledby="report-recent-title">
-          <h2 class="report-panel-title" id="report-recent-title">Derniers rappels enregistrés</h2>
+          <h2 class="report-panel-title" id="report-recent-title">Dernières opérations enregistrées</h2>
           <div class="report-recent-list" id="report-recent-list" aria-live="polite"></div>
+          <p class="history-insight" id="history-insight" aria-live="polite"></p>
         </section>
       </section>
 
@@ -2774,11 +2961,45 @@
             <p class="detail-intro">Ajoutez les interventions réalisées ou à prévoir pour ce véhicule.</p>
           </div>
         </div>
-        <div class="empty-state">
-          <div class="empty-state-icon" aria-hidden="true">🔧</div>
-          <h2>Aucune réparation enregistrée</h2>
-          <p>Les réparations pourront être ajoutées dans l’historique du véhicule.</p>
-        </div>
+        <form class="personal-form" id="repair-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="repair-category">Catégorie</label>
+              <select id="repair-category" name="category" required>
+                <option value="" selected disabled>Choisir</option>
+                <option value="Entretien">Entretien</option>
+                <option value="Moteur">Moteur</option>
+                <option value="Freins">Freins</option>
+                <option value="Pneus">Pneus</option>
+                <option value="Électricité">Électricité</option>
+                <option value="Carrosserie">Carrosserie</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="repair-title-input">Intervention</label>
+              <input id="repair-title-input" name="title" type="text" placeholder="Ex. Remplacement des plaquettes" required />
+            </div>
+            <div class="form-field">
+              <label for="repair-date">Date</label>
+              <input id="repair-date" name="date" type="date" required />
+            </div>
+            <div class="form-field">
+              <label for="repair-mileage">Kilométrage</label>
+              <input id="repair-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 48260" />
+            </div>
+            <div class="form-field full-width">
+              <label for="repair-amount">Montant</label>
+              <input id="repair-amount" name="amount" type="number" min="0" step="0.01" placeholder="Ex. 12500 DA" />
+            </div>
+            <div class="form-field full-width">
+              <label for="repair-notes">Notes <span class="field-optional">(facultatif)</span></label>
+              <textarea id="repair-notes" name="notes" placeholder="Pièces remplacées, garage, garantie…"></textarea>
+            </div>
+          </div>
+          <button class="save-button" type="submit">Enregistrer la réparation</button>
+        </form>
+        <div class="repair-list" id="repair-list" aria-live="polite"></div>
       </section>
     </main>
 
@@ -2808,6 +3029,7 @@
       const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
       const ALERT_ACTIONS_STORAGE_KEY = "siyarati-alert-actions";
       const DOCUMENTS_STORAGE_KEY = "siyarati-documents";
+      const REPAIRS_STORAGE_KEY = "siyarati-repairs";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -2923,6 +3145,9 @@
           renderExpenses();
           renderReports();
         }
+        if (name === "repair") {
+          renderRepairs();
+        }
         if (name === "documents") {
           renderDocuments();
         }
@@ -3034,6 +3259,16 @@
         }
       }
 
+      function getSavedRepairs() {
+        try {
+          const key = getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY);
+          const repairs = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(repairs) ? repairs : [];
+        } catch {
+          return [];
+        }
+      }
+
       function formatDocumentSize(size) {
         const bytes = Number(size);
         if (!Number.isFinite(bytes) || bytes <= 0) {
@@ -3047,6 +3282,7 @@
 
       function renderDocuments() {
         const documents = getSavedDocuments();
+        const guidance = document.querySelector("#documents-guidance");
         document.querySelectorAll("[data-document-status]").forEach((statusElement) => {
           const documentFile = documents[statusElement.dataset.documentStatus];
           statusElement.classList.toggle("has-file", Boolean(documentFile));
@@ -3054,6 +3290,19 @@
             ? `${documentFile.name} · ${formatDocumentSize(documentFile.size)}`
             : "Aucun fichier téléchargé";
         });
+        if (guidance) {
+          const requiredDocuments = [
+            ["carte-grise", "la carte grise"],
+            ["assurance", "l’assurance"],
+            ["vignette", "la vignette"],
+          ];
+          const missingDocuments = requiredDocuments
+            .filter(([key]) => !documents[key])
+            .map(([, label]) => label);
+          guidance.textContent = missingDocuments.length
+            ? `Pour un dossier complet, ajoutez ${missingDocuments.join(", ")}.`
+            : "Dossier documentaire complet : SIYARATI peut mieux vous rappeler vos échéances.";
+        }
       }
 
       function formatMileage(value) {
@@ -3154,6 +3403,7 @@
           CUSTOM_REMINDERS_STORAGE_KEY,
           ALERT_ACTIONS_STORAGE_KEY,
           DOCUMENTS_STORAGE_KEY,
+          REPAIRS_STORAGE_KEY,
           TOW_STORAGE_KEY,
         ].forEach((baseKey) => localStorage.removeItem(`${baseKey}:${vehicleId}`));
       }
@@ -3461,6 +3711,22 @@
         return targets.join(" · ") || "Échéance à définir";
       }
 
+      function getAlertAdvice(entry) {
+        if (entry.status === "expired") {
+          return "À faire maintenant : régularisez cette échéance.";
+        }
+        if (entry.mileageRemaining !== null && entry.mileageRemaining !== undefined) {
+          if (entry.mileageRemaining <= 300) {
+            return `Prenez rendez-vous avant d’atteindre ${formatMileage(entry.targetMileage)}.`;
+          }
+          return `Anticipez cette intervention avant ${formatMileage(entry.targetMileage)}.`;
+        }
+        if (entry.date) {
+          return `Préparez cette démarche avant le ${formatReminderDate(entry.date)}.`;
+        }
+        return "Ajoutez une date ou un kilométrage pour recevoir une recommandation.";
+      }
+
       function escapeHtml(value) {
         return String(value)
           .replaceAll("&", "&amp;")
@@ -3503,13 +3769,55 @@
           .join("");
       }
 
+      function renderRepairs() {
+        const list = document.querySelector("#repair-list");
+        if (!list) {
+          return;
+        }
+        const repairs = getSavedRepairs();
+        if (!repairs.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucune réparation enregistrée. Ajoutez une intervention pour construire l’historique réel de votre voiture.</p>';
+          return;
+        }
+
+        list.innerHTML = repairs
+          .slice()
+          .sort((first, second) => String(second.date).localeCompare(String(first.date)))
+          .map((repair) => {
+            const details = [
+              repair.category,
+              repair.date ? formatReminderDate(new Date(`${repair.date}T00:00:00`)) : "",
+              repair.mileage ? formatMileage(repair.mileage) : "",
+              repair.amount !== "" && repair.amount !== undefined ? formatAmount(repair.amount) : "",
+            ].filter(Boolean).join(" · ");
+            return `
+              <article class="repair-item">
+                <div class="repair-item-copy">
+                  <strong>${escapeHtml(repair.title)}</strong>
+                  <small>${escapeHtml(details)}${repair.notes ? ` · ${escapeHtml(repair.notes)}` : ""}</small>
+                </div>
+                <button class="remove-repair-button" type="button" data-remove-repair="${escapeHtml(repair.id)}" aria-label="Supprimer ${escapeHtml(repair.title)}">×</button>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function getHistoryEntries() {
+        const reminderEntries = getSavedCustomReminders()
+          .filter((reminder) => reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0)
+          .map((reminder) => ({ ...reminder, source: "Rappel" }));
+        const repairEntries = getSavedRepairs()
+          .filter((repair) => repair.amount !== "" && Number.isFinite(Number(repair.amount)) && Number(repair.amount) >= 0)
+          .map((repair) => ({ ...repair, source: "Réparation" }));
+        return [...reminderEntries, ...repairEntries];
+      }
+
       function renderExpenses() {
         const list = document.querySelector("#expense-list");
         const total = document.querySelector("#expense-total");
         const count = document.querySelector("#expense-count");
-        const expenses = getSavedCustomReminders().filter((reminder) => {
-          return reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0;
-        });
+        const expenses = getHistoryEntries();
         const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
 
         total.textContent = formatAmount(totalAmount);
@@ -3544,9 +3852,7 @@
         const count = document.querySelector("#report-count");
         const bars = document.querySelector("#report-bars");
         const recentList = document.querySelector("#report-recent-list");
-        const expenses = getSavedCustomReminders().filter((reminder) => {
-          return reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0;
-        });
+        const expenses = getHistoryEntries();
         const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
         const categoryTotals = expenses.reduce((categories, reminder) => {
           categories[reminder.category] = (categories[reminder.category] || 0) + Number(reminder.amount);
@@ -3561,6 +3867,10 @@
         if (!expenses.length) {
           bars.innerHTML = '<p class="reminder-section-intro">Ajoutez un montant dans un rappel pour afficher le rapport.</p>';
           recentList.innerHTML = '<p class="reminder-section-intro">Aucune donnée disponible pour le moment.</p>';
+          const emptyInsight = document.querySelector("#history-insight");
+          if (emptyInsight) {
+            emptyInsight.textContent = "Analyse automatique : ajoutez vos interventions et leurs montants pour repérer les postes qui coûtent le plus.";
+          }
           return;
         }
 
@@ -3597,6 +3907,14 @@
             `;
           })
           .join("");
+
+        const insight = document.querySelector("#history-insight");
+        if (insight) {
+          const highestCategory = sortedCategories[0];
+          insight.textContent = highestCategory
+            ? `Analyse automatique : la catégorie la plus coûteuse est ${highestCategory[0]} avec ${formatAmount(highestCategory[1])}. Pensez à vérifier les prochaines échéances liées à cette catégorie.`
+            : "Analyse automatique : ajoutez vos interventions et leurs montants pour repérer les postes qui coûtent le plus.";
+        }
       }
 
       function updateVehicleAlertStatus(entries) {
@@ -3634,6 +3952,7 @@
 
         if (!entries.length) {
           alertsList.innerHTML = '<div class="alerts-empty">Aucune date enregistrée pour le moment. Rendez-vous dans <strong>Rappels</strong> pour ajouter vos échéances.</div>';
+          renderSmartAdvice(entries);
           return;
         }
 
@@ -3645,6 +3964,7 @@
               <div class="alert-item-copy">
                 <h3 class="alert-item-title">${escapeHtml(entry.label)}</h3>
                 <p class="alert-item-date">${formatReminderTarget(entry)}</p>
+                <p class="alert-item-advice">${escapeHtml(getAlertAdvice(entry))}</p>
               </div>
               <span class="alert-item-status">${getReminderStatusLabel(entry)}</span>
               <div class="alert-item-actions">
@@ -3656,6 +3976,80 @@
             </article>
           `;
           })
+          .join("");
+        renderSmartAdvice(entries);
+      }
+
+      function renderSmartAdvice(entries = getReminderEntries()) {
+        const list = document.querySelector("#smart-advice-list");
+        if (!list) {
+          return;
+        }
+
+        if (!getPrimaryVehicleId()) {
+          list.innerHTML = `
+            <article class="smart-advice-item">
+              <div class="smart-advice-copy">
+                <strong>Commencez par enregistrer votre véhicule</strong>
+                <span>SIYARATI pourra ensuite calculer les échéances et les actions prioritaires.</span>
+              </div>
+              <button class="smart-advice-action" type="button" data-advice-screen="vehicle-info">Configurer</button>
+            </article>
+          `;
+          return;
+        }
+
+        const activeEntries = entries
+          .filter((entry) => getAlertDisplayState(entry).active && entry.status !== "upcoming")
+          .sort((first, second) => {
+            const priority = { expired: 4, critical: 3, warning: 2, safe: 1, upcoming: 0 };
+            return priority[second.status] - priority[first.status];
+          });
+        const missingDocuments = ["carte-grise", "assurance", "vignette"]
+          .filter((key) => !getSavedDocuments()[key]);
+        const recommendations = [];
+
+        activeEntries.slice(0, 2).forEach((entry) => {
+          recommendations.push({
+            state: entry.status === "expired" || entry.status === "critical" ? "is-critical" : "is-warning",
+            title: entry.status === "expired" || entry.status === "critical" ? "Action prioritaire" : "À planifier",
+            text: `${entry.label} · ${getAlertAdvice(entry)}`,
+            action: "Voir",
+            screen: "alerts",
+          });
+        });
+
+        if (missingDocuments.length) {
+          recommendations.push({
+            state: "",
+            title: "Complétez le dossier du véhicule",
+            text: `Il manque ${missingDocuments.length} document${missingDocuments.length > 1 ? "s" : ""} important${missingDocuments.length > 1 ? "s" : ""}.`,
+            action: "Documents",
+            screen: "documents",
+          });
+        }
+
+        if (!recommendations.length) {
+          recommendations.push({
+            state: "",
+            title: "Votre voiture est suivie",
+            text: "Aucune action urgente. SIYARATI continuera de surveiller vos dates et votre kilométrage.",
+            action: "Rappels",
+            screen: "reminders",
+          });
+        }
+
+        list.innerHTML = recommendations
+          .slice(0, 3)
+          .map((recommendation) => `
+            <article class="smart-advice-item ${recommendation.state}">
+              <div class="smart-advice-copy">
+                <strong>${escapeHtml(recommendation.title)}</strong>
+                <span>${escapeHtml(recommendation.text)}</span>
+              </div>
+              <button class="smart-advice-action" type="button" data-advice-screen="${recommendation.screen}">${escapeHtml(recommendation.action)}</button>
+            </article>
+          `)
           .join("");
       }
 
@@ -3691,6 +4085,14 @@
           return;
         }
         handleAlertAction(actionButton.dataset.alertAction, actionButton.dataset.alertKey);
+      });
+
+      document.querySelector("#smart-advice-list").addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-advice-screen]");
+        if (!actionButton) {
+          return;
+        }
+        showScreen(actionButton.dataset.adviceScreen);
       });
 
       function checkAlerts(options = {}) {
@@ -4128,6 +4530,45 @@
         });
       });
 
+      const repairForm = document.querySelector("#repair-form");
+      const repairList = document.querySelector("#repair-list");
+
+      repairForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const repair = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const savedRepairs = getSavedRepairs();
+        savedRepairs.push({
+          id: `${Date.now()}-${savedRepairs.length + 1}`,
+          category: repair.category,
+          title: repair.title.trim(),
+          date: repair.date,
+          mileage: repair.mileage,
+          amount: repair.amount,
+          notes: repair.notes.trim(),
+        });
+        localStorage.setItem(getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY), JSON.stringify(savedRepairs));
+        event.currentTarget.reset();
+        renderRepairs();
+        renderExpenses();
+        renderReports();
+        showToast("La réparation a été enregistrée.");
+        showScreen("home");
+      });
+
+      repairList.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-repair]");
+        if (!removeButton) {
+          return;
+        }
+        const repairId = removeButton.dataset.removeRepair;
+        const remainingRepairs = getSavedRepairs().filter(({ id }) => id !== repairId);
+        localStorage.setItem(getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY), JSON.stringify(remainingRepairs));
+        renderRepairs();
+        renderExpenses();
+        renderReports();
+        showToast("La réparation a été supprimée.");
+      });
+
       const customReminderForm = document.querySelector("#custom-reminder-form");
       const customReminderList = document.querySelector("#custom-reminder-list");
 
@@ -4208,6 +4649,7 @@
       updateVehicleAvailability();
       renderDocuments();
       renderCustomReminders();
+      renderRepairs();
       renderExpenses();
       renderReports();
       checkAlerts();
