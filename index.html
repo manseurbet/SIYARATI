@@ -3912,6 +3912,7 @@
             );
             renderDocuments();
             showToast(`${file.name} a été téléchargé.`);
+            showScreen("home");
           } catch {
             showToast("Impossible d’enregistrer ce fichier. Essayez un fichier plus léger.");
           }
@@ -3968,6 +3969,7 @@
         showToast(vehicleFormMode === "add-secondary"
           ? "Le véhicule secondaire a été ajouté."
           : "Les informations du véhicule ont été enregistrées.");
+        showScreen("home");
       });
 
       function prepareVehicleForm(vehicle = {}, mode = "edit-primary", vehicleId = "") {
@@ -4161,6 +4163,7 @@
         renderReports();
         checkAlerts();
         showToast("Le rappel a été ajouté.");
+        showScreen("home");
       });
 
       customReminderList.addEventListener("click", (event) => {
