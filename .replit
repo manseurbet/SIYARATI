@@ -1,4 +1,5 @@
 modules = ["python-base-3.13", "nodejs-24"]
+
 [workflows]
 runButton = "Project"
 
@@ -12,16 +13,25 @@ task = "workflow.run"
 args = "Start application"
 
 [[workflows.workflow]]
-name = "Start application"
+name = "Run-v1"
 author = "agent"
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "workflow.run"
+args = "Start application"
 
 [workflows.workflow.metadata]
 outputType = "webview"
 
+[[workflows.workflow]]
+name = "Siyarati_v1"
+mode = "sequential"
+author = 54411406
+
 [[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "python3 server.py"
-waitForPort = 5000
+task = "workflow.run"
+args = ""
 
 [[ports]]
 localPort = 5000
