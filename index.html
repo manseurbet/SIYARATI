@@ -646,6 +646,8 @@
 
       .icon-badge,
       .card-info .icon-badge,
+      .card-vehicle .icon-badge,
+      .card-documents .icon-badge,
       .card-reminders .icon-badge,
       .card-alerts .icon-badge,
       .card-help .icon-badge {
@@ -751,6 +753,114 @@
         border-radius: 15px;
         background: #ffffff;
         box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .documents-upload-panel {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .documents-panel-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .documents-upload-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .document-upload-card {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 11px;
+        padding: 11px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .document-upload-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: #eaf1f6;
+        font-size: 18px;
+      }
+
+      .document-upload-copy {
+        display: grid;
+        min-width: 0;
+        flex: 1;
+        gap: 3px;
+      }
+
+      .document-upload-copy strong {
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .document-upload-copy small {
+        overflow: hidden;
+        color: #76869a;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .document-upload-copy small.has-file {
+        color: #318a65;
+        font-weight: 750;
+      }
+
+      .document-upload-button {
+        position: relative;
+        display: inline-flex;
+        min-height: 34px;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        border: 1px solid #c5d2df;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .document-upload-button:hover,
+      .document-upload-button:focus-within {
+        border-color: #536c8f;
+        background: #f2f6f9;
+        outline: none;
+      }
+
+      .document-upload-button input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .documents-upload-note {
+        margin: 0;
+        color: #8a98a8;
+        font-size: 11px;
       }
 
       .vehicle-documents-heading {
@@ -2047,22 +2157,36 @@
       <section aria-labelledby="services-title">
         <div class="section-heading">
           <h2 id="services-title">Que souhaitez-vous consulter&nbsp;?</h2>
-           <span>5 services</span>
+            <span>6 services</span>
         </div>
 
         <div class="menu-grid">
-          <button class="menu-card card-info" type="button" data-screen="vehicle-info">
+          <button class="menu-card card-vehicle" type="button" data-screen="vehicle-info">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="12" r="8.5" />
-                  <path d="M12 10.8v5.2M12 7.5h.01" />
+                  <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+                  <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
+                </svg>
+              </div>
+              <h3>Véhicule</h3>
+              <p>Gérez votre véhicule principal et vos véhicules secondaires.</p>
+            </div>
+            <span class="card-footer">Voir mes véhicules <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-documents" type="button" data-screen="documents" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3.8h8l4 4V20H6a2 2 0 0 1-2-2V5.8a2 2 0 0 1 2-2Z" />
+                  <path d="M14 3.8V8h4M8 12h8M8 15.5h6" />
                 </svg>
               </div>
               <h3>Documents</h3>
-              <p>Retrouvez vos documents et informations administratives.</p>
+              <p>Ajoutez la photo et les documents importants du véhicule.</p>
             </div>
-            <span class="card-footer">Voir les détails <span class="arrow">↗</span></span>
+            <span class="card-footer">Gérer les documents <span class="arrow">↗</span></span>
           </button>
 
           <button class="menu-card card-reminders" type="button" data-screen="reminders" data-requires-vehicle>
@@ -2141,8 +2265,8 @@
           </button>
           <div>
             <p class="detail-kicker">Mon espace</p>
-            <h1 class="detail-title" id="vehicle-info-title">Documents</h1>
-            <p class="detail-intro">Choisissez les informations que vous souhaitez consulter.</p>
+            <h1 class="detail-title" id="vehicle-info-title">Véhicule</h1>
+            <p class="detail-intro">Gérez vos véhicules et choisissez le véhicule principal.</p>
           </div>
         </div>
 
@@ -2158,6 +2282,87 @@
             </button>
           </div>
           <div class="vehicle-list" id="vehicle-list" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="documents-screen" class="screen is-hidden" aria-labelledby="documents-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon espace</p>
+            <h1 class="detail-title" id="documents-title">Documents</h1>
+            <p class="detail-intro">Téléchargez les documents importants de votre véhicule principal.</p>
+          </div>
+        </div>
+
+        <div class="documents-upload-panel">
+          <p class="documents-panel-title">Télécharger un document</p>
+          <div class="documents-upload-list">
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">📷</div>
+              <div class="document-upload-copy">
+                <strong>Photo du véhicule</strong>
+                <small data-document-status="photo">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*" data-document-upload="photo" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🪪</div>
+              <div class="document-upload-copy">
+                <strong>Carte grise</strong>
+                <small data-document-status="carte-grise">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="carte-grise" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🪪</div>
+              <div class="document-upload-copy">
+                <strong>Permis de conduire</strong>
+                <small data-document-status="permis">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="permis" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🏷️</div>
+              <div class="document-upload-copy">
+                <strong>Vignette</strong>
+                <small data-document-status="vignette">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="vignette" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🛡️</div>
+              <div class="document-upload-copy">
+                <strong>Assurance</strong>
+                <small data-document-status="assurance">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="assurance" />
+              </label>
+            </article>
+          </div>
+          <p class="documents-upload-note">Formats acceptés : images et PDF.</p>
         </div>
       </section>
 
@@ -2305,10 +2510,6 @@
               <input id="last-oil-change-mileage" name="last-oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 35000" />
             </div>
 
-            <div class="form-field full-width">
-              <label for="vehicle-photo">Photo du véhicule</label>
-              <input id="vehicle-photo" name="vehicle-photo" type="file" accept="image/*" />
-            </div>
           </div>
 
           <button class="save-button" type="submit">Enregistrer mon véhicule</button>
@@ -2556,6 +2757,7 @@
       const screens = {
         home: document.querySelector("#home-screen"),
         "vehicle-info": document.querySelector("#vehicle-info-screen"),
+        documents: document.querySelector("#documents-screen"),
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
         reminders: document.querySelector("#reminders-screen"),
         alerts: document.querySelector("#alerts-screen"),
@@ -2571,6 +2773,7 @@
       const TOW_STORAGE_KEY = "siyarati-tow-number";
       const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
       const ALERT_ACTIONS_STORAGE_KEY = "siyarati-alert-actions";
+      const DOCUMENTS_STORAGE_KEY = "siyarati-documents";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -2686,6 +2889,9 @@
           renderExpenses();
           renderReports();
         }
+        if (name === "documents") {
+          renderDocuments();
+        }
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
@@ -2784,6 +2990,38 @@
         }
       }
 
+      function getSavedDocuments() {
+        try {
+          const key = getVehicleScopedStorageKey(DOCUMENTS_STORAGE_KEY);
+          const documents = JSON.parse(localStorage.getItem(key) || "{}");
+          return documents && typeof documents === "object" ? documents : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function formatDocumentSize(size) {
+        const bytes = Number(size);
+        if (!Number.isFinite(bytes) || bytes <= 0) {
+          return "";
+        }
+        if (bytes < 1024 * 1024) {
+          return `${Math.round(bytes / 1024)} Ko`;
+        }
+        return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+      }
+
+      function renderDocuments() {
+        const documents = getSavedDocuments();
+        document.querySelectorAll("[data-document-status]").forEach((statusElement) => {
+          const documentFile = documents[statusElement.dataset.documentStatus];
+          statusElement.classList.toggle("has-file", Boolean(documentFile));
+          statusElement.textContent = documentFile
+            ? `${documentFile.name} · ${formatDocumentSize(documentFile.size)}`
+            : "Aucun fichier téléchargé";
+        });
+      }
+
       function formatMileage(value) {
         const mileage = Number(value);
         return Number.isFinite(mileage) && mileage >= 0
@@ -2852,6 +3090,7 @@
           REMINDERS_STORAGE_KEY,
           CUSTOM_REMINDERS_STORAGE_KEY,
           ALERT_ACTIONS_STORAGE_KEY,
+          DOCUMENTS_STORAGE_KEY,
           TOW_STORAGE_KEY,
         ].forEach((baseKey) => localStorage.removeItem(`${baseKey}:${vehicleId}`));
       }
@@ -3557,6 +3796,51 @@
         window.location.href = `tel:${phoneNumber}`;
       });
 
+      document.querySelector("#documents-screen").addEventListener("change", (event) => {
+        const uploadInput = event.target.closest("[data-document-upload]");
+        const file = uploadInput?.files?.[0];
+        if (!uploadInput || !file) {
+          return;
+        }
+
+        if (!getPrimaryVehicleId()) {
+          uploadInput.value = "";
+          showToast("Ajoutez d’abord un véhicule principal.");
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          uploadInput.value = "";
+          showToast("Le fichier doit faire 5 Mo maximum.");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          try {
+            const documents = getSavedDocuments();
+            documents[uploadInput.dataset.documentUpload] = {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              data: reader.result,
+            };
+            localStorage.setItem(
+              getVehicleScopedStorageKey(DOCUMENTS_STORAGE_KEY),
+              JSON.stringify(documents),
+            );
+            renderDocuments();
+            showToast(`${file.name} a été téléchargé.`);
+          } catch {
+            showToast("Impossible d’enregistrer ce fichier. Essayez un fichier plus léger.");
+          }
+        });
+        reader.addEventListener("error", () => {
+          showToast("Impossible de lire ce fichier.");
+        });
+        reader.readAsDataURL(file);
+      });
+
       const vehicleBrandField = document.querySelector("#vehicle-category");
       const vehicleDetailsForm = document.querySelector("#vehicle-details-form");
       let vehicleFormMode = "edit-primary";
@@ -3569,10 +3853,8 @@
         event.preventDefault();
         const form = event.currentTarget;
         const vehicleDetails = Object.fromEntries(new FormData(form).entries());
-        const photoField = form.querySelector('[name="vehicle-photo"]');
         const vehicles = getSavedVehicles();
         const existingVehicle = vehicles.find((vehicle) => vehicle.id === vehicleFormVehicleId);
-        vehicleDetails["vehicle-photo"] = photoField.files?.[0]?.name || existingVehicle?.data?.["vehicle-photo"] || "";
 
         if (vehicleFormMode === "add-secondary") {
           const newVehicleId = createVehicleId();
@@ -3837,6 +4119,7 @@
 
       renderVehicleList();
       updateVehicleAvailability();
+      renderDocuments();
       renderCustomReminders();
       renderExpenses();
       renderReports();
