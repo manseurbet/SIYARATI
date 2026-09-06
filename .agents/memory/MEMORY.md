@@ -1,1 +1,2 @@
 - [Rapports inspirés de Drivvo](drivvo-reports.md) — utiliser Drivvo comme référence fonctionnelle et visuelle pour les futurs rapports SIYARATI.
+- [Notifications en arrière-plan](background-notifications.md) — les notifications hors onglet dépendent du service worker et du support périodique du navigateur.
