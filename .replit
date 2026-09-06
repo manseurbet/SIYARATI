@@ -13,25 +13,13 @@ task = "workflow.run"
 args = "Start application"
 
 [[workflows.workflow]]
-name = "Run-v1"
-author = "agent"
-mode = "sequential"
-
-[[workflows.workflow.tasks]]
-task = "workflow.run"
-args = "Start application"
-
-[workflows.workflow.metadata]
-outputType = "webview"
-
-[[workflows.workflow]]
-name = "Siyarati_v1"
+name = "Start application"
 mode = "sequential"
 author = 54411406
 
 [[workflows.workflow.tasks]]
-task = "workflow.run"
-args = ""
+task = "shell.exec"
+args = "python3 server.py"
 
 [[ports]]
 localPort = 5000
