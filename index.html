@@ -644,6 +644,42 @@
         background: #e8ecf0;
       }
 
+      .dashboard-vehicle-label {
+        display: block;
+        margin-top: 10px;
+        color: #8090a5;
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .dashboard-vehicle-select {
+        width: 100%;
+        min-height: 34px;
+        margin-top: 5px;
+        padding: 7px 28px 7px 9px;
+        border: 1px solid #d5dde6;
+        border-radius: 9px;
+        color: #2b3c52;
+        background-color: #f8fafb;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .dashboard-vehicle-select:focus-visible {
+        border-color: #9eafc3;
+        outline: 2px solid rgba(83, 108, 143, 0.22);
+        outline-offset: 1px;
+      }
+
+      .dashboard-vehicle-select:disabled {
+        color: #a8b2bd;
+        background-color: #eef1f4;
+        cursor: not-allowed;
+      }
+
       .icon-badge,
       .card-info .icon-badge,
       .card-vehicle .icon-badge,
@@ -2161,7 +2197,7 @@
         </div>
 
         <div class="menu-grid">
-          <button class="menu-card card-vehicle" type="button" data-screen="vehicle-info">
+          <article class="menu-card card-vehicle" data-screen="vehicle-info" role="button" tabindex="0">
             <div>
               <div class="icon-badge" aria-hidden="true">
                 <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
@@ -2169,11 +2205,15 @@
                   <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
                 </svg>
               </div>
+              <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Tableau de bord</label>
+              <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
+                <option value="">Aucun véhicule enregistré</option>
+              </select>
               <h3>Véhicule</h3>
               <p>Gérez votre véhicule principal et vos véhicules secondaires.</p>
             </div>
             <span class="card-footer">Voir mes véhicules <span class="arrow">↗</span></span>
-          </button>
+          </article>
 
           <button class="menu-card card-documents" type="button" data-screen="documents" data-requires-vehicle>
             <div>
@@ -3081,6 +3121,35 @@
           .join(" ") || "Véhicule sans nom";
       }
 
+      function renderDashboardVehicleSelector() {
+        const selector = document.querySelector("#dashboard-vehicle-select");
+        if (!selector) {
+          return;
+        }
+
+        const vehicles = getSavedVehicles();
+        const primaryId = getPrimaryVehicleId();
+        selector.innerHTML = "";
+
+        if (!vehicles.length) {
+          const emptyOption = document.createElement("option");
+          emptyOption.value = "";
+          emptyOption.textContent = "Aucun véhicule enregistré";
+          selector.appendChild(emptyOption);
+          selector.disabled = true;
+          return;
+        }
+
+        vehicles.forEach(({ id, data }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = getVehicleDisplayName(data);
+          option.selected = id === primaryId;
+          selector.appendChild(option);
+        });
+        selector.disabled = false;
+      }
+
       function createVehicleId() {
         return `vehicle-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
       }
@@ -3156,6 +3225,8 @@
         updateVehicleDisplay(getSavedVehicle());
         updateMileageDisplay(getSavedVehicle()["current-mileage"]);
         renderVehicleList();
+        renderDashboardVehicleSelector();
+        renderDocuments();
         updateVehicleAvailability();
         checkAlerts();
         showToast("Le véhicule principal a été changé.");
@@ -3180,6 +3251,8 @@
         updateVehicleDisplay(getSavedVehicle());
         updateMileageDisplay(getSavedVehicle()["current-mileage"]);
         renderVehicleList();
+        renderDashboardVehicleSelector();
+        renderDocuments();
         updateVehicleAvailability();
         checkAlerts();
       }
@@ -3676,6 +3749,14 @@
           }
           showScreen(control.dataset.screen);
         });
+        if (control.getAttribute("role") === "button") {
+          control.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              showScreen(control.dataset.screen);
+            }
+          });
+        }
       });
 
       document.querySelectorAll(".toast-card, .menu-card:not([data-screen]), .detail-card:not([data-screen])").forEach((card) => {
@@ -3881,6 +3962,7 @@
         updateVehicleDisplay(getSavedVehicle());
         updateMileageDisplay(getSavedVehicle()["current-mileage"]);
         renderVehicleList();
+        renderDashboardVehicleSelector();
         updateVehicleAvailability();
         checkAlerts();
         showToast(vehicleFormMode === "add-secondary"
@@ -3963,6 +4045,19 @@
         if (!vehicleManagement.contains(event.target)) {
           closeVehicleManagementMenu();
         }
+      });
+
+      const dashboardVehicleSelector = document.querySelector("#dashboard-vehicle-select");
+      dashboardVehicleSelector.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+      dashboardVehicleSelector.addEventListener("change", (event) => {
+        const vehicleId = event.currentTarget.value;
+        if (!vehicleId) {
+          return;
+        }
+        setPrimaryVehicle(vehicleId);
+        showScreen("home");
       });
 
       document.querySelector("#add-secondary-vehicle-button").addEventListener("click", () => {
@@ -4118,6 +4213,7 @@
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
       renderVehicleList();
+      renderDashboardVehicleSelector();
       updateVehicleAvailability();
       renderDocuments();
       renderCustomReminders();
