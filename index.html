@@ -87,26 +87,6 @@
         font-size: 11px;
       }
 
-      .profile-button {
-        display: grid;
-        width: 40px;
-        height: 40px;
-        place-items: center;
-        border: 1px solid var(--stroke);
-        border-radius: 50%;
-        color: var(--text);
-        background: rgba(255, 255, 255, 0.06);
-        cursor: pointer;
-        transition: transform 160ms ease, background 160ms ease;
-      }
-
-      .profile-button:hover,
-      .profile-button:focus-visible {
-        background: rgba(255, 255, 255, 0.12);
-        transform: translateY(-1px);
-        outline: none;
-      }
-
       .hero {
         margin-bottom: 24px;
       }
@@ -312,6 +292,18 @@
         border-color: rgba(255, 126, 126, 0.35);
         color: #ffd0d0;
         background: rgba(139, 42, 42, 0.45);
+      }
+
+      .vehicle-status.is-disabled {
+        border-color: rgba(214, 224, 235, 0.28);
+        color: #c6d0dc;
+        background: rgba(93, 111, 133, 0.34);
+        cursor: not-allowed;
+      }
+
+      .vehicle-status.is-disabled .status-dot {
+        background: #aab8c8;
+        box-shadow: none;
       }
 
       .status-dot {
@@ -548,12 +540,6 @@
         color: #d9e3ef;
       }
 
-      .profile-button {
-        border: 0;
-        color: #536c8f;
-        background: #ffffff;
-      }
-
       .hero {
         padding: 0 2px;
       }
@@ -571,6 +557,7 @@
       }
 
       .vehicle-card {
+        min-height: 148px;
         border-color: #d7dee7;
         background: #ffffff;
         box-shadow: 0 6px 16px rgba(43, 60, 82, 0.08);
@@ -620,7 +607,7 @@
       }
 
       .menu-card {
-        min-height: 168px;
+        min-height: 148px;
         border-color: #d5dde6;
         border-radius: 15px;
         color: #2b3c52;
@@ -632,6 +619,29 @@
       .menu-card:focus-visible {
         border-color: #9eafc3;
         box-shadow: 0 10px 20px rgba(43, 60, 82, 0.13);
+      }
+
+      .menu-card.is-disabled {
+        border-color: #e1e6eb;
+        color: #a8b2bd;
+        background: #f3f5f7;
+        box-shadow: none;
+        cursor: not-allowed;
+        filter: grayscale(0.55);
+        opacity: 0.72;
+      }
+
+      .menu-card.is-disabled:hover,
+      .menu-card.is-disabled:focus-visible {
+        border-color: #e1e6eb;
+        box-shadow: none;
+        outline: none;
+        transform: none;
+      }
+
+      .menu-card.is-disabled .icon-badge {
+        color: #a8b2bd;
+        background: #e8ecf0;
       }
 
       .icon-badge,
@@ -733,6 +743,243 @@
         gap: 14px;
       }
 
+      .vehicle-documents-panel {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .vehicle-documents-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .vehicle-documents-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 20px;
+      }
+
+      .add-vehicle-button {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        gap: 6px;
+        padding: 0 12px;
+        border: 1px solid #c5d2df;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #f3f7fa;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .add-vehicle-button:hover,
+      .add-vehicle-button:focus-visible {
+        border-color: #536c8f;
+        outline: none;
+        background: #eaf1f6;
+      }
+
+      .add-vehicle-button span {
+        font-size: 21px;
+        line-height: 1;
+      }
+
+      .vehicle-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .vehicle-list-empty,
+      .empty-state {
+        padding: 18px;
+        border: 1px dashed #c8d3df;
+        border-radius: 12px;
+        color: #76869a;
+        text-align: center;
+        background: #f8fafb;
+      }
+
+      .vehicle-list-empty p,
+      .empty-state p {
+        margin: 5px 0 0;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .vehicle-list-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .vehicle-list-item.is-primary {
+        border-color: #b9d8cb;
+        background: #f3fbf7;
+      }
+
+      .vehicle-list-main {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        border: 0;
+        color: #2b3c52;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+      }
+
+      .vehicle-list-main:focus-visible {
+        outline: 2px solid #9eafc3;
+        outline-offset: 3px;
+      }
+
+      .vehicle-list-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #eaf1f6;
+        font-size: 19px;
+      }
+
+      .vehicle-list-copy {
+        display: grid;
+        min-width: 0;
+        gap: 3px;
+      }
+
+      .vehicle-list-copy strong,
+      .vehicle-list-copy small {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .vehicle-list-copy strong {
+        font-size: 13px;
+      }
+
+      .vehicle-list-copy small {
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .vehicle-list-actions {
+        position: relative;
+        display: flex;
+        flex: 0 0 auto;
+        gap: 5px;
+      }
+
+      .vehicle-list-menu-toggle {
+        display: grid;
+        width: 34px;
+        height: 32px;
+        place-items: center;
+        border: 1px solid #d5dde6;
+        border-radius: 8px;
+        color: #53677d;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+
+      .vehicle-list-menu-toggle:hover,
+      .vehicle-list-menu-toggle:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .vehicle-list-menu {
+        position: absolute;
+        z-index: 5;
+        top: 38px;
+        right: 0;
+        display: grid;
+        min-width: 162px;
+        padding: 5px;
+        border: 1px solid #d5dde6;
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 10px 22px rgba(43, 60, 82, 0.14);
+      }
+
+      .vehicle-list-menu[hidden] {
+        display: none;
+      }
+
+      .vehicle-list-action {
+        min-height: 32px;
+        padding: 0 8px;
+        border: 1px solid #d5dde6;
+        border-radius: 8px;
+        color: #53677d;
+        background: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .vehicle-list-menu .vehicle-list-action {
+        width: 100%;
+        border: 0;
+        border-radius: 7px;
+        text-align: left;
+      }
+
+      .vehicle-list-menu .vehicle-list-action:hover,
+      .vehicle-list-menu .vehicle-list-action:focus-visible {
+        background: #f2f6f9;
+      }
+
+      .vehicle-list-action:hover,
+      .vehicle-list-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .vehicle-list-action.is-danger {
+        color: #b44d59;
+      }
+
+      .empty-state {
+        margin-top: 14px;
+      }
+
+      .empty-state-icon {
+        font-size: 30px;
+      }
+
+      .empty-state h2 {
+        margin: 9px 0 0;
+        color: #2b3c52;
+        font-size: 17px;
+      }
+
       .detail-card {
         display: flex;
         min-height: 210px;
@@ -758,15 +1005,15 @@
       }
 
       .detail-card .icon-badge {
-        width: 58px;
-        height: 58px;
-        border-radius: 16px;
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
         color: #40546b;
         background: #eef3f7;
       }
 
       .detail-card h3 {
-        margin: 28px 0 7px;
+        margin: 20px 0 7px;
         color: #2b3c52;
         font-size: 19px;
         letter-spacing: -0.03em;
@@ -987,6 +1234,7 @@
 
       .alert-item {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 14px;
@@ -1059,6 +1307,46 @@
       .alert-item.is-expired .alert-item-status {
         color: #b13d3d;
         background: #ffe1e1;
+      }
+
+      .alert-item.is-done,
+      .alert-item.is-snoozed {
+        border-color: #d4dde6;
+        border-left-color: #8b9bad;
+        background: #f7f9fb;
+      }
+
+      .alert-item.is-done .alert-item-status,
+      .alert-item.is-snoozed .alert-item-status {
+        color: #607286;
+        background: #e8eef3;
+      }
+
+      .alert-item-actions {
+        display: flex;
+        flex: 0 0 100%;
+        justify-content: flex-end;
+        gap: 7px;
+      }
+
+      .alert-item-actions button {
+        min-height: 30px;
+        padding: 0 9px;
+        border: 1px solid #c7d2de;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .alert-item-actions button:hover,
+      .alert-item-actions button:focus-visible {
+        border-color: #7f97b5;
+        outline: none;
+        background: #f2f6f9;
       }
 
       .alert-stages {
@@ -1719,12 +2007,6 @@
             <p class="brand-subtitle">Votre voiture, simplement.</p>
           </div>
         </div>
-        <button class="profile-button" type="button" aria-label="Ouvrir le profil">
-          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <circle cx="12" cy="8" r="3.2" />
-            <path d="M5.5 19.2c1.5-2.8 3.65-4.2 6.5-4.2s5 1.4 6.5 4.2" />
-          </svg>
-        </button>
       </header>
 
       <section id="home-screen" class="screen" aria-labelledby="page-title">
@@ -1756,7 +2038,7 @@
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
           <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
         </div>
-        <button class="vehicle-status" id="vehicle-alert-status" type="button" data-screen="alerts" aria-label="Ouvrir les notifications des alertes">
+        <button class="vehicle-status" id="vehicle-alert-status" type="button" data-screen="alerts" data-requires-vehicle aria-label="Ouvrir les notifications des alertes">
           <span class="status-dot"></span>
           <span id="vehicle-alert-status-text">Notifications des alertes · 0</span>
         </button>
@@ -1864,49 +2146,18 @@
           </div>
         </div>
 
-        <div class="detail-grid">
-          <button class="detail-card" type="button" data-screen="personal-info">
+        <div class="vehicle-documents-panel">
+          <div class="vehicle-documents-heading">
             <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="12" cy="8" r="3.2" />
-                  <path d="M5.5 19.2c1.5-2.8 3.65-4.2 6.5-4.2s5 1.4 6.5 4.2" />
-                </svg>
-              </div>
-              <h3>Infos personnelles</h3>
-              <p>Votre profil, vos coordonnées et vos préférences.</p>
+              <p class="detail-kicker">Véhicules</p>
+              <h2 class="vehicle-documents-title">Mes véhicules</h2>
             </div>
-            <span class="card-footer">Voir le profil <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="detail-card" type="button" data-screen="vehicle-details">
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
-                  <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
-                </svg>
-              </div>
-              <h3>Infos véhicule</h3>
-              <p>La carte grise, les caractéristiques et l’historique.</p>
-            </div>
-            <span class="card-footer">Voir le véhicule <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="detail-card" type="button" data-screen="expenses">
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
-                  <path d="M3.5 9.5h17M7 14h3M16.5 14h.01" />
-                </svg>
-              </div>
-              <h3>Dépenses</h3>
-              <p>Centralisez les frais liés à votre véhicule.</p>
-            </div>
-            <span class="card-footer">Voir les dépenses <span class="arrow">↗</span></span>
-          </button>
-
+            <button class="add-vehicle-button" id="add-secondary-vehicle-button" type="button" aria-label="Ajouter un véhicule secondaire">
+              <span aria-hidden="true">+</span>
+              Ajouter
+            </button>
+          </div>
+          <div class="vehicle-list" id="vehicle-list" aria-live="polite"></div>
         </div>
       </section>
 
@@ -1919,8 +2170,8 @@
           </button>
           <div>
             <p class="detail-kicker">Documents</p>
-            <h1 class="detail-title" id="expenses-title">Dépenses</h1>
-            <p class="detail-intro">Retrouvez les montants et leur synthèse à partir de vos rappels enregistrés.</p>
+            <h1 class="detail-title" id="expenses-title">Historique</h1>
+            <p class="detail-intro">Retrouvez les dépenses et les opérations enregistrées pour votre véhicule.</p>
           </div>
         </div>
 
@@ -1954,67 +2205,6 @@
           <h2 class="report-panel-title" id="report-recent-title">Derniers rappels enregistrés</h2>
           <div class="report-recent-list" id="report-recent-list" aria-live="polite"></div>
         </section>
-      </section>
-
-      <section id="personal-info-screen" class="screen is-hidden" aria-labelledby="personal-info-title">
-        <div class="detail-header">
-          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour aux informations">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="m15 18-6-6 6-6" />
-            </svg>
-          </button>
-          <div>
-            <p class="detail-kicker">Mon espace</p>
-            <h1 class="detail-title" id="personal-info-title">Infos personnelles</h1>
-            <p class="detail-intro">Renseignez vos informations pour compléter votre profil conducteur.</p>
-          </div>
-        </div>
-
-        <form class="personal-form" id="personal-info-form">
-          <div class="form-grid">
-            <div class="form-field">
-              <label for="driver-last-name">Nom conducteur</label>
-              <input id="driver-last-name" name="driver-last-name" type="text" placeholder="Votre nom" autocomplete="family-name" required />
-            </div>
-
-            <div class="form-field">
-              <label for="driver-first-name">Prénom</label>
-              <input id="driver-first-name" name="driver-first-name" type="text" placeholder="Votre prénom" autocomplete="given-name" required />
-            </div>
-
-            <div class="form-field">
-              <label for="birth-date">Date de naissance</label>
-              <input id="birth-date" name="birth-date" type="date" autocomplete="bday" required />
-            </div>
-
-            <div class="form-field">
-              <label for="blood-type">Groupe sanguin</label>
-              <select id="blood-type" name="blood-type" required>
-                <option value="" selected disabled>Sélectionner</option>
-                <option value="A+">A+</option>
-                <option value="A-">A-</option>
-                <option value="B+">B+</option>
-                <option value="B-">B-</option>
-                <option value="AB+">AB+</option>
-                <option value="AB-">AB-</option>
-                <option value="O+">O+</option>
-                <option value="O-">O-</option>
-              </select>
-            </div>
-
-            <div class="form-field full-width">
-              <label for="driver-address">Adresse</label>
-              <input id="driver-address" name="driver-address" type="text" placeholder="Votre adresse complète" autocomplete="street-address" required />
-            </div>
-
-            <div class="form-field full-width">
-              <label for="phone-number">Numéro de téléphone</label>
-              <input id="phone-number" name="phone-number" type="tel" placeholder="+213 5 00 00 00 00" autocomplete="tel" required />
-            </div>
-          </div>
-
-          <button class="save-button" type="submit">Enregistrer mes informations</button>
-        </form>
       </section>
 
       <section id="vehicle-details-screen" class="screen is-hidden" aria-labelledby="vehicle-details-title">
@@ -2103,11 +2293,6 @@
             <div class="form-field">
               <label for="vehicle-registration">Matricule</label>
               <input id="vehicle-registration" name="vehicle-registration" type="text" placeholder="Ex. 123456-16-00" required />
-            </div>
-
-            <div class="form-field full-width">
-              <label for="vehicle-vin">Numéro de châssis</label>
-              <input id="vehicle-vin" name="vehicle-vin" type="text" placeholder="Numéro VIN à 17 caractères" minlength="17" maxlength="17" required />
             </div>
 
             <div class="form-field full-width">
@@ -2208,7 +2393,6 @@
           <div>
             <p class="detail-kicker">Surveillance</p>
             <h1 class="detail-title" id="alerts-title">Alertes</h1>
-            <p class="detail-intro">Les échéances changent de couleur selon le nombre de jours restants.</p>
           </div>
         </div>
 
@@ -2224,12 +2408,6 @@
             <strong class="alert-count" id="alert-count">0</strong>
             <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
           </div>
-        </div>
-
-        <div class="alert-stages" aria-label="Niveaux d’alerte">
-          <span class="alert-stage"><span class="alert-stage-dot is-safe"></span><strong>Vert</strong> · 7 à 3 jours ou 300 à 201 km</span>
-          <span class="alert-stage"><span class="alert-stage-dot is-warning"></span><strong>Orange</strong> · 3 à 2 jours ou 200 à 101 km</span>
-          <span class="alert-stage"><span class="alert-stage-dot is-critical"></span><strong>Rouge</strong> · 2 jours ou moins ou 100 km ou moins</span>
         </div>
 
         <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
@@ -2347,6 +2525,26 @@
           </a>
         </div>
       </section>
+
+      <section id="repair-screen" class="screen is-hidden" aria-labelledby="repair-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Suivi du véhicule</p>
+            <h1 class="detail-title" id="repair-title">Réparation</h1>
+            <p class="detail-intro">Ajoutez les interventions réalisées ou à prévoir pour ce véhicule.</p>
+          </div>
+        </div>
+        <div class="empty-state">
+          <div class="empty-state-icon" aria-hidden="true">🔧</div>
+          <h2>Aucune réparation enregistrée</h2>
+          <p>Les réparations pourront être ajoutées dans l’historique du véhicule.</p>
+        </div>
+      </section>
     </main>
 
     <div class="toast" role="status" aria-live="polite"></div>
@@ -2358,18 +2556,21 @@
       const screens = {
         home: document.querySelector("#home-screen"),
         "vehicle-info": document.querySelector("#vehicle-info-screen"),
-        "personal-info": document.querySelector("#personal-info-screen"),
         "vehicle-details": document.querySelector("#vehicle-details-screen"),
         reminders: document.querySelector("#reminders-screen"),
         alerts: document.querySelector("#alerts-screen"),
         expenses: document.querySelector("#expenses-screen"),
         troubleshooting: document.querySelector("#troubleshooting-screen"),
+        repair: document.querySelector("#repair-screen"),
       };
 
       const REMINDERS_STORAGE_KEY = "siyarati-reminders";
       const VEHICLE_STORAGE_KEY = "siyarati-vehicle";
+      const VEHICLES_STORAGE_KEY = "siyarati-vehicles";
+      const PRIMARY_VEHICLE_STORAGE_KEY = "siyarati-primary-vehicle";
       const TOW_STORAGE_KEY = "siyarati-tow-number";
       const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
+      const ALERT_ACTIONS_STORAGE_KEY = "siyarati-alert-actions";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -2490,26 +2691,96 @@
 
       function getSavedReminders() {
         try {
-          return JSON.parse(localStorage.getItem(REMINDERS_STORAGE_KEY) || "{}");
+          const vehicleId = getPrimaryVehicleId();
+          const key = vehicleId ? `${REMINDERS_STORAGE_KEY}:${vehicleId}` : REMINDERS_STORAGE_KEY;
+          const scopedValue = localStorage.getItem(key);
+          if (vehicleId && scopedValue === null) {
+            const legacyValue = localStorage.getItem(REMINDERS_STORAGE_KEY);
+            if (legacyValue !== null) {
+              localStorage.setItem(key, legacyValue);
+              localStorage.removeItem(REMINDERS_STORAGE_KEY);
+              return JSON.parse(legacyValue || "{}");
+            }
+          }
+          return JSON.parse(scopedValue || "{}");
         } catch {
           return {};
         }
       }
 
-      function getSavedVehicle() {
+      function getSavedVehicles() {
         try {
-          return JSON.parse(localStorage.getItem(VEHICLE_STORAGE_KEY) || "{}");
+          const savedVehicles = JSON.parse(localStorage.getItem(VEHICLES_STORAGE_KEY) || "null");
+          if (Array.isArray(savedVehicles)) {
+            return savedVehicles.filter((vehicle) => vehicle?.id && vehicle?.data && typeof vehicle.data === "object");
+          }
+
+          const legacyVehicle = JSON.parse(localStorage.getItem(VEHICLE_STORAGE_KEY) || "{}");
+          if (legacyVehicle && typeof legacyVehicle === "object" && Object.keys(legacyVehicle).length) {
+            const migratedVehicle = { id: "vehicle-primary", data: legacyVehicle };
+            localStorage.setItem(VEHICLES_STORAGE_KEY, JSON.stringify([migratedVehicle]));
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, migratedVehicle.id);
+            return [migratedVehicle];
+          }
+          return [];
         } catch {
-          return {};
+          return [];
         }
+      }
+
+      function saveVehicles(vehicles) {
+        localStorage.setItem(VEHICLES_STORAGE_KEY, JSON.stringify(vehicles));
+      }
+
+      function getPrimaryVehicleId() {
+        const vehicles = getSavedVehicles();
+        if (!vehicles.length) {
+          return "";
+        }
+
+        const storedPrimaryId = localStorage.getItem(PRIMARY_VEHICLE_STORAGE_KEY);
+        const primaryVehicle = vehicles.find((vehicle) => vehicle.id === storedPrimaryId) || vehicles[0];
+        if (storedPrimaryId !== primaryVehicle.id) {
+          localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, primaryVehicle.id);
+        }
+        return primaryVehicle.id;
+      }
+
+      function getSavedVehicle() {
+        const primaryId = getPrimaryVehicleId();
+        return getSavedVehicles().find((vehicle) => vehicle.id === primaryId)?.data || {};
+      }
+
+      function getVehicleScopedStorageKey(baseKey, vehicleId = getPrimaryVehicleId()) {
+        return vehicleId ? `${baseKey}:${vehicleId}` : baseKey;
       }
 
       function getSavedCustomReminders() {
         try {
-          const reminders = JSON.parse(localStorage.getItem(CUSTOM_REMINDERS_STORAGE_KEY) || "[]");
+          const key = getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY);
+          let storedValue = localStorage.getItem(key);
+          if (getPrimaryVehicleId() && storedValue === null) {
+            const legacyValue = localStorage.getItem(CUSTOM_REMINDERS_STORAGE_KEY);
+            if (legacyValue !== null) {
+              localStorage.setItem(key, legacyValue);
+              localStorage.removeItem(CUSTOM_REMINDERS_STORAGE_KEY);
+              storedValue = legacyValue;
+            }
+          }
+          const reminders = JSON.parse(storedValue || "[]");
           return Array.isArray(reminders) ? reminders : [];
         } catch {
           return [];
+        }
+      }
+
+      function getSavedAlertActions() {
+        try {
+          const key = getVehicleScopedStorageKey(ALERT_ACTIONS_STORAGE_KEY);
+          const actions = JSON.parse(localStorage.getItem(key) || "{}");
+          return actions && typeof actions === "object" ? actions : {};
+        } catch {
+          return {};
         }
       }
 
@@ -2564,6 +2835,114 @@
         metaDisplay.textContent = details.length
           ? details.join(" · ")
           : "Ajoutez votre véhicule dans Documents";
+      }
+
+      function getVehicleDisplayName(vehicle = {}) {
+        return [vehicle["vehicle-category"] || vehicle["vehicle-brand"], vehicle["vehicle-model"]]
+          .filter(Boolean)
+          .join(" ") || "Véhicule sans nom";
+      }
+
+      function createVehicleId() {
+        return `vehicle-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+      }
+
+      function clearVehicleData(vehicleId) {
+        [
+          REMINDERS_STORAGE_KEY,
+          CUSTOM_REMINDERS_STORAGE_KEY,
+          ALERT_ACTIONS_STORAGE_KEY,
+          TOW_STORAGE_KEY,
+        ].forEach((baseKey) => localStorage.removeItem(`${baseKey}:${vehicleId}`));
+      }
+
+      function updateVehicleAvailability() {
+        const hasPrimaryVehicle = Boolean(getPrimaryVehicleId());
+        document.querySelectorAll("[data-requires-vehicle]").forEach((card) => {
+          card.classList.toggle("is-disabled", !hasPrimaryVehicle);
+          card.setAttribute("aria-disabled", String(!hasPrimaryVehicle));
+        });
+      }
+
+      function renderVehicleList() {
+        const vehicleList = document.querySelector("#vehicle-list");
+        if (!vehicleList) {
+          return;
+        }
+
+        const vehicles = getSavedVehicles();
+        const primaryId = getPrimaryVehicleId();
+        if (!vehicles.length) {
+          vehicleList.innerHTML = `
+            <div class="vehicle-list-empty">
+              <strong>Aucun véhicule enregistré</strong>
+              <p>Utilisez le bouton + pour ajouter un véhicule secondaire.</p>
+            </div>
+          `;
+          return;
+        }
+
+        vehicleList.innerHTML = vehicles
+          .map(({ id, data }) => {
+            const isPrimary = id === primaryId;
+            const registration = data["vehicle-registration"] || "Matricule non renseigné";
+            return `
+              <article class="vehicle-list-item${isPrimary ? " is-primary" : ""}">
+                <button class="vehicle-list-main" type="button" data-select-vehicle="${escapeHtml(id)}" aria-label="Sélectionner ${escapeHtml(getVehicleDisplayName(data))}">
+                  <span class="vehicle-list-icon" aria-hidden="true">🚗</span>
+                  <span class="vehicle-list-copy">
+                    <strong>${escapeHtml(getVehicleDisplayName(data))}</strong>
+                    <small>${isPrimary ? "Véhicule principal" : "Véhicule secondaire"} · ${escapeHtml(registration)}</small>
+                  </span>
+                </button>
+                <div class="vehicle-list-actions">
+                  <button class="vehicle-list-menu-toggle" type="button" data-vehicle-menu-toggle aria-label="Ouvrir le menu de ${escapeHtml(getVehicleDisplayName(data))}" aria-expanded="false">···</button>
+                  <div class="vehicle-list-menu" data-vehicle-menu hidden>
+                    <button class="vehicle-list-action" type="button" data-vehicle-list-action="primary" data-vehicle-id="${escapeHtml(id)}" ${isPrimary ? "disabled" : ""}>${isPrimary ? "Véhicule principal" : "Définir comme principal"}</button>
+                    <button class="vehicle-list-action" type="button" data-vehicle-list-action="edit" data-vehicle-id="${escapeHtml(id)}">Modifier</button>
+                    <button class="vehicle-list-action is-danger" type="button" data-vehicle-list-action="delete" data-vehicle-id="${escapeHtml(id)}">Supprimer</button>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function setPrimaryVehicle(vehicleId) {
+        if (!getSavedVehicles().some((vehicle) => vehicle.id === vehicleId)) {
+          return;
+        }
+        localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, vehicleId);
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        updateVehicleAvailability();
+        checkAlerts();
+        showToast("Le véhicule principal a été changé.");
+      }
+
+      function deleteVehicle(vehicleId) {
+        const vehicles = getSavedVehicles();
+        const wasPrimary = getPrimaryVehicleId() === vehicleId;
+        clearVehicleData(vehicleId);
+        const remainingVehicles = vehicles.filter((vehicle) => vehicle.id !== vehicleId);
+        saveVehicles(remainingVehicles);
+
+        if (wasPrimary) {
+          if (remainingVehicles.length) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, remainingVehicles[0].id);
+          } else {
+            localStorage.removeItem(PRIMARY_VEHICLE_STORAGE_KEY);
+          }
+        }
+        localStorage.removeItem(VEHICLE_STORAGE_KEY);
+        prepareVehicleForm();
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        updateVehicleAvailability();
+        checkAlerts();
       }
 
       function getAlertStatus(hoursRemaining) {
@@ -2703,11 +3082,14 @@
 
         const manufacturerEntries = getManufacturerMaintenanceEntries();
 
-        return [...fixedEntries, ...customEntries, ...manufacturerEntries].sort((first, second) => {
+        const actions = getSavedAlertActions();
+        return [...fixedEntries, ...customEntries, ...manufacturerEntries]
+          .sort((first, second) => {
           const firstTarget = first.date ? first.date.getTime() : first.targetMileage ?? Number.POSITIVE_INFINITY;
           const secondTarget = second.date ? second.date.getTime() : second.targetMileage ?? Number.POSITIVE_INFINITY;
           return firstTarget - secondTarget;
-        });
+          })
+          .map((entry) => ({ ...entry, action: actions[entry.key] || null }));
       }
 
       function formatReminderDate(date) {
@@ -2719,6 +3101,15 @@
       }
 
       function getReminderStatusLabel(entry) {
+        const displayState = getAlertDisplayState(entry);
+        if (displayState.status === "done") {
+          return "Traitée";
+        }
+
+        if (displayState.status === "snoozed" && entry.action?.until) {
+          return `Reportée au ${formatReminderDate(new Date(`${entry.action.until}T00:00:00`))}`;
+        }
+
         if (entry.status === "expired") {
           return "Expiré";
         }
@@ -2736,6 +3127,21 @@
         }
 
         return "À venir";
+      }
+
+      function getAlertDisplayState(entry) {
+        if (entry.action?.state === "done") {
+          return { status: "done", active: false };
+        }
+
+        if (entry.action?.state === "snoozed" && entry.action.until) {
+          const snoozeUntil = new Date(`${entry.action.until}T23:59:59`);
+          if (snoozeUntil.getTime() > Date.now()) {
+            return { status: "snoozed", active: false };
+          }
+        }
+
+        return { status: entry.status, active: true };
       }
 
       function formatReminderTarget(entry) {
@@ -2904,8 +3310,11 @@
         const count = document.querySelector("#alert-count");
         const summaryCopy = document.querySelector("#alert-summary-copy");
         const alertsList = document.querySelector("#alerts-list");
-        const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
-        updateVehicleAlertStatus(entries);
+        const activeEntries = entries.filter((entry) => {
+          const displayState = getAlertDisplayState(entry);
+          return displayState.active && entry.status !== "upcoming";
+        });
+        updateVehicleAlertStatus(entries.filter((entry) => getAlertDisplayState(entry).active));
         summary.classList.toggle("is-clear", activeEntries.length === 0);
         count.textContent = activeEntries.length;
 
@@ -2923,17 +3332,60 @@
         }
 
         alertsList.innerHTML = entries
-          .map((entry) => `
-            <article class="alert-item is-${entry.status}">
+          .map((entry) => {
+            const displayState = getAlertDisplayState(entry);
+            return `
+            <article class="alert-item is-${displayState.status}">
               <div class="alert-item-copy">
                 <h3 class="alert-item-title">${escapeHtml(entry.label)}</h3>
                 <p class="alert-item-date">${formatReminderTarget(entry)}</p>
               </div>
               <span class="alert-item-status">${getReminderStatusLabel(entry)}</span>
+              <div class="alert-item-actions">
+                ${displayState.active
+                  ? `<button type="button" data-alert-action="done" data-alert-key="${escapeHtml(entry.key)}">Traiter</button>
+                     <button type="button" data-alert-action="snooze" data-alert-key="${escapeHtml(entry.key)}">Reporter</button>`
+                  : `<button type="button" data-alert-action="restore" data-alert-key="${escapeHtml(entry.key)}">Rétablir</button>`}
+              </div>
             </article>
-          `)
+          `;
+          })
           .join("");
       }
+
+      function handleAlertAction(action, alertKey) {
+        const actions = getSavedAlertActions();
+        if (action === "done") {
+          actions[alertKey] = { state: "done" };
+          showToast("Alerte marquée comme traitée.");
+        } else if (action === "snooze") {
+          const defaultDate = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+          const until = window.prompt("Reporter cette alerte jusqu’au (AAAA-MM-JJ)", defaultDate);
+          if (until === null) {
+            return;
+          }
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(until) || Number.isNaN(new Date(`${until}T00:00:00`).getTime())) {
+            showToast("Date de report invalide.");
+            return;
+          }
+          actions[alertKey] = { state: "snoozed", until };
+          showToast(`Alerte reportée au ${formatReminderDate(new Date(`${until}T00:00:00`))}.`);
+        } else {
+          delete actions[alertKey];
+          showToast("Alerte réactivée.");
+        }
+
+        localStorage.setItem(getVehicleScopedStorageKey(ALERT_ACTIONS_STORAGE_KEY), JSON.stringify(actions));
+        checkAlerts();
+      }
+
+      document.querySelector("#alerts-list").addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-alert-action]");
+        if (!actionButton) {
+          return;
+        }
+        handleAlertAction(actionButton.dataset.alertAction, actionButton.dataset.alertKey);
+      });
 
       function checkAlerts(options = {}) {
         const entries = getReminderEntries();
@@ -2977,17 +3429,20 @@
       }
 
       document.querySelectorAll("[data-screen]").forEach((control) => {
-        control.addEventListener("click", () => showScreen(control.dataset.screen));
+        control.addEventListener("click", (event) => {
+          if (control.classList.contains("is-disabled")) {
+            event.preventDefault();
+            showToast("Aucun véhicule n’est enregistré. Ajoutez d’abord un véhicule.");
+            return;
+          }
+          showScreen(control.dataset.screen);
+        });
       });
 
       document.querySelectorAll(".toast-card, .menu-card:not([data-screen]), .detail-card:not([data-screen])").forEach((card) => {
         card.addEventListener("click", () => {
           showToast(`${card.dataset.label} — cette rubrique sera bientôt disponible.`);
         });
-      });
-
-      document.querySelector(".profile-button").addEventListener("click", () => {
-        showToast("Profil — cette rubrique sera bientôt disponible.");
       });
 
       const locationAction = document.querySelector("#location-action");
@@ -3070,13 +3525,22 @@
         }
       });
 
-      const savedTowNumber = localStorage.getItem(TOW_STORAGE_KEY);
+      const towStorageKey = getVehicleScopedStorageKey(TOW_STORAGE_KEY);
+      let savedTowNumber = localStorage.getItem(towStorageKey);
+      if (!savedTowNumber && getPrimaryVehicleId()) {
+        const legacyTowNumber = localStorage.getItem(TOW_STORAGE_KEY);
+        if (legacyTowNumber) {
+          savedTowNumber = legacyTowNumber;
+          localStorage.setItem(towStorageKey, legacyTowNumber);
+          localStorage.removeItem(TOW_STORAGE_KEY);
+        }
+      }
       if (savedTowNumber) {
         towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
       }
 
       towAction.addEventListener("click", () => {
-        const savedNumber = localStorage.getItem(TOW_STORAGE_KEY) || "";
+        const savedNumber = localStorage.getItem(getVehicleScopedStorageKey(TOW_STORAGE_KEY)) || "";
         const enteredNumber = window.prompt("Entrez le numéro du dépanneur", savedNumber);
         if (enteredNumber === null) {
           return;
@@ -3088,18 +3552,15 @@
           return;
         }
 
-        localStorage.setItem(TOW_STORAGE_KEY, phoneNumber);
+        localStorage.setItem(getVehicleScopedStorageKey(TOW_STORAGE_KEY), phoneNumber);
         towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
         window.location.href = `tel:${phoneNumber}`;
       });
 
-      document.querySelector("#personal-info-form").addEventListener("submit", (event) => {
-        event.preventDefault();
-        showToast("Vos informations personnelles ont été enregistrées.");
-      });
-
       const vehicleBrandField = document.querySelector("#vehicle-category");
       const vehicleDetailsForm = document.querySelector("#vehicle-details-form");
+      let vehicleFormMode = "edit-primary";
+      let vehicleFormVehicleId = "";
       vehicleBrandField.addEventListener("change", (event) => {
         populateVehicleModels(event.currentTarget.value);
       });
@@ -3109,15 +3570,45 @@
         const form = event.currentTarget;
         const vehicleDetails = Object.fromEntries(new FormData(form).entries());
         const photoField = form.querySelector('[name="vehicle-photo"]');
-        vehicleDetails["vehicle-photo"] = photoField.files?.[0]?.name || "";
-        localStorage.setItem(VEHICLE_STORAGE_KEY, JSON.stringify(vehicleDetails));
-        updateVehicleDisplay(vehicleDetails);
-        updateMileageDisplay(vehicleDetails["current-mileage"]);
+        const vehicles = getSavedVehicles();
+        const existingVehicle = vehicles.find((vehicle) => vehicle.id === vehicleFormVehicleId);
+        vehicleDetails["vehicle-photo"] = photoField.files?.[0]?.name || existingVehicle?.data?.["vehicle-photo"] || "";
+
+        if (vehicleFormMode === "add-secondary") {
+          const newVehicleId = createVehicleId();
+          vehicles.push({ id: newVehicleId, data: vehicleDetails });
+          if (!getPrimaryVehicleId()) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, newVehicleId);
+            vehicleFormMode = "edit-primary";
+          }
+        } else {
+          const targetId = vehicleFormVehicleId || getPrimaryVehicleId() || createVehicleId();
+          const existingIndex = vehicles.findIndex((vehicle) => vehicle.id === targetId);
+          if (existingIndex >= 0) {
+            vehicles[existingIndex] = { id: targetId, data: vehicleDetails };
+          } else {
+            vehicles.push({ id: targetId, data: vehicleDetails });
+          }
+          if (!getPrimaryVehicleId()) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, targetId);
+          }
+        }
+
+        saveVehicles(vehicles);
+        localStorage.removeItem(VEHICLE_STORAGE_KEY);
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        updateVehicleAvailability();
         checkAlerts();
-        showToast("Les informations du véhicule ont été enregistrées.");
+        showToast(vehicleFormMode === "add-secondary"
+          ? "Le véhicule secondaire a été ajouté."
+          : "Les informations du véhicule ont été enregistrées.");
       });
 
-      function prepareVehicleForm(vehicle = {}) {
+      function prepareVehicleForm(vehicle = {}, mode = "edit-primary", vehicleId = "") {
+        vehicleFormMode = mode;
+        vehicleFormVehicleId = vehicleId;
         vehicleDetailsForm.reset();
         Object.entries(vehicle).forEach(([fieldName, value]) => {
           const field = vehicleDetailsForm.querySelector(`[name="${fieldName}"]`);
@@ -3158,7 +3649,7 @@
         closeVehicleManagementMenu();
 
         if (action === "add") {
-          prepareVehicleForm();
+          prepareVehicleForm({}, "add-secondary");
           showScreen("vehicle-details");
           return;
         }
@@ -3168,7 +3659,7 @@
             showToast("Aucun véhicule enregistré. Choisissez Ajouter véhicule.");
             return;
           }
-          prepareVehicleForm(savedVehicle);
+          prepareVehicleForm(savedVehicle, "edit-primary", getPrimaryVehicleId());
           showScreen("vehicle-details");
           return;
         }
@@ -3178,14 +3669,10 @@
             showToast("Aucun véhicule à supprimer.");
             return;
           }
-          if (!window.confirm("Supprimer le véhicule principal et ses informations ?")) {
+          if (!window.confirm("Supprimer le véhicule principal et toutes ses données ?")) {
             return;
           }
-          localStorage.removeItem(VEHICLE_STORAGE_KEY);
-          prepareVehicleForm();
-          updateVehicleDisplay();
-          updateMileageDisplay("");
-          checkAlerts();
+          deleteVehicle(getPrimaryVehicleId());
           showToast("Le véhicule a été supprimé.");
         }
       });
@@ -3194,6 +3681,78 @@
         if (!vehicleManagement.contains(event.target)) {
           closeVehicleManagementMenu();
         }
+      });
+
+      document.querySelector("#add-secondary-vehicle-button").addEventListener("click", () => {
+        prepareVehicleForm({}, "add-secondary");
+        showScreen("vehicle-details");
+      });
+
+      document.querySelector("#vehicle-list").addEventListener("click", (event) => {
+        const menuToggle = event.target.closest("[data-vehicle-menu-toggle]");
+        if (menuToggle) {
+          const menu = menuToggle.parentElement.querySelector("[data-vehicle-menu]");
+          const isOpen = !menu.hidden;
+          document.querySelectorAll("[data-vehicle-menu]").forEach((item) => {
+            item.hidden = true;
+          });
+          document.querySelectorAll("[data-vehicle-menu-toggle]").forEach((item) => {
+            item.setAttribute("aria-expanded", "false");
+          });
+          menu.hidden = isOpen;
+          menuToggle.setAttribute("aria-expanded", String(!isOpen));
+          event.stopPropagation();
+          return;
+        }
+
+        const selectButton = event.target.closest("[data-select-vehicle]");
+        if (selectButton) {
+          setPrimaryVehicle(selectButton.dataset.selectVehicle);
+          return;
+        }
+
+        const actionButton = event.target.closest("[data-vehicle-list-action]");
+        if (!actionButton) {
+          return;
+        }
+
+        const vehicleId = actionButton.dataset.vehicleId;
+        const action = actionButton.dataset.vehicleListAction;
+        const vehicle = getSavedVehicles().find((item) => item.id === vehicleId);
+        if (!vehicle) {
+          return;
+        }
+
+        if (action === "primary") {
+          setPrimaryVehicle(vehicleId);
+          return;
+        }
+
+        if (action === "edit") {
+          prepareVehicleForm(vehicle.data, vehicleId === getPrimaryVehicleId() ? "edit-primary" : "edit-secondary", vehicleId);
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "delete") {
+          if (!window.confirm(`Supprimer ${getVehicleDisplayName(vehicle.data)} et toutes ses données ?`)) {
+            return;
+          }
+          deleteVehicle(vehicleId);
+          showToast("Le véhicule et ses données ont été supprimés.");
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (event.target.closest("#vehicle-list")) {
+          return;
+        }
+        document.querySelectorAll("[data-vehicle-menu]").forEach((item) => {
+          item.hidden = true;
+        });
+        document.querySelectorAll("[data-vehicle-menu-toggle]").forEach((item) => {
+          item.setAttribute("aria-expanded", "false");
+        });
       });
 
       const customReminderForm = document.querySelector("#custom-reminder-form");
@@ -3218,7 +3777,7 @@
           amount: reminder.amount,
           notes: reminder.notes.trim(),
         });
-        localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(savedReminders));
+        localStorage.setItem(getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY), JSON.stringify(savedReminders));
         event.currentTarget.reset();
         renderCustomReminders();
         renderExpenses();
@@ -3235,7 +3794,7 @@
 
         const reminderId = removeButton.dataset.removeReminder;
         const remainingReminders = getSavedCustomReminders().filter(({ id }) => id !== reminderId);
-        localStorage.setItem(CUSTOM_REMINDERS_STORAGE_KEY, JSON.stringify(remainingReminders));
+        localStorage.setItem(getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY), JSON.stringify(remainingReminders));
         renderCustomReminders();
         renderExpenses();
         renderReports();
@@ -3276,6 +3835,8 @@
       updateVehicleDisplay(savedVehicle);
       updateMileageDisplay(savedVehicle["current-mileage"]);
 
+      renderVehicleList();
+      updateVehicleAvailability();
       renderCustomReminders();
       renderExpenses();
       renderReports();
