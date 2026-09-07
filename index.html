@@ -122,7 +122,7 @@
         overflow: visible;
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-start;
         gap: 16px;
         margin-bottom: 22px;
         padding: 18px;
@@ -149,6 +149,8 @@
       .vehicle-copy {
         position: relative;
         z-index: 3;
+        min-width: 0;
+        flex: 1 1 auto;
       }
 
       .vehicle-status {
@@ -160,6 +162,60 @@
         display: flex;
         align-items: center;
         gap: 10px;
+      }
+
+      .dashboard-kicker {
+        margin: 0 0 10px 2px;
+        color: #536c8f;
+        font-size: 12px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .vehicle-card-icon {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 14px;
+        color: #536c8f;
+        background: #eef3f7;
+      }
+
+      .vehicle-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 11px;
+      }
+
+      .vehicle-action-button {
+        min-height: 29px;
+        padding: 5px 9px;
+        border: 1px solid #d5dde6;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #f8fafb;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .vehicle-action-button:hover,
+      .vehicle-action-button:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        background: #eef3f7;
+      }
+
+      .vehicle-action-button.is-danger {
+        color: #b44d59;
+        border-color: #e7c9ce;
+        background: #fff7f8;
       }
 
       .vehicle-label {
@@ -667,6 +723,10 @@
         cursor: pointer;
         font-size: 11px;
         font-weight: 700;
+      }
+
+      .vehicle-copy .dashboard-vehicle-select {
+        max-width: 250px;
       }
 
       .dashboard-vehicle-select:focus-visible {
@@ -2316,21 +2376,56 @@
         font-size: 11px;
       }
 
+      #home-screen .services-bar {
+        position: relative;
+        margin: 12px -4px 0;
+        padding: 10px 4px 4px;
+        border: 1px solid rgba(213, 221, 230, 0.92);
+        border-radius: 16px;
+        background: rgba(248, 250, 251, 0.94);
+        box-shadow: 0 10px 24px rgba(43, 60, 82, 0.12);
+        backdrop-filter: blur(12px);
+      }
+
+      #home-screen .menu-grid {
+        display: flex;
+        gap: 8px;
+        overflow-x: auto;
+        padding: 0 1px 3px;
+        scrollbar-width: none;
+      }
+
+      #home-screen .menu-grid::-webkit-scrollbar {
+        display: none;
+      }
+
       #home-screen .menu-card {
-        min-height: 132px;
+        width: 82px;
+        min-width: 82px;
+        min-height: 82px;
+        padding: 10px;
+        border-radius: 14px;
       }
 
       #home-screen .menu-card h3 {
-        margin-bottom: 0;
+        margin: 8px 0 0;
+        font-size: 11px;
+        line-height: 1.15;
       }
 
       #home-screen .menu-card p {
         display: none;
       }
 
+      #home-screen .menu-card .icon-badge {
+        width: 34px;
+        height: 34px;
+        border-radius: 10px;
+      }
+
       #home-screen .menu-card .card-footer {
         justify-content: flex-end;
-        margin-top: 18px;
+        margin-top: 7px;
         font-size: 0;
       }
 
@@ -2408,37 +2503,32 @@
 
       <section id="home-screen" class="screen" aria-labelledby="page-title">
       <section class="hero" aria-labelledby="page-title">
-        <p class="eyebrow">Tableau de bord</p>
         <h1 id="page-title">Bonjour, prêt à prendre la route&nbsp;?</h1>
         <p class="intro">Retrouvez rapidement toutes les informations importantes pour votre véhicule.</p>
       </section>
 
+       <p class="dashboard-kicker">Tableau de bord</p>
        <section class="vehicle-card" aria-label="Véhicule principal">
+         <div class="vehicle-card-icon" aria-hidden="true">
+           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+             <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+             <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
+           </svg>
+         </div>
         <div class="vehicle-copy">
-          <div class="vehicle-label-row">
-            <p class="vehicle-label">Véhicule principal</p>
-            <div class="vehicle-management">
-              <button class="vehicle-management-toggle" id="vehicle-management-toggle" type="button" aria-label="Ouvrir le menu du véhicule" title="Options du véhicule" aria-expanded="false" aria-controls="vehicle-management-menu">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <circle cx="5" cy="12" r="1.7" />
-                  <circle cx="12" cy="12" r="1.7" />
-                  <circle cx="19" cy="12" r="1.7" />
-                </svg>
-              </button>
-              <div class="vehicle-management-menu" id="vehicle-management-menu" hidden>
-                <button type="button" data-vehicle-action="add">1. Ajouter véhicule secondaire</button>
-                <button type="button" data-vehicle-action="delete">2. Supprimer véhicule principal</button>
-                <button type="button" data-vehicle-action="edit">3. Modifier véhicule principal</button>
-              </div>
-            </div>
-          </div>
+           <p class="vehicle-label">Véhicule principal</p>
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
           <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
+           <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Afficher le tableau de bord de</label>
+           <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
+             <option value="">Aucun véhicule enregistré</option>
+           </select>
+           <div class="vehicle-actions" aria-label="Actions du véhicule">
+             <button class="vehicle-action-button" type="button" data-vehicle-action="add">Ajouter</button>
+             <button class="vehicle-action-button" type="button" data-vehicle-action="edit">Modifier</button>
+             <button class="vehicle-action-button is-danger" type="button" data-vehicle-action="delete">Supprimer</button>
+           </div>
         </div>
-        <button class="vehicle-status" id="vehicle-alert-status" type="button" data-screen="alerts" data-requires-vehicle aria-label="Ouvrir les notifications des alertes">
-          <span class="status-dot"></span>
-          <span id="vehicle-alert-status-text">Notifications des alertes · 0</span>
-        </button>
       </section>
 
        <section class="smart-advice-panel" aria-labelledby="smart-advice-title">
@@ -2452,10 +2542,10 @@
          <div class="smart-advice-list" id="smart-advice-list" aria-live="polite"></div>
        </section>
 
-      <section aria-labelledby="services-title">
+       <section class="services-bar" aria-labelledby="services-title">
         <div class="section-heading">
-          <h2 id="services-title">Que souhaitez-vous consulter&nbsp;?</h2>
-            <span>6 services</span>
+           <h2 id="services-title">Services</h2>
+           <span>6 rubriques</span>
         </div>
 
         <div class="menu-grid">
@@ -2467,11 +2557,7 @@
                   <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
                 </svg>
               </div>
-              <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Tableau de bord</label>
-              <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
-                <option value="">Aucun véhicule enregistré</option>
-              </select>
-              <h3>Véhicule</h3>
+              <h3>Véhicules</h3>
               <p>Gérez votre véhicule principal et vos véhicules secondaires.</p>
             </div>
             <span class="card-footer">Voir mes véhicules <span class="arrow">↗</span></span>
@@ -4188,18 +4274,6 @@
         }
       }
 
-      function updateVehicleAlertStatus(entries) {
-        const status = document.querySelector("#vehicle-alert-status");
-        const statusText = document.querySelector("#vehicle-alert-status-text");
-        const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
-        const hasCriticalAlert = activeEntries.some((entry) => entry.status === "critical" || entry.status === "expired");
-        const hasWarningAlert = activeEntries.some((entry) => entry.status === "warning");
-
-        status.classList.toggle("is-warning", !hasCriticalAlert && hasWarningAlert);
-        status.classList.toggle("is-critical", hasCriticalAlert);
-        statusText.textContent = `Notifications des alertes · ${activeEntries.length}`;
-      }
-
       function renderAlerts(entries) {
         const summary = document.querySelector("#alert-summary");
         const count = document.querySelector("#alert-count");
@@ -4209,7 +4283,6 @@
           const displayState = getAlertDisplayState(entry);
           return displayState.active && entry.status !== "upcoming";
         });
-        updateVehicleAlertStatus(entries.filter((entry) => getAlertDisplayState(entry).active));
         summary.classList.toggle("is-clear", activeEntries.length === 0);
         count.textContent = activeEntries.length;
 
@@ -4691,23 +4764,7 @@
         populateVehicleModels(brand, vehicle["vehicle-model"] || "");
       }
 
-      const vehicleManagement = document.querySelector(".vehicle-management");
-      const vehicleManagementToggle = document.querySelector("#vehicle-management-toggle");
-      const vehicleManagementMenu = document.querySelector("#vehicle-management-menu");
-
-      function closeVehicleManagementMenu() {
-        vehicleManagementMenu.hidden = true;
-        vehicleManagementToggle.setAttribute("aria-expanded", "false");
-      }
-
-      vehicleManagementToggle.addEventListener("click", (event) => {
-        event.stopPropagation();
-        const isOpen = !vehicleManagementMenu.hidden;
-        vehicleManagementMenu.hidden = isOpen;
-        vehicleManagementToggle.setAttribute("aria-expanded", String(!isOpen));
-      });
-
-      vehicleManagementMenu.addEventListener("click", (event) => {
+      document.querySelector(".vehicle-actions").addEventListener("click", (event) => {
         const actionButton = event.target.closest("[data-vehicle-action]");
         if (!actionButton) {
           return;
@@ -4715,7 +4772,6 @@
 
         const action = actionButton.dataset.vehicleAction;
         const savedVehicle = getSavedVehicle();
-        closeVehicleManagementMenu();
 
         if (action === "add") {
           prepareVehicleForm({}, "add-secondary");
@@ -4743,12 +4799,6 @@
           }
           deleteVehicle(getPrimaryVehicleId());
           showToast("Le véhicule a été supprimé.");
-        }
-      });
-
-      document.addEventListener("click", (event) => {
-        if (!vehicleManagement.contains(event.target)) {
-          closeVehicleManagementMenu();
         }
       });
 
