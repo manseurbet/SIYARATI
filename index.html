@@ -4508,6 +4508,20 @@
               </div>
               <button class="smart-advice-action" type="button" data-advice-screen="vehicle-info">Configurer</button>
             </article>
+             <article class="smart-advice-item">
+               <div class="smart-advice-copy">
+                 <strong>Ajouter vos documents</strong>
+                 <span>Centralisez la carte grise, l’assurance et la vignette de votre véhicule.</span>
+               </div>
+               <button class="smart-advice-action" type="button" data-advice-screen="documents">Documents</button>
+             </article>
+             <article class="smart-advice-item">
+               <div class="smart-advice-copy">
+                 <strong>Ajouter une alarme</strong>
+                 <span>Activez les notifications pour être prévenu des prochaines échéances.</span>
+               </div>
+               <button class="smart-advice-action" type="button" data-advice-screen="alerts">Ajouter</button>
+             </article>
           `;
           return;
         }
@@ -4520,6 +4534,10 @@
           });
         const missingDocuments = ["carte-grise", "assurance", "vignette"]
           .filter((key) => !getSavedDocuments()[key]);
+        const notificationPreferences = getSavedNotificationPreferences();
+        const notificationsEnabled = "Notification" in window &&
+          Notification.permission === "granted" &&
+          notificationPreferences.enabled === true;
         const recommendations = [];
 
         activeEntries.slice(0, 2).forEach((entry) => {
@@ -4542,6 +4560,16 @@
           });
         }
 
+        if (!notificationsEnabled) {
+          recommendations.push({
+            state: "",
+            title: "Ajouter une alarme",
+            text: "Activez les notifications pour être prévenu avant les échéances et les entretiens.",
+            action: "Ajouter",
+            screen: "alerts",
+          });
+        }
+
         if (!recommendations.length) {
           recommendations.push({
             state: "",
@@ -4553,7 +4581,7 @@
         }
 
         list.innerHTML = recommendations
-          .slice(0, 3)
+          .slice(0, 4)
           .map((recommendation) => `
             <article class="smart-advice-item ${recommendation.state}">
               <div class="smart-advice-copy">
