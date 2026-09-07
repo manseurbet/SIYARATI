@@ -4517,10 +4517,10 @@
              </article>
              <article class="smart-advice-item">
                <div class="smart-advice-copy">
-                 <strong>Ajouter une alarme</strong>
-                 <span>Activez les notifications pour être prévenu des prochaines échéances.</span>
+                 <strong>Ajouter un rappel</strong>
+                 <span>Enregistrez une prochaine échéance d’entretien ou de document.</span>
                </div>
-               <button class="smart-advice-action" type="button" data-advice-screen="alerts">Ajouter</button>
+               <button class="smart-advice-action" type="button" data-advice-screen="reminders">Ajouter</button>
              </article>
           `;
           return;
@@ -4563,10 +4563,10 @@
         if (!notificationsEnabled) {
           recommendations.push({
             state: "",
-            title: "Ajouter une alarme",
-            text: "Activez les notifications pour être prévenu avant les échéances et les entretiens.",
+            title: "Ajouter un rappel",
+            text: "Enregistrez une prochaine échéance d’entretien ou de document.",
             action: "Ajouter",
-            screen: "alerts",
+            screen: "reminders",
           });
         }
 
