@@ -2544,6 +2544,25 @@
           grid-column: auto;
         }
       }
+
+      @media (max-height: 760px) {
+        #home-screen .smart-advice-panel {
+          margin-bottom: 16px;
+          padding: 12px;
+        }
+
+        #home-screen .smart-advice-heading {
+          margin-bottom: 8px;
+        }
+
+        #home-screen .smart-advice-list {
+          gap: 6px;
+        }
+
+        #home-screen .smart-advice-item {
+          padding: 8px;
+        }
+      }
     </style>
   </head>
   <body>
@@ -4534,10 +4553,6 @@
           });
         const missingDocuments = ["carte-grise", "assurance", "vignette"]
           .filter((key) => !getSavedDocuments()[key]);
-        const notificationPreferences = getSavedNotificationPreferences();
-        const notificationsEnabled = "Notification" in window &&
-          Notification.permission === "granted" &&
-          notificationPreferences.enabled === true;
         const recommendations = [];
 
         activeEntries.slice(0, 2).forEach((entry) => {
@@ -4560,15 +4575,13 @@
           });
         }
 
-        if (!notificationsEnabled) {
-          recommendations.push({
-            state: "",
-            title: "Ajouter un rappel",
-            text: "Enregistrez une prochaine échéance d’entretien ou de document.",
-            action: "Ajouter",
-            screen: "reminders",
-          });
-        }
+        recommendations.push({
+          state: "",
+          title: "Ajouter un rappel",
+          text: "Enregistrez une prochaine échéance d’entretien ou de document.",
+          action: "Ajouter",
+          screen: "reminders",
+        });
 
         if (!recommendations.length) {
           recommendations.push({
