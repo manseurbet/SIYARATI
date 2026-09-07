@@ -58,6 +58,45 @@
         margin-bottom: 28px;
       }
 
+      .connection-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        min-height: 28px;
+        padding: 5px 9px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        border-radius: 999px;
+        color: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.1);
+        font-size: 10px;
+        font-weight: 750;
+        white-space: nowrap;
+      }
+
+      .connection-status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: #7bd8a5;
+        box-shadow: 0 0 0 3px rgba(123, 216, 165, 0.14);
+      }
+
+      .connection-status.is-offline {
+        color: #ffe8b8;
+        border-color: rgba(255, 220, 153, 0.3);
+        background: rgba(255, 184, 102, 0.13);
+      }
+
+      .connection-status.is-offline .connection-status-dot {
+        background: #ffbf69;
+        box-shadow: 0 0 0 3px rgba(255, 191, 105, 0.15);
+      }
+
+      .connection-status.is-syncing .connection-status-dot {
+        background: #8cc8ff;
+        box-shadow: 0 0 0 3px rgba(140, 200, 255, 0.15);
+      }
+
       .brand {
         display: flex;
         align-items: center;
@@ -1657,6 +1696,24 @@
         line-height: 1.4;
       }
 
+      .offline-data-note {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        margin: 12px 0 0;
+        padding: 9px 10px;
+        border: 1px solid #dce5ec;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #f7fafc;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .offline-data-note strong {
+        color: #2b3c52;
+      }
+
       .notification-button {
         min-height: 36px;
         flex: 0 0 auto;
@@ -2434,6 +2491,12 @@
       }
 
       @media (max-width: 430px) {
+        .connection-status {
+          max-width: 118px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
         .vehicle-card {
           align-items: flex-start;
           gap: 12px;
@@ -2497,6 +2560,10 @@
           <div>
             <p class="brand-name">SIYARATI</p>
             <p class="brand-subtitle">Votre voiture, simplement.</p>
+          </div>
+          <div class="connection-status" id="connection-status" role="status" aria-live="polite">
+            <span class="connection-status-dot" aria-hidden="true"></span>
+            <span id="connection-status-text">En ligne</span>
           </div>
         </div>
       </header>
@@ -3009,6 +3076,7 @@
             <h2 id="notification-title">Recevoir les alertes sans ouvrir SIYARATI</h2>
             <p id="notification-status">Activez les notifications pour être prévenu des échéances et entretiens du véhicule principal.</p>
             <p class="notification-panel-note">Stratégie choisie : notifications système via le navigateur, avec vérification en arrière-plan sur les appareils compatibles.</p>
+            <p class="offline-data-note"><strong>Hors connexion :</strong> vos modifications restent enregistrées sur cet appareil et le suivi des alertes est resynchronisé dès que la connexion revient.</p>
           </div>
           <button class="notification-button" id="enable-notifications-button" type="button">Activer</button>
         </section>
@@ -3204,6 +3272,7 @@
       const DOCUMENTS_STORAGE_KEY = "siyarati-documents";
       const REPAIRS_STORAGE_KEY = "siyarati-repairs";
       const NOTIFICATION_PREFERENCES_STORAGE_KEY = "siyarati-notification-preferences";
+      const OFFLINE_SYNC_STORAGE_KEY = "siyarati-offline-sync";
       const reminderDefinitions = [
         { key: "insurance-date", label: "Assurance" },
         { key: "sticker-date", label: "Vignette" },
@@ -3445,6 +3514,54 @@
         );
       }
 
+      function getPendingOfflineSync() {
+        try {
+          const pending = JSON.parse(localStorage.getItem(OFFLINE_SYNC_STORAGE_KEY) || "null");
+          return pending && typeof pending === "object" ? pending : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function updateConnectionStatus(state = "") {
+        const status = document.querySelector("#connection-status");
+        const text = document.querySelector("#connection-status-text");
+        if (!status || !text) {
+          return;
+        }
+
+        const isOffline = navigator.onLine === false;
+        const hasPendingSync = Boolean(getPendingOfflineSync());
+        status.classList.toggle("is-offline", isOffline);
+        status.classList.toggle("is-syncing", !isOffline && state === "syncing");
+
+        if (isOffline) {
+          text.textContent = hasPendingSync
+            ? "Hors connexion · enregistré"
+            : "Hors connexion";
+          return;
+        }
+        if (state === "syncing") {
+          text.textContent = "Synchronisation…";
+          return;
+        }
+        text.textContent = hasPendingSync ? "En ligne · à synchroniser" : "En ligne";
+      }
+
+      function markOfflineSyncPending(reason = "modification") {
+        localStorage.setItem(OFFLINE_SYNC_STORAGE_KEY, JSON.stringify({
+          pending: true,
+          reason,
+          queuedAt: Date.now(),
+        }));
+        updateConnectionStatus();
+      }
+
+      function clearOfflineSyncPending() {
+        localStorage.removeItem(OFFLINE_SYNC_STORAGE_KEY);
+        updateConnectionStatus();
+      }
+
       function updateNotificationControls() {
         const button = document.querySelector("#enable-notifications-button");
         const status = document.querySelector("#notification-status");
@@ -3545,26 +3662,69 @@
 
       async function syncNotificationState({ notify = false } = {}) {
         if (!notificationRegistration?.active || !("Notification" in window) || Notification.permission !== "granted") {
-          return;
+          return false;
         }
         const snapshot = getNotificationSnapshot();
         const preferences = snapshot ? getSavedNotificationPreferences() : {};
         if (preferences.enabled !== true) {
-          notificationRegistration.active.postMessage({
+          return postNotificationSyncMessage({
             type: "SYNC_ALERTS",
             activeVehicleId: "",
             snapshot: null,
             notify: false,
           });
-          return;
         }
 
-        notificationRegistration.active.postMessage({
+        return postNotificationSyncMessage({
           type: "SYNC_ALERTS",
           activeVehicleId: snapshot?.vehicleId || "",
           snapshot,
           notify,
         });
+      }
+
+      function postNotificationSyncMessage(message) {
+        if (!notificationRegistration?.active) {
+          return Promise.resolve(false);
+        }
+
+        if (!("MessageChannel" in window)) {
+          notificationRegistration.active.postMessage(message);
+          return Promise.resolve(true);
+        }
+
+        return new Promise((resolve) => {
+          const channel = new MessageChannel();
+          const timeout = window.setTimeout(() => resolve(false), 3000);
+          channel.port1.addEventListener("message", (event) => {
+            window.clearTimeout(timeout);
+            resolve(event.data?.ok !== false);
+          }, { once: true });
+          notificationRegistration.active.postMessage(message, [channel.port2]);
+        });
+      }
+
+      async function syncOfflineChanges({ notify = false } = {}) {
+        if (navigator.onLine === false) {
+          markOfflineSyncPending("modification hors connexion");
+          return false;
+        }
+
+        updateConnectionStatus("syncing");
+        const hasBackgroundNotificationAccess =
+          Boolean(notificationRegistration?.active) &&
+          "Notification" in window &&
+          Notification.permission === "granted";
+        const synced = hasBackgroundNotificationAccess
+          ? await syncNotificationState({ notify })
+          : true;
+
+        if (synced) {
+          clearOfflineSyncPending();
+        } else {
+          updateConnectionStatus();
+        }
+        return synced;
       }
 
       async function initializeNotificationSupport() {
@@ -3582,7 +3742,7 @@
             if (preferences.backgroundEnabled !== backgroundEnabled) {
               saveNotificationPreferences({ ...preferences, backgroundEnabled });
             }
-            await syncNotificationState({ notify: true });
+            await syncOfflineChanges({ notify: true });
           }
           updateNotificationControls();
         } catch {
@@ -3602,6 +3762,15 @@
           showScreen("alerts");
         });
       }
+
+      window.addEventListener("offline", () => {
+        markOfflineSyncPending("connexion perdue");
+      });
+
+      window.addEventListener("online", () => {
+        updateConnectionStatus("syncing");
+        checkAlerts();
+      });
 
       function getSavedDocuments() {
         try {
@@ -4458,7 +4627,7 @@
 
         const backgroundEnabled = await registerBackgroundNotificationCheck();
         saveNotificationPreferences({ enabled: true, backgroundEnabled });
-        await syncNotificationState({ notify: true });
+        await syncOfflineChanges({ notify: true });
         updateNotificationControls();
         showToast(backgroundEnabled
           ? "Notifications activées, y compris en arrière-plan."
@@ -4490,7 +4659,7 @@
 
         lastUrgentSignature = criticalSignature;
         updateNotificationControls();
-        syncNotificationState({ notify: true });
+        syncOfflineChanges({ notify: true }).catch(() => updateConnectionStatus());
       }
 
       function playAlertTone() {
@@ -4687,6 +4856,7 @@
               JSON.stringify(documents),
             );
             renderDocuments();
+            syncOfflineChanges().catch(() => updateConnectionStatus());
             showToast(`${file.name} a été téléchargé.`);
             showScreen("home");
           } catch {
@@ -4908,6 +5078,7 @@
         renderRepairs();
         renderExpenses();
         renderReports();
+        syncOfflineChanges().catch(() => updateConnectionStatus());
         showToast("La réparation a été enregistrée.");
         showScreen("home");
       });
@@ -4923,6 +5094,7 @@
         renderRepairs();
         renderExpenses();
         renderReports();
+        syncOfflineChanges().catch(() => updateConnectionStatus());
         showToast("La réparation a été supprimée.");
       });
 
@@ -5009,6 +5181,7 @@
       renderRepairs();
       renderExpenses();
       renderReports();
+      updateConnectionStatus();
       checkAlerts();
       initializeNotificationSupport();
       window.setInterval(() => checkAlerts(), 60000);

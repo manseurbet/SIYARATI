@@ -1,7 +1,61 @@
 const DATABASE_NAME = "siyarati-notifications";
-const DATABASE_VERSION = 1;
+const DATABASE_VERSION = 2;
+const APP_CACHE_NAME = "siyarati-app-v2";
+const APP_SHELL = ["./", "./index.html", "./manifest.webmanifest"];
 const ACTIVE_VEHICLE_KEY = "activeVehicleId";
 const PERIODIC_CHECK_TAG = "siyarati-alert-check";
+
+function cacheAppShell() {
+  return caches.open(APP_CACHE_NAME).then(async (cache) => {
+    await Promise.all(APP_SHELL.map(async (asset) => {
+      try {
+        await cache.add(asset);
+      } catch {
+        // A temporary network failure must not prevent the worker from installing.
+      }
+    }));
+  });
+}
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(cacheAppShell().then(() => self.skipWaiting()));
+});
+
+self.addEventListener("activate", (event) => {
+  event.waitUntil((async () => {
+    const cacheNames = await caches.keys();
+    await Promise.all(cacheNames
+      .filter((cacheName) => cacheName.startsWith("siyarati-app-") && cacheName !== APP_CACHE_NAME)
+      .map((cacheName) => caches.delete(cacheName)));
+    await self.clients.claim();
+  })());
+});
+
+self.addEventListener("fetch", (event) => {
+  if (event.request.method !== "GET") {
+    return;
+  }
+
+  event.respondWith((async () => {
+    try {
+      const response = await fetch(event.request);
+      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+        const cache = await caches.open(APP_CACHE_NAME);
+        await cache.put(event.request, response.clone());
+      }
+      return response;
+    } catch {
+      const cachedResponse = await caches.match(event.request);
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      if (event.request.mode === "navigate") {
+        return caches.match("./index.html");
+      }
+      throw new Error("Ressource indisponible hors connexion");
+    }
+  })());
+});
 
 function openDatabase() {
   return new Promise((resolve, reject) => {
@@ -208,14 +262,22 @@ self.addEventListener("message", (event) => {
   }
 
   event.waitUntil((async () => {
-    const { activeVehicleId, snapshot, notify } = event.data;
-    await writeRecord("meta", { key: ACTIVE_VEHICLE_KEY, value: activeVehicleId || "" });
-    if (!snapshot?.vehicleId) {
-      return;
-    }
-    await writeRecord("snapshots", snapshot);
-    if (notify) {
-      await deliverSnapshot(snapshot);
+    try {
+      const { activeVehicleId, snapshot, notify } = event.data;
+      await writeRecord("meta", { key: ACTIVE_VEHICLE_KEY, value: activeVehicleId || "" });
+      if (snapshot?.vehicleId) {
+        await writeRecord("snapshots", snapshot);
+        if (notify) {
+          await deliverSnapshot(snapshot);
+        }
+      }
+      event.ports[0]?.postMessage({ type: "SYNC_ALERTS_COMPLETE", ok: true });
+    } catch (error) {
+      event.ports[0]?.postMessage({
+        type: "SYNC_ALERTS_COMPLETE",
+        ok: false,
+        message: error?.message || "Synchronisation impossible",
+      });
     }
   })());
 });
