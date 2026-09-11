@@ -4756,19 +4756,15 @@
           return "Expiré";
         }
 
-        if (entry.status === "critical" || entry.status === "warning" || entry.status === "safe") {
-          const targets = [];
-          if (entry.hoursRemaining !== null && entry.hoursRemaining !== undefined && entry.dateStatus === entry.status) {
-            const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
-            targets.push(`Dans ${days} jour${days > 1 ? "s" : ""}`);
-          }
-          if (entry.mileageRemaining !== null && entry.mileageStatus === entry.status) {
-            targets.push(`Dans ${Math.max(0, Math.ceil(entry.mileageRemaining))} km`);
-          }
-          return targets.join(" · ") || "À venir";
+        const targets = [];
+        if (entry.hoursRemaining !== null && entry.hoursRemaining !== undefined && entry.dateStatus === entry.status) {
+          const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
+          targets.push(`Dans ${days} jour${days > 1 ? "s" : ""}`);
         }
-
-        return "À venir";
+        if (entry.mileageRemaining !== null && entry.mileageRemaining !== undefined && entry.mileageStatus === entry.status) {
+          targets.push(`Dans ${Math.max(0, Math.ceil(entry.mileageRemaining))} km`);
+        }
+        return targets.join(" · ") || "À venir";
       }
 
       function getAlertDisplayState(entry) {
