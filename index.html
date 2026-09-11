@@ -841,6 +841,38 @@
         display: none !important;
       }
 
+      .monthly-mileage-inline-form[hidden] {
+        display: none !important;
+      }
+
+      .monthly-mileage-inline-form {
+        display: flex;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .monthly-mileage-inline-input {
+        flex: 1;
+        min-width: 0;
+        padding: 10px 12px;
+        border: 1px solid #d8e0e9;
+        border-radius: 10px;
+        font-size: 14px;
+        box-sizing: border-box;
+      }
+
+      .monthly-mileage-inline-submit {
+        flex: 0 0 auto;
+        padding: 10px 16px;
+        border: none;
+        border-radius: 10px;
+        background: #173f7a;
+        color: #fff;
+        font-weight: 700;
+        font-size: 13px;
+        cursor: pointer;
+      }
+
       .monthly-mileage-alert {
         grid-template-columns: 16px minmax(0, 1fr) auto auto !important;
       }
@@ -3117,6 +3149,10 @@
           <span class="home-alert-status">Mettre à jour</span>
           <button type="button" class="remove-reminder-button monthly-mileage-alert-dismiss" aria-label="Ignorer ce rappel pour ce mois-ci">×</button>
         </div>
+        <form class="monthly-mileage-inline-form" hidden>
+          <input type="number" min="0" step="1" class="monthly-mileage-inline-input" inputmode="numeric" placeholder="Nouveau kilométrage" required />
+          <button type="submit" class="monthly-mileage-inline-submit">Valider</button>
+        </form>
        </section>
 
        <section class="home-priority" aria-label="Action d'urgence">
@@ -3530,6 +3566,10 @@
           <span class="home-alert-status">Mettre à jour</span>
           <button type="button" class="remove-reminder-button monthly-mileage-alert-dismiss" aria-label="Ignorer ce rappel pour ce mois-ci">×</button>
         </div>
+        <form class="monthly-mileage-inline-form" hidden>
+          <input type="number" min="0" step="1" class="monthly-mileage-inline-input" inputmode="numeric" placeholder="Nouveau kilométrage" required />
+          <button type="submit" class="monthly-mileage-inline-submit">Valider</button>
+        </form>
 
         <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
 
@@ -4996,6 +5036,9 @@
 
         alerts.forEach((alert) => {
           const text = alert.querySelector(".monthly-mileage-alert-text");
+          const inlineForm = alert.nextElementSibling?.classList.contains("monthly-mileage-inline-form")
+            ? alert.nextElementSibling
+            : null;
           alert.classList.toggle("is-disabled", !hasVehicle);
           alert.setAttribute("aria-disabled", String(!hasVehicle));
 
@@ -5003,6 +5046,9 @@
           // cours. Il réapparaîtra automatiquement au mois suivant (les deux
           // vérifications comparent au mois courant).
           alert.hidden = updated || dismissed;
+          if (updated || dismissed || !hasVehicle) {
+            if (inlineForm) inlineForm.hidden = true;
+          }
           if (updated || dismissed) {
             return;
           }
@@ -5363,11 +5409,25 @@
       }
 
       document.querySelectorAll(".monthly-mileage-alert").forEach((alert) => {
+        const inlineForm = alert.nextElementSibling?.classList.contains("monthly-mileage-inline-form")
+          ? alert.nextElementSibling
+          : null;
+        const inlineInput = inlineForm?.querySelector(".monthly-mileage-inline-input");
+
         alert.addEventListener("click", () => {
           if (!getPrimaryVehicleId()) { showToast("Ajoutez d’abord un véhicule principal."); return; }
-          prepareVehicleForm(getSavedVehicle(), "edit-primary", getPrimaryVehicleId());
-          showScreen("vehicle-details");
-          updateBottomNav("vehicle-details");
+          if (!inlineForm) { return; }
+          // La saisie se fait directement dans la carte d'alerte, sans
+          // naviguer vers la fiche véhicule (qui contient d'autres champs
+          // obligatoires sans rapport avec la simple mise à jour mensuelle).
+          const isOpening = inlineForm.hidden;
+          inlineForm.hidden = !isOpening;
+          if (isOpening && inlineInput) {
+            const current = getCurrentMileage();
+            inlineInput.value = current !== null ? current : "";
+            inlineInput.focus();
+            inlineInput.select();
+          }
         });
         alert.addEventListener("keydown", (event) => {
           if (event.key === "Enter" || event.key === " ") { event.preventDefault(); alert.click(); }
@@ -5384,6 +5444,35 @@
         });
         dismissButton?.addEventListener("keydown", (event) => {
           event.stopPropagation();
+        });
+
+        inlineForm?.addEventListener("click", (event) => {
+          // Empêche un clic dans le formulaire de rouvrir/fermer la carte.
+          event.stopPropagation();
+        });
+        inlineForm?.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const vehicleId = getPrimaryVehicleId();
+          if (!vehicleId) {
+            return;
+          }
+          const newMileage = Number(inlineInput?.value);
+          if (!Number.isFinite(newMileage) || newMileage < 0) {
+            showToast("Saisissez un kilométrage valide.");
+            return;
+          }
+          const current = getCurrentMileage();
+          if (current !== null && newMileage < current) {
+            showToast(`Le kilométrage ne peut pas être inférieur à l’actuel (${formatMileage(current)}).`);
+            return;
+          }
+          updateVehicleData(vehicleId, { "current-mileage": String(newMileage) });
+          updateMileageDisplay(getCurrentMileage());
+          markMonthlyMileageUpdated();
+          renderMonthlyMileageAlert();
+          checkAlerts();
+          renderReports();
+          showToast("Kilométrage actualisé.");
         });
       });
 
@@ -5716,6 +5805,16 @@
         const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
         vehicleBrandField.value = brand;
         populateVehicleModels(brand, vehicle["vehicle-model"] || "");
+
+        // Ce champ est obligatoire ; pour un véhicule déjà enregistré avant
+        // qu'il ne le devienne, il peut être vide. Sans cela, la validation
+        // native du navigateur bloque silencieusement l'enregistrement, sans
+        // message visible : la page paraît "figée" alors qu'elle attend
+        // juste ce champ.
+        const lastOilChangeField = vehicleDetailsForm.querySelector('[name="last-oil-change-mileage"]');
+        if (lastOilChangeField && !lastOilChangeField.value && vehicle["current-mileage"]) {
+          lastOilChangeField.value = vehicle["current-mileage"];
+        }
       }
 
       document.querySelector(".vehicle-actions").addEventListener("click", (event) => {
