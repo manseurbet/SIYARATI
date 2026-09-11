@@ -780,6 +780,181 @@
         cursor: not-allowed;
       }
 
+      #home-screen .home-alerts {
+        margin: 20px 0;
+        padding: 18px;
+        border: 1px solid #e6ebf2;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(15, 35, 65, 0.06);
+      }
+
+      #home-screen .home-alerts-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      #home-screen .home-section-kicker {
+        display: block;
+        margin-bottom: 3px;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        color: #718096;
+      }
+
+      #home-screen .home-alerts-heading h2 {
+        margin: 0;
+        font-size: 22px;
+        line-height: 1.15;
+      }
+
+      #home-screen .home-alert-count {
+        display: inline-flex;
+        min-width: 24px;
+        height: 24px;
+        align-items: center;
+        justify-content: center;
+        margin-left: 4px;
+        padding: 0 7px;
+        border-radius: 999px;
+        background: #e5484d;
+        color: #fff;
+        font-size: 12px;
+        vertical-align: 2px;
+      }
+
+      #home-screen .home-alerts-link {
+        border: 0;
+        background: transparent;
+        color: #173f7a;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      .monthly-mileage-alert[hidden] {
+        display: none !important;
+      }
+
+      .monthly-mileage-alert {
+        grid-template-columns: 16px minmax(0, 1fr) auto auto !important;
+      }
+
+      .monthly-mileage-alert-dismiss {
+        width: 30px;
+        height: 30px;
+        font-size: 15px;
+      }
+
+      #home-screen .home-alert-row,
+      #alerts-screen .home-alert-row {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 16px minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 12px;
+        margin-top: 10px;
+        padding: 13px 14px;
+        border: 1px solid #e5eaf0;
+        border-radius: 14px;
+        background: #fff;
+        box-sizing: border-box;
+        text-align: left;
+        box-shadow: 0 3px 10px rgba(15, 35, 65, 0.04);
+      }
+
+      #home-screen .home-alert-row:first-child {
+        margin-top: 0;
+      }
+
+      #home-screen .home-alert-icon,
+      #alerts-screen .home-alert-icon {
+        width: 10px;
+        height: 10px;
+        display: block;
+        flex: 0 0 10px;
+        border-radius: 50%;
+        background: #98a2b3;
+        font-size: 0;
+      }
+
+      /* Accueil : les lignes restent neutres ; seul le point indique l’urgence. */
+      #home-screen .home-alert-row,
+      #alerts-screen .home-alert-row {
+        color: inherit;
+        cursor: pointer;
+      }
+      #home-screen .home-alert-row:hover,
+      #home-screen .home-alert-row:focus-visible,
+      #alerts-screen .home-alert-row:hover,
+      #alerts-screen .home-alert-row:focus-visible {
+        background: #fafbfd;
+        border-color: #cfd8e3;
+        outline: none;
+      }
+      #home-screen .home-alert-icon.is-critical,
+      #home-screen .home-alert-icon.is-expired,
+      #alerts-screen .home-alert-icon.is-critical,
+      #alerts-screen .home-alert-icon.is-expired { background: #d92d20; }
+      #home-screen .home-alert-icon.is-warning,
+      #alerts-screen .home-alert-icon.is-warning { background: #f79009; }
+      #home-screen .home-alert-icon.is-safe,
+      #alerts-screen .home-alert-icon.is-safe { background: #12b76a; }
+
+      #home-screen .home-alert-copy,
+      #alerts-screen .home-alert-copy {
+        min-width: 0;
+      }
+
+      #home-screen .home-alert-copy strong,
+      #home-screen .home-alert-copy span,
+      #alerts-screen .home-alert-copy strong,
+      #alerts-screen .home-alert-copy span {
+        display: block;
+      }
+
+      #home-screen .home-alert-copy strong,
+      #alerts-screen .home-alert-copy strong {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 15px;
+      }
+
+      #home-screen .home-alert-copy span,
+      #alerts-screen .home-alert-copy span {
+        margin-top: 3px;
+        color: #667085;
+        font-size: 12px;
+      }
+
+      #home-screen .home-alert-status,
+      #alerts-screen .home-alert-status {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 42px;
+        padding: 7px 10px;
+        border: 1px solid #d8e0e9;
+        border-radius: 9px;
+        background: #f8fafb;
+        color: #173f7a;
+        font-size: 11px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      #home-screen .home-alert-empty {
+        padding: 14px 0 2px;
+        color: #667085;
+        font-size: 13px;
+      }
+
       .smart-advice-panel {
         margin-bottom: 22px;
         padding: 16px;
@@ -1481,6 +1656,18 @@
         color: #91a0b0;
         font-size: 10px;
         font-weight: 600;
+      }
+
+      .field-help {
+        display: block;
+        margin-top: 6px;
+        color: #718096;
+        font-size: 10px;
+        line-height: 1.45;
+      }
+
+      .field-help strong {
+        color: #536c8f;
       }
 
       .form-field input,
@@ -2241,6 +2428,25 @@
         font-size: 16px;
       }
 
+      .breakdown-reason-select {
+        width: 100%;
+        min-height: 48px;
+        padding: 11px 13px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        color: #53677d;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .breakdown-reason-select:focus-visible {
+        border-color: #7aa7e8;
+        outline: 2px solid rgba(63, 115, 255, 0.12);
+      }
+
       .breakdown-reason-list {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -2433,40 +2639,158 @@
         font-size: 11px;
       }
 
+      #home-screen .home-eyebrow {
+        margin: 0 0 5px;
+        color: #536c8f;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 0.11em;
+      }
+
+      #home-screen .hero {
+        margin-bottom: 18px;
+      }
+
+      #home-screen .hero h1 {
+        margin-bottom: 6px;
+      }
+
+      #home-screen .vehicle-card {
+        min-height: 0;
+        padding: 15px;
+        align-items: flex-start;
+      }
+
+      #home-screen .vehicle-card-icon {
+        width: 64px;
+        height: 64px;
+        flex: 0 0 64px;
+        border-radius: 14px;
+        overflow: hidden;
+      }
+
+      #home-screen .vehicle-card-icon img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        border-radius: inherit;
+      }
+
+      #home-screen .vehicle-name {
+        font-size: 18px;
+      }
+
+      #home-screen .vehicle-meta {
+        font-size: 11px;
+      }
+
+      #home-screen .home-priority {
+        margin: 12px 0 14px;
+      }
+
+      #home-screen .breakdown-quick-action {
+        display: flex;
+        width: 100%;
+        min-height: 64px;
+        align-items: center;
+        gap: 11px;
+        padding: 10px 13px;
+        border: 1px solid #e4c9cd;
+        border-radius: 15px;
+        color: #7e343d;
+        background: #fff8f8;
+        box-shadow: 0 5px 14px rgba(126, 52, 61, 0.06);
+        cursor: pointer;
+        text-align: left;
+      }
+
+      #home-screen .breakdown-quick-action:hover,
+      #home-screen .breakdown-quick-action:focus-visible {
+        border-color: #d7aeb4;
+        outline: none;
+        box-shadow: 0 8px 18px rgba(126, 52, 61, 0.1);
+      }
+
+      #home-screen .breakdown-quick-action.is-disabled {
+        border-color: #e1e6eb;
+        color: #a8b2bd;
+        background: #f3f5f7;
+        box-shadow: none;
+        cursor: not-allowed;
+        opacity: 0.72;
+      }
+
+      #home-screen .breakdown-quick-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 38px;
+        place-items: center;
+        border-radius: 11px;
+        background: #f6e5e7;
+        font-size: 18px;
+      }
+
+      #home-screen .breakdown-quick-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      #home-screen .breakdown-quick-copy strong,
+      #home-screen .breakdown-quick-copy small {
+        display: block;
+      }
+
+      #home-screen .breakdown-quick-copy strong {
+        font-size: 12px;
+        letter-spacing: 0.02em;
+      }
+
+      #home-screen .breakdown-quick-copy small {
+        margin-top: 2px;
+        color: #9a6c72;
+        font-size: 10px;
+      }
+
+      #home-screen .breakdown-quick-arrow {
+        font-size: 24px;
+        line-height: 1;
+      }
+
+      #home-screen .smart-advice-panel {
+        margin-bottom: 16px;
+      }
+
       #home-screen .services-bar {
         position: relative;
-        margin: 12px -4px 0;
-        padding: 10px 4px 4px;
+        margin: 0;
+        padding: 14px;
         border: 1px solid rgba(213, 221, 230, 0.92);
         border-radius: 16px;
-        background: rgba(248, 250, 251, 0.94);
-        box-shadow: 0 10px 24px rgba(43, 60, 82, 0.12);
-        backdrop-filter: blur(12px);
+        background: #f8fafb;
+        box-shadow: 0 6px 16px rgba(43, 60, 82, 0.07);
       }
 
       #home-screen .menu-grid {
-        display: flex;
-        gap: 8px;
-        overflow-x: auto;
-        padding: 0 1px 3px;
-        scrollbar-width: none;
-      }
-
-      #home-screen .menu-grid::-webkit-scrollbar {
-        display: none;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+        padding: 0;
       }
 
       #home-screen .menu-card {
-        width: 82px;
-        min-width: 82px;
-        min-height: 82px;
-        padding: 10px;
-        border-radius: 14px;
+        width: auto;
+        min-width: 0;
+        min-height: 104px;
+        padding: 11px;
+        border-radius: 13px;
+        box-shadow: 0 3px 9px rgba(43, 60, 82, 0.05);
       }
 
       #home-screen .menu-card h3 {
         margin: 8px 0 0;
-        font-size: 11px;
+        font-size: 12px;
         line-height: 1.15;
       }
 
@@ -2481,13 +2805,26 @@
       }
 
       #home-screen .menu-card .card-footer {
-        justify-content: flex-end;
-        margin-top: 7px;
-        font-size: 0;
+        justify-content: space-between;
+        margin-top: 6px;
+        color: #8090a5;
+        font-size: 9px;
       }
 
       #home-screen .menu-card .card-footer .arrow {
-        font-size: 13px;
+        width: 21px;
+        height: 21px;
+        font-size: 12px;
+      }
+
+      @media (max-width: 430px) {
+        #home-screen .menu-grid {
+          gap: 8px;
+        }
+
+        #home-screen .menu-card {
+          min-height: 100px;
+        }
       }
 
       @media (max-width: 430px) {
@@ -2563,6 +2900,154 @@
           padding: 8px;
         }
       }
+
+
+      /* Navigation basse restaurée + action panne persistante */
+      body {
+        padding-bottom: 82px;
+      }
+
+      .bottom-nav {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1000;
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        height: 72px;
+        padding: 7px 8px max(7px, env(safe-area-inset-bottom));
+        border-top: 1px solid #dfe5ec;
+        background: rgba(255, 255, 255, 0.98);
+        box-shadow: 0 -6px 20px rgba(47, 66, 92, 0.10);
+        backdrop-filter: blur(12px);
+      }
+
+      .bottom-nav-item {
+        display: flex;
+        min-width: 0;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 3px;
+        border: 0;
+        background: transparent;
+        color: #64748b;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .bottom-nav-item svg {
+        width: 23px;
+        height: 23px;
+        stroke: currentColor;
+      }
+
+      .bottom-nav-item.is-active {
+        color: #1457c8;
+      }
+
+      .bottom-nav-item:active {
+        transform: translateY(1px);
+      }
+
+      /* Barre panne fixe : compacte et sans recouvrir les alertes. */
+      #home-screen {
+        padding-bottom: 92px;
+      }
+
+      .home-priority {
+        position: fixed;
+        right: 14px;
+        bottom: 78px;
+        left: 14px;
+        z-index: 999;
+        margin: 0;
+        pointer-events: none;
+      }
+
+      .home-priority .breakdown-quick-action {
+        width: 100%;
+        min-height: 52px;
+        padding: 7px 12px;
+        gap: 9px;
+        border-radius: 13px;
+        box-shadow: 0 6px 16px rgba(220, 38, 38, 0.18);
+        pointer-events: auto;
+      }
+
+      #home-screen .breakdown-quick-icon {
+        width: 32px;
+        height: 32px;
+        flex-basis: 32px;
+        border-radius: 9px;
+        font-size: 16px;
+      }
+
+      #home-screen .breakdown-quick-copy strong {
+        font-size: 11px;
+      }
+
+      #home-screen .breakdown-quick-copy small {
+        margin-top: 1px;
+        font-size: 9px;
+      }
+
+      #home-screen .breakdown-quick-arrow {
+        font-size: 21px;
+      }
+
+      @media (min-width: 700px) {
+        .bottom-nav {
+          right: max(14px, calc((100vw - 620px) / 2));
+          left: max(14px, calc((100vw - 620px) / 2));
+          border: 1px solid #dfe5ec;
+          border-bottom: 0;
+          border-radius: 18px 18px 0 0;
+        }
+
+        .home-priority {
+          right: max(28px, calc((100vw - 592px) / 2));
+          left: max(28px, calc((100vw - 592px) / 2));
+        }
+      }
+    
+      .more-tools-grid {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .more-tool-card {
+        width: 100%;
+        display: grid;
+        grid-template-columns: 46px minmax(0, 1fr) 22px;
+        align-items: center;
+        gap: 12px;
+        padding: 15px;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 8px 24px rgba(15, 23, 42, 0.07);
+        text-align: left;
+        color: inherit;
+        cursor: pointer;
+      }
+      .more-tool-icon {
+        width: 46px;
+        height: 46px;
+        display: grid;
+        place-items: center;
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.06);
+        color: #0f172a;
+      }
+      .more-tool-icon svg { width: 24px; height: 24px; }
+      .more-tool-copy { min-width: 0; display: grid; gap: 4px; }
+      .more-tool-copy strong { font-size: 15px; }
+      .more-tool-copy small { color: #64748b; line-height: 1.35; }
+      .more-tool-arrow { font-size: 26px; color: #94a3b8; justify-self: end; }
     </style>
   </head>
   <body>
@@ -2589,13 +3074,13 @@
 
       <section id="home-screen" class="screen" aria-labelledby="page-title">
       <section class="hero" aria-labelledby="page-title">
-        <h1 id="page-title">Bonjour, prêt à prendre la route&nbsp;?</h1>
-        <p class="intro">Retrouvez rapidement toutes les informations importantes pour votre véhicule.</p>
+        <p class="home-eyebrow">VOTRE TABLEAU DE BORD</p>
+        <h1 id="page-title">Votre voiture, simplement.</h1>
+        <p class="intro">Les informations importantes et les prochaines actions, au même endroit.</p>
       </section>
 
-       <p class="dashboard-kicker">Tableau de bord</p>
        <section class="vehicle-card" aria-label="Véhicule principal">
-         <div class="vehicle-card-icon" aria-hidden="true">
+         <div class="vehicle-card-icon" id="vehicle-card-icon" aria-hidden="true">
            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
              <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
              <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
@@ -2605,121 +3090,47 @@
            <p class="vehicle-label">Véhicule principal</p>
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
           <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
-           <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Afficher le tableau de bord de</label>
+           <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Véhicule affiché</label>
            <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
              <option value="">Aucun véhicule enregistré</option>
            </select>
            <div class="vehicle-actions" aria-label="Actions du véhicule">
-             <button class="vehicle-action-button" type="button" data-vehicle-action="add">Ajouter</button>
+             <button class="vehicle-action-button" type="button" data-vehicle-action="add">+ Ajouter</button>
              <button class="vehicle-action-button" type="button" data-vehicle-action="edit">Modifier</button>
              <button class="vehicle-action-button is-danger" type="button" data-vehicle-action="delete">Supprimer</button>
            </div>
         </div>
       </section>
 
-       <section class="smart-advice-panel" aria-labelledby="smart-advice-title">
-         <div class="smart-advice-heading">
-           <span class="smart-advice-heading-icon" aria-hidden="true">✦</span>
+       <section class="home-alerts" aria-labelledby="home-alerts-title">
+         <div class="home-alerts-heading">
            <div>
-             <h2 id="smart-advice-title">À faire pour votre voiture</h2>
-             <p>SIYARATI surveille les prochaines échéances</p>
+             <span class="home-section-kicker">SURVEILLANCE</span>
+             <h2 id="home-alerts-title">Alertes <span class="home-alert-count" id="home-alert-count">0</span></h2>
            </div>
+           <button class="home-alerts-link" type="button" data-screen="alerts" data-requires-vehicle>Voir tout <span aria-hidden="true">›</span></button>
          </div>
-         <div class="smart-advice-list" id="smart-advice-list" aria-live="polite"></div>
+         <div class="home-alerts-list" id="home-alerts-list" aria-live="polite"></div>
+        <div class="home-alert-row monthly-mileage-alert" role="button" tabindex="0" data-requires-vehicle>
+          <span class="home-alert-icon is-warning" aria-hidden="true"></span>
+          <span class="home-alert-copy"><strong>Actualisez votre kilométrage</strong><span class="monthly-mileage-alert-text">Mise à jour mensuelle du compteur</span></span>
+          <span class="home-alert-status">Mettre à jour</span>
+          <button type="button" class="remove-reminder-button monthly-mileage-alert-dismiss" aria-label="Ignorer ce rappel pour ce mois-ci">×</button>
+        </div>
        </section>
 
-       <section class="services-bar" aria-labelledby="services-title">
-        <div class="section-heading">
-           <h2 id="services-title">Services</h2>
-           <span>6 rubriques</span>
-        </div>
+       <section class="home-priority" aria-label="Action d'urgence">
+         <button class="breakdown-quick-action" type="button" data-screen="troubleshooting" data-requires-vehicle>
+           <span class="breakdown-quick-icon" aria-hidden="true">🚨</span>
+           <span class="breakdown-quick-copy">
+             <strong>JE SUIS EN PANNE</strong>
+             <small>📍 Localiser ma position</small>
+           </span>
+           <span class="breakdown-quick-arrow" aria-hidden="true">›</span>
+         </button>
+       </section>
 
-        <div class="menu-grid">
-          <article class="menu-card card-vehicle" data-screen="vehicle-info" role="button" tabindex="0">
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
-                  <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
-                </svg>
-              </div>
-              <h3>Véhicules</h3>
-              <p>Gérez votre véhicule principal et vos véhicules secondaires.</p>
-            </div>
-            <span class="card-footer">Voir mes véhicules <span class="arrow">↗</span></span>
-          </article>
 
-          <button class="menu-card card-documents" type="button" data-screen="documents" data-requires-vehicle>
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M6 3.8h8l4 4V20H6a2 2 0 0 1-2-2V5.8a2 2 0 0 1 2-2Z" />
-                  <path d="M14 3.8V8h4M8 12h8M8 15.5h6" />
-                </svg>
-              </div>
-              <h3>Documents</h3>
-              <p>Ajoutez la photo et les documents importants du véhicule.</p>
-            </div>
-            <span class="card-footer">Gérer les documents <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="menu-card card-reminders" type="button" data-screen="reminders" data-requires-vehicle>
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M18 9a6 6 0 0 0-12 0c0 7-2.5 7.2-2.5 8.5h17C20.5 16.2 18 16 18 9Z" />
-                  <path d="M10 20h4" />
-                </svg>
-              </div>
-              <h3>Rappels</h3>
-              <p>Entretiens, contrôles et échéances à ne pas oublier.</p>
-            </div>
-            <span class="card-footer">Gérer les rappels <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="menu-card card-history" type="button" data-screen="expenses" data-requires-vehicle>
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M4 6.5h16M4 12h16M4 17.5h10" />
-                  <path d="m17 15 2 2 3-3" />
-                </svg>
-              </div>
-              <h3>Historique</h3>
-              <p>Retrouvez les dépenses et les opérations enregistrées.</p>
-            </div>
-            <span class="card-footer">Voir l’historique <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="menu-card card-help" type="button" data-screen="troubleshooting" data-requires-vehicle>
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
-                  <path d="m15.5 15.5 3.8 3.8M18.3 14.2l1.5-1.5" />
-                </svg>
-              </div>
-              <h3>Dépannage</h3>
-              <p>Obtenez de l’aide rapidement en cas de problème.</p>
-            </div>
-            <span class="card-footer">Besoin d’aide <span class="arrow">↗</span></span>
-          </button>
-
-          <button class="menu-card card-repair" type="button" data-screen="repair" data-requires-vehicle>
-            <div>
-              <div class="icon-badge" aria-hidden="true">
-                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
-                  <path d="m15.5 15.5 3.8 3.8" />
-                </svg>
-              </div>
-              <h3>Réparation</h3>
-              <p>Suivez les réparations à prévoir pour votre véhicule.</p>
-            </div>
-            <span class="card-footer">Voir les réparations <span class="arrow">↗</span></span>
-          </button>
-        </div>
-      </section>
 
       <p class="footnote">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -2729,6 +3140,46 @@
         Vos données sont protégées
       </p>
       </section>
+
+      <nav class="bottom-nav" aria-label="Navigation principale">
+        <button class="bottom-nav-item is-active" type="button" data-bottom-screen="home" aria-label="Accueil" aria-current="page">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="m3 10.5 9-7 9 7" />
+            <path d="M5.5 9.5V21h13V9.5M9.5 21v-6h5v6" />
+          </svg>
+          <span>Accueil</span>
+        </button>
+        <button class="bottom-nav-item" type="button" data-bottom-screen="vehicle-info" aria-label="Véhicules">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+            <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
+          </svg>
+          <span>Véhicules</span>
+        </button>
+        <button class="bottom-nav-item" type="button" data-bottom-screen="reminders" aria-label="Rappels">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="4" y="5" width="16" height="15" rx="2" />
+            <path d="M8 3v4M16 3v4M4 9h16M8 13h.01M12 13h.01M16 13h.01M8 17h.01M12 17h.01" />
+          </svg>
+          <span>Rappels</span>
+        </button>
+        <button class="bottom-nav-item" type="button" data-bottom-screen="documents" aria-label="Documents">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 3.5h8l4 4V20.5H6z" />
+            <path d="M14 3.5v4h4M9 12h6M9 16h6" />
+          </svg>
+          <span>Documents</span>
+        </button>
+        <button class="bottom-nav-item" type="button" id="bottom-more-button" aria-label="Plus">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none" aria-hidden="true">
+            <circle cx="5" cy="12" r="1.7" />
+            <circle cx="12" cy="12" r="1.7" />
+            <circle cx="19" cy="12" r="1.7" />
+          </svg>
+          <span>Plus</span>
+        </button>
+      </nav>
+
 
       <section id="vehicle-info-screen" class="screen is-hidden" aria-labelledby="vehicle-info-title">
         <div class="detail-header">
@@ -2843,7 +3294,7 @@
 
       <section id="expenses-screen" class="screen is-hidden" aria-labelledby="expenses-title">
         <div class="detail-header">
-          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour à Documents">
+          <button class="back-button" type="button" data-screen="more" aria-label="Retour à Plus">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="m15 18-6-6 6-6" />
             </svg>
@@ -2915,18 +3366,15 @@
                 <option value="Citroën">Citroën</option>
                 <option value="Dacia">Dacia</option>
                 <option value="DFSK">DFSK</option>
-                <option value="Dongfeng">Dongfeng</option>
                 <option value="Fiat">Fiat</option>
                 <option value="Ford">Ford</option>
                 <option value="Geely">Geely</option>
                 <option value="Great Wall">Great Wall</option>
-                <option value="Haval">Haval</option>
                 <option value="Hyundai">Hyundai</option>
                 <option value="Isuzu">Isuzu</option>
                 <option value="JAC">JAC</option>
                 <option value="JMC">JMC</option>
                 <option value="Kia">Kia</option>
-                <option value="Mahindra">Mahindra</option>
                 <option value="Mercedes-Benz">Mercedes-Benz</option>
                 <option value="Mitsubishi">Mitsubishi</option>
                 <option value="Nissan">Nissan</option>
@@ -2950,11 +3398,6 @@
             </div>
 
             <div class="form-field">
-              <label for="vehicle-year">Année</label>
-              <input id="vehicle-year" name="vehicle-year" type="number" min="1950" max="2030" step="1" placeholder="Ex. 2021" required />
-            </div>
-
-            <div class="form-field">
               <label for="engine-type">Motorisation</label>
               <select id="engine-type" name="engine-type" required>
                 <option value="" selected disabled>Choisir</option>
@@ -2973,7 +3416,7 @@
 
             <div class="form-field">
               <label for="vehicle-registration">Matricule</label>
-              <input id="vehicle-registration" name="vehicle-registration" type="text" placeholder="Ex. 123456-16-00" required />
+              <input id="vehicle-registration" name="vehicle-registration" type="text" inputmode="numeric" maxlength="14" placeholder="1234567-126-16" pattern="\d{1,7}-[123]\d{2}-(?:0[1-9]|[1-5][0-9]|6[0-8])" title="Format : xxxxxxx-xxx-xx (7 chiffres pour le premier bloc)." required />
             </div>
 
             <div class="form-field full-width">
@@ -2982,8 +3425,8 @@
             </div>
 
             <div class="form-field full-width">
-              <label for="last-oil-change-mileage">Kilométrage de la dernière vidange <span class="field-optional">(facultatif)</span></label>
-              <input id="last-oil-change-mileage" name="last-oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 35000" />
+              <label for="last-oil-change-mileage">Kilométrage de la dernière vidange</label>
+              <input id="last-oil-change-mileage" name="last-oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 35000" required />
             </div>
 
           </div>
@@ -3016,12 +3459,7 @@
                   <option value="Contrôle">Contrôle</option>
                   <option value="Assurance">Assurance</option>
                   <option value="Vignette">Vignette</option>
-                  <option value="Entretien">Entretien</option>
                   <option value="Révision">Révision</option>
-                  <option value="Pneus">Pneus</option>
-                  <option value="Freins">Freins</option>
-                  <option value="Batterie">Batterie</option>
-                  <option value="Filtres">Filtres</option>
                   <option value="Autre">Autre</option>
                 </select>
               </div>
@@ -3047,7 +3485,7 @@
               </div>
 
               <div class="form-field full-width">
-                <label for="custom-reminder-notes">Notes</label>
+                <label for="custom-reminder-notes">Notes <span class="field-optional">(facultatif)</span></label>
                 <textarea id="custom-reminder-notes" name="notes" placeholder="Ajoutez une pièce ou une remarque utile."></textarea>
               </div>
             </div>
@@ -3056,7 +3494,6 @@
           </form>
 
           <div class="custom-reminder-list" id="custom-reminder-list" aria-live="polite"></div>
-          <p class="reminder-section-intro manufacturer-note">Les alertes d’entretien constructeur apparaissent automatiquement dans Alertes après l’enregistrement de la marque, du modèle, de l’année, de la motorisation et du kilométrage.</p>
         </section>
       </section>
 
@@ -3085,6 +3522,13 @@
             <strong class="alert-count" id="alert-count">0</strong>
             <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
           </div>
+        </div>
+
+        <div class="home-alert-row monthly-mileage-alert" role="button" tabindex="0" data-requires-vehicle>
+          <span class="home-alert-icon is-warning" aria-hidden="true"></span>
+          <span class="home-alert-copy"><strong>Actualisez votre kilométrage</strong><span class="monthly-mileage-alert-text">Mise à jour mensuelle du compteur</span></span>
+          <span class="home-alert-status">Mettre à jour</span>
+          <button type="button" class="remove-reminder-button monthly-mileage-alert-dismiss" aria-label="Ignorer ce rappel pour ce mois-ci">×</button>
         </div>
 
         <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
@@ -3117,38 +3561,18 @@
         </div>
 
         <div class="help-actions" aria-label="Actions de dépannage">
-          <section class="breakdown-reasons" aria-labelledby="breakdown-reasons-title">
-            <h2 id="breakdown-reasons-title">Quel est le problème ?</h2>
-            <div class="breakdown-reason-list" role="radiogroup" aria-label="Motif de la panne">
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Batterie">
-                <span aria-hidden="true">🔋</span>
-                <span>Batterie</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Crevaison">
-                <span aria-hidden="true">🛞</span>
-                <span>Crevaison</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Carburant">
-                <span aria-hidden="true">⛽</span>
-                <span>Carburant</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Surchauffe">
-                <span aria-hidden="true">🌡️</span>
-                <span>Surchauffe</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Panne moteur">
-                <span aria-hidden="true">🔧</span>
-                <span>Panne moteur</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Accident">
-                <span aria-hidden="true">🚗</span>
-                <span>Accident</span>
-              </button>
-              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Je ne sais pas">
-                <span aria-hidden="true">❓</span>
-                <span>Je ne sais pas</span>
-              </button>
-            </div>
+          <section class="breakdown-reasons" aria-label="Choisir le problème">
+            <h2>Quel est le problème ?</h2>
+            <select class="breakdown-reason-select" id="breakdown-reason-select" aria-label="Choisir le problème">
+              <option value="" selected disabled>Choisir une panne</option>
+              <option value="Batterie">🔋 Batterie</option>
+              <option value="Crevaison">🛞 Crevaison</option>
+              <option value="Panne de carburant">⛽ Panne de carburant</option>
+              <option value="Surchauffe">🌡️ Surchauffe</option>
+              <option value="Panne moteur">🔧 Panne moteur</option>
+              <option value="Accident">🚗 Accident</option>
+              <option value="Je ne sais pas">❓ Je ne sais pas</option>
+            </select>
           </section>
 
           <button class="help-action" id="location-action" type="button" disabled>
@@ -3165,7 +3589,6 @@
             <span class="help-action-chevron" aria-hidden="true">↗</span>
           </button>
           <div class="help-action-result" id="location-result" hidden>
-            <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
             <div class="location-share-controls">
               <label for="location-share-mode">Mode d’envoi</label>
               <select id="location-share-mode">
@@ -3208,6 +3631,52 @@
         </div>
       </section>
 
+      <section id="more-screen" class="screen is-hidden" aria-labelledby="more-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon espace</p>
+            <h1 class="detail-title" id="more-title">Plus</h1>
+            <p class="detail-intro">Retrouvez ici les outils complémentaires de SIYARATI.</p>
+          </div>
+        </div>
+
+        <div class="more-tools-grid">
+          <button class="more-tool-card" type="button" data-screen="repair" data-requires-vehicle>
+            <span class="more-tool-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                <path d="m15.5 15.5 3.8 3.8" />
+              </svg>
+            </span>
+            <span class="more-tool-copy">
+              <strong>Réparation</strong>
+              <small>Enregistrer les interventions, pièces remplacées et coûts de votre véhicule.</small>
+            </span>
+            <span class="more-tool-arrow" aria-hidden="true">›</span>
+          </button>
+
+          <button class="more-tool-card" type="button" data-screen="expenses" data-requires-vehicle>
+            <span class="more-tool-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 3.5h12v17H6z" />
+                <path d="M9 8h6M9 12h6M9 16h4" />
+                <path d="M8 3.5v-1h8v1" />
+              </svg>
+            </span>
+            <span class="more-tool-copy">
+              <strong>Historique</strong>
+              <small>Consulter les réparations, dépenses et opérations enregistrées pour votre véhicule.</small>
+            </span>
+            <span class="more-tool-arrow" aria-hidden="true">›</span>
+          </button>
+        </div>
+      </section>
+
       <section id="repair-screen" class="screen is-hidden" aria-labelledby="repair-title">
         <div class="detail-header">
           <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
@@ -3241,8 +3710,8 @@
               <input id="repair-title-input" name="title" type="text" placeholder="Ex. Remplacement des plaquettes" required />
             </div>
             <div class="form-field">
-              <label for="repair-date">Date</label>
-              <input id="repair-date" name="date" type="date" required />
+              <label for="repair-date">Date <span class="field-optional">(facultatif)</span></label>
+              <input id="repair-date" name="date" type="date" />
             </div>
             <div class="form-field">
               <label for="repair-mileage">Kilométrage</label>
@@ -3279,6 +3748,7 @@
         expenses: document.querySelector("#expenses-screen"),
         troubleshooting: document.querySelector("#troubleshooting-screen"),
         repair: document.querySelector("#repair-screen"),
+        more: document.querySelector("#more-screen"),
       };
 
       const REMINDERS_STORAGE_KEY = "siyarati-reminders";
@@ -3287,6 +3757,18 @@
       const PRIMARY_VEHICLE_STORAGE_KEY = "siyarati-primary-vehicle";
       const TOW_STORAGE_KEY = "siyarati-tow-number";
       const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
+      const MONTHLY_MILEAGE_ALERT_KEY = "siyarati-monthly-mileage-alert";
+      const USER_SPACE_KEY = "siyarati-anonymous-user-space";
+
+      function getAnonymousUserSpaceId() {
+        let id = localStorage.getItem(USER_SPACE_KEY);
+        if (!id) {
+          id = `user-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+          localStorage.setItem(USER_SPACE_KEY, id);
+        }
+        return id;
+      }
+      getAnonymousUserSpaceId();
       const ALERT_ACTIONS_STORAGE_KEY = "siyarati-alert-actions";
       const DOCUMENTS_STORAGE_KEY = "siyarati-documents";
       const REPAIRS_STORAGE_KEY = "siyarati-repairs";
@@ -3309,18 +3791,15 @@
         "Citroën": ["C3", "C4", "C-Elysée", "Berlingo"],
         Dacia: ["Sandero", "Logan", "Duster", "Stepway", "Dokker", "Lodgy"],
         DFSK: ["Glory 500", "Glory 580", "K01"],
-        Dongfeng: ["S50", "SX5", "Rich"],
         Fiat: ["500", "Panda", "Tipo", "Argo", "Doblo", "Ducato"],
         Ford: ["Fiesta", "Focus", "Ranger", "Transit", "Kuga", "EcoSport"],
         Geely: ["Emgrand", "Coolray", "GX3 Pro", "Geometry C"],
         "Great Wall": ["Wingle 5", "Wingle 7", "Poer", "M4"],
-        Haval: ["Jolion", "H6"],
         Hyundai: ["i10", "i20", "Accent", "Elantra", "Grand i10", "Creta", "Tucson", "Santa Fe"],
         Isuzu: ["D-Max", "NPR", "NKR"],
         JAC: ["JS2", "JS3", "JS4", "J7", "X200", "X250"],
         JMC: ["Vigus", "Carry", "N720"],
         Kia: ["Picanto", "Rio", "Cerato", "Carens", "Sportage", "Sorento"],
-        Mahindra: ["KUV100", "Scorpio", "Thar", "Bolero"],
         "Mercedes-Benz": ["Classe A", "Classe C", "Classe E", "GLA", "GLC", "Sprinter"],
         Mitsubishi: ["Lancer", "ASX", "Outlander", "L200", "Canter"],
         Nissan: ["Micra", "Sunny", "Qashqai", "X-Trail", "Navara", "Patrol"],
@@ -3342,18 +3821,15 @@
         "Citroën": { default: 15000, Électrique: 30000 },
         Dacia: { default: 15000, Électrique: 30000 },
         DFSK: { default: 10000, Électrique: 30000 },
-        Dongfeng: { default: 10000, Électrique: 30000 },
         Fiat: { default: 15000, Électrique: 30000 },
         Ford: { default: 15000, Électrique: 30000 },
         Geely: { default: 15000, Électrique: 30000 },
         "Great Wall": { default: 10000, Électrique: 30000 },
-        Haval: { default: 10000, Électrique: 30000 },
         Hyundai: { default: 15000, Électrique: 30000 },
         Isuzu: { default: 10000, Électrique: 30000 },
         JAC: { default: 10000, Électrique: 30000 },
         JMC: { default: 10000, Électrique: 30000 },
         Kia: { default: 15000, Électrique: 30000 },
-        Mahindra: { default: 10000, Électrique: 30000 },
         "Mercedes-Benz": { default: 15000, Électrique: 30000 },
         Mitsubishi: { default: 15000, Électrique: 30000 },
         Nissan: { default: 15000, Électrique: 30000 },
@@ -3403,6 +3879,12 @@
         });
         if (name === "alerts") {
           checkAlerts({ playSound: true });
+        }
+        if (name === "home") {
+          // Toujours rafraîchir les alertes à l'ouverture de l'accueil,
+          // notamment juste après l'ajout d'un nouveau rappel.
+          renderHomeAlerts(getReminderEntries());
+           renderMonthlyMileageAlert();
         }
         if (name === "expenses") {
           renderExpenses();
@@ -3458,6 +3940,19 @@
 
       function saveVehicles(vehicles) {
         localStorage.setItem(VEHICLES_STORAGE_KEY, JSON.stringify(vehicles));
+      }
+
+      function updateVehicleData(vehicleId, patch) {
+        if (!vehicleId) {
+          return;
+        }
+        const vehicles = getSavedVehicles();
+        const index = vehicles.findIndex((vehicle) => vehicle.id === vehicleId);
+        if (index === -1) {
+          return;
+        }
+        vehicles[index] = { id: vehicleId, data: { ...vehicles[index].data, ...patch } };
+        saveVehicles(vehicles);
       }
 
       function getPrimaryVehicleId() {
@@ -3673,6 +4168,7 @@
             value: entry.value,
             date: entry.date ? entry.value : null,
             targetMileage: entry.targetMileage ?? null,
+            currentMileage,
             action: entry.action || null,
           })),
           updatedAt: Date.now(),
@@ -3876,28 +4372,27 @@
       function updateVehicleDisplay(vehicle = {}) {
         const nameDisplay = document.querySelector("#vehicle-name-display");
         const metaDisplay = document.querySelector("#vehicle-meta-display");
+        const icon = document.querySelector("#vehicle-card-icon");
         const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
         const model = vehicle["vehicle-model"] || "";
         const vehicleName = [brand, model].filter(Boolean).join(" ");
-        const details = [];
-
-        if (vehicle["vehicle-registration"]) {
-          details.push(vehicle["vehicle-registration"]);
-        }
-        if (vehicle["vehicle-year"]) {
-          details.push(vehicle["vehicle-year"]);
-        }
-        if (vehicle["engine-type"]) {
-          details.push(vehicle["engine-type"]);
-        }
-        if (vehicle["current-mileage"] !== undefined && vehicle["current-mileage"] !== "") {
-          details.push(formatMileage(vehicle["current-mileage"]));
-        }
+        const registration = vehicle["vehicle-registration"] || "";
 
         nameDisplay.textContent = vehicleName || "Aucun véhicule enregistré";
-        metaDisplay.textContent = details.length
-          ? details.join(" · ")
-          : "Ajoutez votre véhicule dans Documents";
+        metaDisplay.textContent = registration || "Ajoutez votre véhicule dans Documents";
+
+        if (icon) {
+          const photo = getSavedDocuments().photo;
+          if (photo?.data) {
+            icon.innerHTML = `<img src="${escapeHtml(photo.data)}" alt="Photo du véhicule" />`;
+          } else {
+            icon.innerHTML = `
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+                <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
+              </svg>`;
+          }
+        }
       }
 
       function getVehicleDisplayName(vehicle = {}) {
@@ -4092,6 +4587,7 @@
       }
 
       function getManufacturerMaintenanceEntries() {
+        const vehicleId = getPrimaryVehicleId();
         const vehicle = getSavedVehicle();
         const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"];
         const model = vehicle["vehicle-model"];
@@ -4108,10 +4604,15 @@
           return [];
         }
 
-        const lastServiceMileage = Number(vehicle["last-oil-change-mileage"]);
-        const baselineMileage = Number.isFinite(lastServiceMileage) && lastServiceMileage >= 0
-          ? lastServiceMileage
-          : currentMileage;
+        let baselineMileage = Number(vehicle["last-oil-change-mileage"]);
+        if (!Number.isFinite(baselineMileage) || baselineMileage < 0) {
+          // Aucune référence connue : on l'ancre une seule fois sur le
+          // kilométrage actuel et on la persiste. Sans cela, recalculer la
+          // référence à chaque appel fait "fuir" l'échéance en permanence :
+          // elle ne devient jamais proche, ni due.
+          baselineMileage = currentMileage;
+          updateVehicleData(vehicleId, { "last-oil-change-mileage": String(currentMileage) });
+        }
         const targetMileage = baselineMileage + interval;
         const mileageRemaining = targetMileage - currentMileage;
         const mileageStatus = getMileageAlertStatus(mileageRemaining);
@@ -4250,7 +4751,7 @@
         if (entry.date) {
           targets.push(`Échéance : ${formatReminderDate(entry.date)}`);
         }
-        if (entry.targetMileage !== null) {
+        if (entry.targetMileage !== null && entry.targetMileage !== undefined && Number.isFinite(Number(entry.targetMileage))) {
           targets.push(`Objectif : ${formatMileage(entry.targetMileage)}`);
         }
         return targets.join(" · ") || "Échéance à définir";
@@ -4462,6 +4963,148 @@
         }
       }
 
+      function getMonthKey(date = new Date()) {
+        return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+      }
+      function isMonthlyMileageUpdated() {
+        const id = getPrimaryVehicleId();
+        return Boolean(id && localStorage.getItem(`${MONTHLY_MILEAGE_ALERT_KEY}:${id}`) === getMonthKey());
+      }
+      function markMonthlyMileageUpdated() {
+        const id = getPrimaryVehicleId();
+        if (id) localStorage.setItem(`${MONTHLY_MILEAGE_ALERT_KEY}:${id}`, getMonthKey());
+      }
+      function isMonthlyMileageDismissed() {
+        const id = getPrimaryVehicleId();
+        return Boolean(id && localStorage.getItem(`${MONTHLY_MILEAGE_ALERT_KEY}:dismissed:${id}`) === getMonthKey());
+      }
+      function markMonthlyMileageDismissed() {
+        const id = getPrimaryVehicleId();
+        if (id) localStorage.setItem(`${MONTHLY_MILEAGE_ALERT_KEY}:dismissed:${id}`, getMonthKey());
+      }
+      function renderMonthlyMileageAlert() {
+        const alerts = document.querySelectorAll(".monthly-mileage-alert");
+        if (!alerts.length) return;
+        const hasVehicle = Boolean(getPrimaryVehicleId());
+        // Le kilométrage saisi lors de l'actualisation devient la référence
+        // courante (via getCurrentMileage/current-mileage) pour tous les
+        // calculs (rappel constructeur, rapports…).
+        const updated = hasVehicle && isMonthlyMileageUpdated();
+        // Le rappel reste actif tant que l'utilisateur n'a ni actualisé,
+        // ni explicitement refusé (ignoré) le rappel de ce mois-ci.
+        const dismissed = hasVehicle && !updated && isMonthlyMileageDismissed();
+
+        alerts.forEach((alert) => {
+          const text = alert.querySelector(".monthly-mileage-alert-text");
+          alert.classList.toggle("is-disabled", !hasVehicle);
+          alert.setAttribute("aria-disabled", String(!hasVehicle));
+
+          // Le rappel disparaît une fois actualisé OU refusé pour le mois en
+          // cours. Il réapparaîtra automatiquement au mois suivant (les deux
+          // vérifications comparent au mois courant).
+          alert.hidden = updated || dismissed;
+          if (updated || dismissed) {
+            return;
+          }
+
+          if (!hasVehicle) {
+            if (text) text.textContent = "Ajoutez d’abord votre véhicule";
+            return;
+          }
+          if (text) text.textContent = `Mise à jour mensuelle · ${getMonthKey()}`;
+        });
+      }
+      function getMileageReferenceFromRecords() {
+        const vehicle = getSavedVehicle();
+        const values = [];
+        const current = Number(vehicle["current-mileage"]);
+        if (Number.isFinite(current) && current >= 0) values.push(current);
+        getSavedRepairs().forEach((repair) => { const m = Number(repair.mileage); if (Number.isFinite(m) && m >= 0) values.push(m); });
+        return values.length ? Math.max(...values) : null;
+      }
+      function updateMileageReferenceFromRecords() {
+        const id = getPrimaryVehicleId();
+        if (!id) return;
+        const reference = getMileageReferenceFromRecords();
+        if (reference === null) return;
+        const vehicles = getSavedVehicles();
+        const i = vehicles.findIndex(v => v.id === id);
+        if (i < 0) return;
+        const current = Number(vehicles[i].data["current-mileage"]);
+        if (!Number.isFinite(current) || reference > current) { vehicles[i].data["current-mileage"] = String(reference); saveVehicles(vehicles); }
+      }
+
+      function renderHomeAlerts(entries) {
+        const list = document.querySelector("#home-alerts-list");
+        const count = document.querySelector("#home-alert-count");
+        if (!list || !count) {
+          return;
+        }
+
+        // Une alerte créée dans Rappels doit apparaître immédiatement sur
+        // l'accueil, même si son échéance est encore lointaine.
+        const missingVehicleDocuments = [
+          ["carte-grise", "Carte grise"],
+          ["assurance", "Assurance"],
+          ["vignette", "Vignette"],
+        ].filter(([key]) => !getSavedDocuments()[key]);
+        const displayEntries = [...entries];
+        if (missingVehicleDocuments.length) {
+          displayEntries.push({
+            key: "missing-documents",
+            label: "Documents à télécharger",
+            documentNames: missingVehicleDocuments.map(([, label]) => label),
+            status: "warning",
+            date: null,
+            targetMileage: null,
+            isDocumentAlert: true,
+          });
+        }
+        const activeEntries = displayEntries
+          .filter((entry) => entry.isDocumentAlert || getAlertDisplayState(entry).active)
+          .sort((first, second) => {
+            const priority = { expired: 4, critical: 3, warning: 2, safe: 1, upcoming: 0 };
+            const priorityDifference = priority[second.status] - priority[first.status];
+            if (priorityDifference !== 0) {
+              return priorityDifference;
+            }
+            const firstTarget = first.date ? first.date.getTime() : first.targetMileage ?? Number.POSITIVE_INFINITY;
+            const secondTarget = second.date ? second.date.getTime() : second.targetMileage ?? Number.POSITIVE_INFINITY;
+            return firstTarget - secondTarget;
+          });
+
+        count.textContent = activeEntries.length;
+
+        if (!activeEntries.length) {
+          list.innerHTML = entries.length
+            ? '<div class="home-alert-empty">Aucune alerte active pour le moment.</div>'
+            : '<div class="home-alert-empty">Aucune alerte pour le moment. Ajoutez vos échéances dans <strong>Rappels</strong>.</div>';
+          return;
+        }
+
+        list.innerHTML = activeEntries.slice(0, 3).map((entry) => {
+          const displayState = entry.isDocumentAlert
+            ? { status: "warning", active: true }
+            : getAlertDisplayState(entry);
+          const status = entry.isDocumentAlert
+            ? "À compléter"
+            : getReminderStatusLabel(entry);
+          const target = entry.isDocumentAlert
+            ? `À télécharger : ${entry.documentNames.join(", ")}`
+            : formatReminderTarget(entry);
+          return `
+            <button class="home-alert-row" type="button" data-screen="${entry.isDocumentAlert ? "documents" : "alerts"}" data-requires-vehicle>
+              <span class="home-alert-icon is-${displayState.status}" aria-hidden="true"></span>
+              <span class="home-alert-copy">
+                <strong>${escapeHtml(entry.category ? `${entry.category} · ${entry.label}` : entry.label)}</strong>
+                <span>${escapeHtml(target)}</span>
+              </span>
+              <span class="home-alert-status">Voir</span>
+            </button>
+          `;
+        }).join("");
+      }
+
       function renderAlerts(entries) {
         const summary = document.querySelector("#alert-summary");
         const count = document.querySelector("#alert-count");
@@ -4469,14 +5112,14 @@
         const alertsList = document.querySelector("#alerts-list");
         const activeEntries = entries.filter((entry) => {
           const displayState = getAlertDisplayState(entry);
-          return displayState.active && entry.status !== "upcoming";
+          return displayState.active;
         });
         summary.classList.toggle("is-clear", activeEntries.length === 0);
         count.textContent = activeEntries.length;
 
         if (activeEntries.length === 0) {
           summaryCopy.textContent = entries.length
-            ? "Aucune échéance dans les 7 prochains jours ou à moins de 300 km."
+            ? "Aucune échéance active à traiter pour le moment."
             : "Ajoutez vos dates dans Rappels pour activer la surveillance.";
         } else {
           summaryCopy.textContent = `${activeEntries.length} échéance${activeEntries.length > 1 ? "s" : ""} à traiter.`;
@@ -4484,7 +5127,6 @@
 
         if (!entries.length) {
           alertsList.innerHTML = '<div class="alerts-empty">Aucune date enregistrée pour le moment. Rendez-vous dans <strong>Rappels</strong> pour ajouter vos échéances.</div>';
-          renderSmartAdvice(entries);
           return;
         }
 
@@ -4509,7 +5151,6 @@
           `;
           })
           .join("");
-        renderSmartAdvice(entries);
       }
 
       function renderSmartAdvice(entries = getReminderEntries()) {
@@ -4675,19 +5316,14 @@
           : "Notifications activées pour les vérifications disponibles.");
       });
 
-      document.querySelector("#smart-advice-list").addEventListener("click", (event) => {
-        const actionButton = event.target.closest("[data-advice-screen]");
-        if (!actionButton) {
-          return;
-        }
-        showScreen(actionButton.dataset.adviceScreen);
-      });
-
       function checkAlerts(options = {}) {
         const entries = getReminderEntries();
-        const criticalEntries = entries.filter((entry) => entry.status === "critical" || entry.status === "expired");
+        const criticalEntries = entries.filter((entry) =>
+          (entry.status === "critical" || entry.status === "expired") && getAlertDisplayState(entry).active
+        );
         const criticalSignature = criticalEntries.map((entry) => `${entry.key}:${entry.value}`).join("|");
 
+        renderHomeAlerts(entries);
         renderAlerts(entries);
 
         const shouldPlaySound =
@@ -4726,6 +5362,31 @@
         });
       }
 
+      document.querySelectorAll(".monthly-mileage-alert").forEach((alert) => {
+        alert.addEventListener("click", () => {
+          if (!getPrimaryVehicleId()) { showToast("Ajoutez d’abord un véhicule principal."); return; }
+          prepareVehicleForm(getSavedVehicle(), "edit-primary", getPrimaryVehicleId());
+          showScreen("vehicle-details");
+          updateBottomNav("vehicle-details");
+        });
+        alert.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") { event.preventDefault(); alert.click(); }
+        });
+        const dismissButton = alert.querySelector(".monthly-mileage-alert-dismiss");
+        dismissButton?.addEventListener("click", (event) => {
+          event.stopPropagation();
+          if (!getPrimaryVehicleId()) {
+            return;
+          }
+          markMonthlyMileageDismissed();
+          renderMonthlyMileageAlert();
+          showToast("Rappel ignoré pour ce mois-ci.");
+        });
+        dismissButton?.addEventListener("keydown", (event) => {
+          event.stopPropagation();
+        });
+      });
+
       document.querySelectorAll("[data-screen]").forEach((control) => {
         control.addEventListener("click", (event) => {
           if (control.classList.contains("is-disabled")) {
@@ -4734,6 +5395,7 @@
             return;
           }
           showScreen(control.dataset.screen);
+          updateBottomNav(control.dataset.screen);
         });
         if (control.getAttribute("role") === "button") {
           control.addEventListener("keydown", (event) => {
@@ -4745,6 +5407,20 @@
         }
       });
 
+      // Les alertes de l’accueil sont générées dynamiquement après le chargement.
+      // La délégation garantit que le bouton « Voir » fonctionne pour chaque case.
+      document.querySelector("#home-alerts-list")?.addEventListener("click", (event) => {
+        const control = event.target.closest("[data-screen]");
+        if (!control) return;
+        event.preventDefault();
+        if (control.classList.contains("is-disabled")) {
+          showToast("Aucun véhicule n’est enregistré. Ajoutez d’abord un véhicule.");
+          return;
+        }
+        showScreen(control.dataset.screen);
+        updateBottomNav(control.dataset.screen);
+      });
+
       document.querySelectorAll(".toast-card, .menu-card:not([data-screen]), .detail-card:not([data-screen])").forEach((card) => {
         card.addEventListener("click", () => {
           showToast(`${card.dataset.label} — cette rubrique sera bientôt disponible.`);
@@ -4754,35 +5430,34 @@
       const locationAction = document.querySelector("#location-action");
       const locationStatus = document.querySelector("#location-status");
       const locationResult = document.querySelector("#location-result");
-      const locationMapLink = document.querySelector("#location-map-link");
       const locationShareMode = document.querySelector("#location-share-mode");
       const sendLocationButton = document.querySelector("#send-location-button");
       const locationShareStatus = document.querySelector("#location-share-status");
-      const breakdownReasonButtons = document.querySelectorAll(".breakdown-reason");
+      const breakdownReasonSelect = document.querySelector("#breakdown-reason-select");
       const towAction = document.querySelector("#tow-action");
       const towStatus = document.querySelector("#tow-status");
       let currentLocationMapUrl = "";
       let selectedBreakdownReason = "";
 
-      breakdownReasonButtons.forEach((reasonButton) => {
-        reasonButton.addEventListener("click", () => {
-          selectedBreakdownReason = reasonButton.dataset.reason;
-          breakdownReasonButtons.forEach((button) => {
-            const isSelected = button === reasonButton;
-            button.classList.toggle("is-selected", isSelected);
-            button.setAttribute("aria-checked", String(isSelected));
-          });
-          locationAction.disabled = false;
-          locationStatus.textContent = `Motif choisi : ${selectedBreakdownReason} · appuyez pour partager`;
-          locationResult.hidden = true;
-          currentLocationMapUrl = "";
-          locationShareStatus.textContent = "";
-        });
+      breakdownReasonSelect?.addEventListener("change", () => {
+        selectedBreakdownReason = breakdownReasonSelect.value;
+        locationAction.disabled = false;
+        locationStatus.textContent = `Motif choisi : ${selectedBreakdownReason} · appuyez pour obtenir votre position`;
+        locationResult.hidden = true;
+        currentLocationMapUrl = "";
+        locationShareStatus.textContent = "";
       });
 
       locationAction.addEventListener("click", () => {
+        // Le mode d’envoi doit apparaître dès l’action « Ma position ».
+        // Le bouton d’envoi reste désactivé tant que les coordonnées ne sont pas obtenues.
+        locationResult.hidden = false;
+        sendLocationButton.disabled = true;
+        locationShareStatus.textContent = "Recherche de votre position…";
+
         if (!selectedBreakdownReason) {
           locationStatus.textContent = "Sélectionnez d’abord le problème.";
+          breakdownReasonSelect?.focus();
           return;
         }
 
@@ -4791,22 +5466,41 @@
           return;
         }
 
+        if (!window.isSecureContext) {
+          // Les navigateurs bloquent purement et simplement la géolocalisation
+          // hors HTTPS (ou localhost) : ouvrir le fichier directement
+          // (file://) ou le servir en http:// simple ne fonctionnera jamais.
+          locationStatus.textContent = "La géolocalisation nécessite une connexion sécurisée (HTTPS). Ouvrez l’application via son adresse en ligne (https://…).";
+          showToast("Géolocalisation bloquée : l’application doit être servie en HTTPS.");
+          return;
+        }
+
         locationStatus.textContent = "Recherche de votre position…";
-        locationResult.hidden = true;
+        // Le menu de partage reste visible pendant la recherche de position.
         currentLocationMapUrl = "";
-        locationShareStatus.textContent = "";
+
+        // Même logique que la V1 : demande directe au GPS avec haute précision.
         navigator.geolocation.getCurrentPosition(
           ({ coords }) => {
             const latitude = coords.latitude.toFixed(5);
             const longitude = coords.longitude.toFixed(5);
             locationStatus.textContent = `Position trouvée : ${latitude}, ${longitude}`;
             currentLocationMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
-            locationMapLink.href = currentLocationMapUrl;
             locationResult.hidden = false;
+            sendLocationButton.disabled = false;
+            locationShareStatus.textContent = "Choisissez WhatsApp, SMS ou Facebook puis appuyez sur « Envoyer ma position ».";
             showToast("Votre position a été trouvée.");
           },
-          () => {
-            locationStatus.textContent = "Position inaccessible. Autorisez la localisation puis réessayez.";
+          (error) => {
+            if (error.code === 1) {
+              locationStatus.textContent = "Position inaccessible. Autorisez la localisation puis réessayez.";
+            } else if (error.code === 2) {
+              locationStatus.textContent = "Position indisponible. Activez le GPS puis réessayez.";
+            } else if (error.code === 3) {
+              locationStatus.textContent = "La recherche de position a pris trop de temps. Réessayez.";
+            } else {
+              locationStatus.textContent = "Position inaccessible. Autorisez la localisation puis réessayez.";
+            }
           },
           { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 },
         );
@@ -4918,10 +5612,57 @@
         populateVehicleModels(event.currentTarget.value);
       });
 
+      function formatVehicleRegistration(value) {
+        const digits = String(value || "").replace(/\D/g, "").slice(0, 12);
+        if (digits.length <= 7) return digits;
+        if (digits.length <= 10) return `${digits.slice(0, 7)}-${digits.slice(7)}`;
+        return `${digits.slice(0, 7)}-${digits.slice(7, 10)}-${digits.slice(10, 12)}`;
+      }
+
+      function validateVehicleRegistration(value) {
+        const registration = String(value || "").trim();
+        const match = registration.match(/^(\d{7})-([123])(\d{2})-(\d{2})$/);
+        if (!match) return false;
+        const yearCode = Number(match[3]);
+        const currentYearCode = new Date().getFullYear() % 100;
+        const wilaya = Number(match[4]);
+        const validYear = yearCode >= 70 || yearCode <= currentYearCode;
+        return validYear && wilaya >= 1 && wilaya <= 68;
+      }
+
+      const vehicleRegistrationField = document.querySelector("#vehicle-registration");
+      vehicleRegistrationField?.addEventListener("input", (event) => {
+        event.currentTarget.value = formatVehicleRegistration(event.currentTarget.value);
+        event.currentTarget.setCustomValidity(
+          event.currentTarget.value && !validateVehicleRegistration(event.currentTarget.value)
+            ? "Matricule invalide : 7 chiffres dans le premier bloc, puis catégorie/année et wilaya."
+            : "",
+        );
+      });
+      vehicleRegistrationField?.addEventListener("blur", (event) => {
+        event.currentTarget.value = formatVehicleRegistration(event.currentTarget.value);
+      });
+
       vehicleDetailsForm.addEventListener("submit", (event) => {
         event.preventDefault();
         const form = event.currentTarget;
         const vehicleDetails = Object.fromEntries(new FormData(form).entries());
+        if (!validateVehicleRegistration(vehicleDetails["vehicle-registration"])) {
+          showToast("Matricule invalide : 7 chiffres dans le premier bloc, année valide et wilaya de 01 à 68.");
+          document.querySelector("#vehicle-registration")?.focus();
+          return;
+        }
+        const currentMileageValue = Number(vehicleDetails["current-mileage"]);
+        const lastOilChangeMileageValue = Number(vehicleDetails["last-oil-change-mileage"]);
+        if (
+          Number.isFinite(currentMileageValue) &&
+          Number.isFinite(lastOilChangeMileageValue) &&
+          lastOilChangeMileageValue > currentMileageValue
+        ) {
+          showToast("Le kilométrage de la dernière vidange ne peut pas dépasser le kilométrage actuel.");
+          document.querySelector("#last-oil-change-mileage")?.focus();
+          return;
+        }
         const vehicles = getSavedVehicles();
         const existingVehicle = vehicles.find((vehicle) => vehicle.id === vehicleFormVehicleId);
 
@@ -4952,6 +5693,8 @@
         renderVehicleList();
         renderDashboardVehicleSelector();
         updateVehicleAvailability();
+        markMonthlyMileageUpdated();
+        renderMonthlyMileageAlert();
         checkAlerts();
         showToast(vehicleFormMode === "add-secondary"
           ? "Le véhicule secondaire a été ajouté."
@@ -5115,10 +5858,27 @@
           notes: repair.notes.trim(),
         });
         localStorage.setItem(getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY), JSON.stringify(savedRepairs));
+
+        // Un entretien (ex. vidange) enregistré avec un kilométrage fait
+        // repartir le cycle du rappel constructeur, au lieu de le laisser
+        // "Expiré" indéfiniment après la première échéance passée.
+        if (repair.category === "Entretien" && repair.mileage) {
+          const repairMileage = Number(repair.mileage);
+          const currentBaseline = Number(getSavedVehicle()["last-oil-change-mileage"]);
+          if (Number.isFinite(repairMileage) && repairMileage >= 0 &&
+            (!Number.isFinite(currentBaseline) || repairMileage > currentBaseline)) {
+            updateVehicleData(getPrimaryVehicleId(), { "last-oil-change-mileage": String(repairMileage) });
+          }
+        }
+
+        updateMileageReferenceFromRecords();
+        updateMileageDisplay(getCurrentMileage());
+        renderMonthlyMileageAlert();
         event.currentTarget.reset();
         renderRepairs();
         renderExpenses();
         renderReports();
+        checkAlerts();
         syncOfflineChanges().catch(() => updateConnectionStatus());
         showToast("La réparation a été enregistrée.");
         showScreen("home");
@@ -5217,13 +5977,65 @@
       renderVehicleList();
       renderDashboardVehicleSelector();
       updateVehicleAvailability();
+
+
+      const bottomNavItems = document.querySelectorAll("[data-bottom-screen]");
+      const bottomMoreButton = document.querySelector("#bottom-more-button");
+      function updateBottomNav(screenName) {
+        bottomNavItems.forEach((item) => {
+          const active = item.dataset.bottomScreen === screenName;
+          item.classList.toggle("is-active", active);
+          if (active) {
+            item.setAttribute("aria-current", "page");
+          } else {
+            item.removeAttribute("aria-current");
+          }
+        });
+        if (bottomMoreButton) {
+          const activeMore = screenName === "more";
+          bottomMoreButton.classList.toggle("is-active", activeMore);
+          if (activeMore) {
+            bottomMoreButton.setAttribute("aria-current", "page");
+          } else {
+            bottomMoreButton.removeAttribute("aria-current");
+          }
+        }
+      }
+
+      bottomNavItems.forEach((item) => {
+        item.addEventListener("click", () => {
+          const target = item.dataset.bottomScreen;
+          if (target) {
+            showScreen(target);
+            updateBottomNav(target);
+          }
+        });
+      });
+
+      bottomMoreButton?.addEventListener("click", () => {
+        showScreen("more");
+        updateBottomNav("more");
+      });
       renderDocuments();
       renderCustomReminders();
       renderRepairs();
       renderExpenses();
       renderReports();
       updateConnectionStatus();
+      updateMileageReferenceFromRecords();
+      renderMonthlyMileageAlert();
       checkAlerts();
+
+      // Premier affichage : si aucun véhicule n'est enregistré, ouvrir directement
+      // la page "Véhicule" afin que l'utilisateur puisse créer son premier véhicule.
+      if (!getPrimaryVehicleId()) {
+        showScreen("vehicle-info");
+        updateBottomNav("vehicle-info");
+      } else {
+        showScreen("home");
+        updateBottomNav("home");
+      }
+
       initializeNotificationSupport();
       window.setInterval(() => checkAlerts(), 60000);
     </script>
