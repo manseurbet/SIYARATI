@@ -1,0 +1,4967 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b1424" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%233f73ff'/%3E%3Cpath d='M14 40h36l3-13a5 5 0 0 0-5-6H16a5 5 0 0 0-5 6l3 13Zm7-19 3-8h16l3 8M20 40v5m24-5v5M15 31h34' fill='none' stroke='white' stroke-width='4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <title>SIYARATI — Accueil</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #08111f;
+        --surface: rgba(20, 34, 56, 0.86);
+        --surface-strong: #162640;
+        --stroke: rgba(255, 255, 255, 0.1);
+        --text: #f6f9ff;
+        --muted: #8da0bc;
+        --blue: #58a6ff;
+        --green: #49d39d;
+        --orange: #ffb866;
+        --red: #ff7785;
+        --violet: #9b8cff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-width: 320px;
+        min-height: 100vh;
+        margin: 0;
+        color: var(--text);
+        background:
+          radial-gradient(circle at 85% 0%, rgba(79, 142, 255, 0.16), transparent 31%),
+          radial-gradient(circle at 0% 42%, rgba(74, 211, 157, 0.08), transparent 26%),
+          var(--bg);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .app-shell {
+        width: min(100%, 560px);
+        min-height: 100vh;
+        margin: 0 auto;
+        padding: 24px 18px 30px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 11px;
+      }
+
+      .brand-mark {
+        display: grid;
+        width: 40px;
+        height: 40px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, 0.12);
+        border-radius: 14px;
+        background: linear-gradient(145deg, #2c80ff, #5b55dd);
+        box-shadow: 0 10px 24px rgba(54, 98, 255, 0.28);
+      }
+
+      .brand-name {
+        margin: 0;
+        font-size: 15px;
+        font-weight: 750;
+        letter-spacing: -0.02em;
+      }
+
+      .brand-subtitle {
+        margin: 2px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .hero {
+        margin-bottom: 24px;
+      }
+
+      .eyebrow {
+        margin: 0 0 8px;
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        max-width: 360px;
+        margin: 0;
+        font-size: clamp(30px, 8vw, 44px);
+        line-height: 1.02;
+        letter-spacing: -0.06em;
+      }
+
+      .intro {
+        max-width: 390px;
+        margin: 12px 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .vehicle-card {
+        position: relative;
+        overflow: visible;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 22px;
+        padding: 18px;
+        border: 1px solid rgba(125, 170, 255, 0.2);
+        border-radius: 22px;
+        background:
+          linear-gradient(110deg, rgba(43, 95, 167, 0.52), rgba(23, 38, 64, 0.86)),
+          var(--surface);
+        box-shadow: 0 18px 50px rgba(0, 0, 0, 0.2);
+      }
+
+      .vehicle-card::after {
+        position: absolute;
+        top: -55px;
+        right: -26px;
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        background: rgba(88, 166, 255, 0.18);
+        content: "";
+        filter: blur(2px);
+      }
+
+      .vehicle-copy {
+        position: relative;
+        z-index: 3;
+      }
+
+      .vehicle-status {
+        position: relative;
+        z-index: 1;
+      }
+
+      .vehicle-label-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .vehicle-label {
+        margin: 0 0 4px;
+        color: #b8cbed;
+        font-size: 11px;
+        font-weight: 650;
+        letter-spacing: 0.09em;
+        text-transform: uppercase;
+      }
+
+      .vehicle-management {
+        position: relative;
+        margin-top: -5px;
+      }
+
+      .vehicle-management-toggle {
+        display: grid;
+        width: 34px;
+        height: 30px;
+        place-items: center;
+        padding: 0;
+        border: 1px solid rgba(125, 170, 255, 0.35);
+        border-radius: 9px;
+        color: #d9e3ef;
+        background: rgba(43, 95, 167, 0.34);
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .vehicle-management-toggle svg {
+        display: block;
+      }
+
+      .vehicle-management-toggle:hover,
+      .vehicle-management-toggle:focus-visible {
+        border-color: rgba(255, 255, 255, 0.65);
+        outline: none;
+      }
+
+      .vehicle-management-menu {
+        position: absolute;
+        top: 37px;
+        right: 0;
+        z-index: 4;
+        display: grid;
+        width: max-content;
+        min-width: 214px;
+        gap: 3px;
+        padding: 6px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        background: #ffffff;
+        box-shadow: 0 10px 24px rgba(43, 60, 82, 0.2);
+        white-space: nowrap;
+      }
+
+      .vehicle-management-menu[hidden] {
+        display: none;
+      }
+
+      .vehicle-management-menu button {
+        min-height: 38px;
+        padding: 9px 12px;
+        border: 0;
+        border-radius: 7px;
+        color: #53677d;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+        text-align: left;
+        white-space: nowrap;
+      }
+
+      .vehicle-management-menu button:hover,
+      .vehicle-management-menu button:focus-visible {
+        color: #2b3c52;
+        background: #eef3f7;
+        outline: none;
+      }
+
+      .vehicle-management-menu button[data-vehicle-action="delete"] {
+        color: #b44d59;
+      }
+
+      .vehicle-name {
+        margin: 0;
+        font-size: 18px;
+        font-weight: 760;
+        letter-spacing: -0.03em;
+      }
+
+      .vehicle-meta {
+        margin: 5px 0 0;
+        color: #b3c5e3;
+        font-size: 12px;
+      }
+
+      .vehicle-status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        padding: 9px 11px;
+        border: 1px solid rgba(73, 211, 157, 0.2);
+        border-radius: 999px;
+        color: #a9f4d6;
+        background: rgba(25, 102, 74, 0.35);
+        font-size: 11px;
+        font-weight: 750;
+        white-space: nowrap;
+        cursor: pointer;
+        appearance: none;
+      }
+
+      .vehicle-status:hover,
+      .vehicle-status:focus-visible {
+        border-color: rgba(125, 170, 255, 0.55);
+        outline: 2px solid rgba(125, 170, 255, 0.25);
+        outline-offset: 2px;
+      }
+
+      .vehicle-status.is-warning {
+        border-color: rgba(245, 181, 67, 0.35);
+        color: #ffe0a0;
+        background: rgba(145, 91, 20, 0.42);
+      }
+
+      .vehicle-status.is-critical {
+        border-color: rgba(255, 126, 126, 0.35);
+        color: #ffd0d0;
+        background: rgba(139, 42, 42, 0.45);
+      }
+
+      .vehicle-status.is-disabled {
+        border-color: rgba(214, 224, 235, 0.28);
+        color: #c6d0dc;
+        background: rgba(93, 111, 133, 0.34);
+        cursor: not-allowed;
+      }
+
+      .vehicle-status.is-disabled .status-dot {
+        background: #aab8c8;
+        box-shadow: none;
+      }
+
+      .status-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--green);
+        box-shadow: 0 0 0 4px rgba(73, 211, 157, 0.12);
+      }
+
+      .vehicle-status.is-warning .status-dot {
+        background: #f5b543;
+        box-shadow: 0 0 0 4px rgba(245, 181, 67, 0.14);
+      }
+
+      .vehicle-status.is-critical .status-dot {
+        background: #ff7e7e;
+        box-shadow: 0 0 0 4px rgba(255, 126, 126, 0.14);
+      }
+
+      .section-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 0 0 12px;
+      }
+
+      .section-heading h2 {
+        margin: 0;
+        font-size: 15px;
+        letter-spacing: -0.02em;
+      }
+
+      .section-heading span {
+        color: var(--muted);
+        font-size: 11px;
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .menu-card {
+        display: flex;
+        min-height: 170px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 16px;
+        border: 1px solid var(--stroke);
+        border-radius: 22px;
+        color: var(--text);
+        text-align: left;
+        background: linear-gradient(160deg, rgba(25, 42, 68, 0.96), rgba(14, 27, 47, 0.9));
+        box-shadow: 0 12px 30px rgba(0, 0, 0, 0.14);
+        cursor: pointer;
+        transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .menu-card:hover,
+      .menu-card:focus-visible {
+        border-color: rgba(255, 255, 255, 0.24);
+        outline: none;
+        transform: translateY(-3px);
+        box-shadow: 0 17px 34px rgba(0, 0, 0, 0.23);
+      }
+
+      .menu-card:active {
+        transform: translateY(-1px) scale(0.99);
+      }
+
+      .icon-badge {
+        display: grid;
+        width: 48px;
+        height: 48px;
+        place-items: center;
+        border-radius: 16px;
+      }
+
+      .card-info .icon-badge {
+        color: var(--blue);
+        background: rgba(88, 166, 255, 0.13);
+      }
+
+      .card-reminders .icon-badge {
+        color: var(--orange);
+        background: rgba(255, 184, 102, 0.13);
+      }
+
+      .card-alerts .icon-badge {
+        color: var(--red);
+        background: rgba(255, 119, 133, 0.13);
+      }
+
+      .card-help .icon-badge {
+        color: var(--violet);
+        background: rgba(155, 140, 255, 0.13);
+      }
+
+      .menu-card h3 {
+        margin: 22px 0 6px;
+        font-size: 17px;
+        letter-spacing: -0.03em;
+      }
+
+      .menu-card p {
+        min-height: 38px;
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 16px;
+        color: #afbdd2;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .arrow {
+        display: grid;
+        width: 25px;
+        height: 25px;
+        place-items: center;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+      }
+
+      .footnote {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        margin: 26px 0 0;
+        color: #71839f;
+        font-size: 11px;
+      }
+
+      .footnote svg {
+        color: var(--green);
+      }
+
+      .toast {
+        position: fixed;
+        right: 18px;
+        bottom: 18px;
+        left: 18px;
+        width: min(100% - 36px, 430px);
+        margin: auto;
+        padding: 13px 15px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 14px;
+        color: #eaf2ff;
+        background: rgba(20, 34, 56, 0.95);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.32);
+        font-size: 13px;
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(12px);
+        transition: opacity 180ms ease, transform 180ms ease;
+      }
+
+      .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      @media (min-width: 600px) {
+        .app-shell {
+          padding-top: 36px;
+          padding-bottom: 40px;
+        }
+
+        .menu-grid {
+          gap: 16px;
+        }
+
+        .menu-card {
+          min-height: 188px;
+          padding: 19px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+        }
+      }
+
+      /* Référence visuelle : cartes claires et pictogrammes foncés */
+      body {
+        color: #2b3c52;
+        background: #eef1f4;
+      }
+
+      .app-shell {
+        padding-top: 0;
+        padding-right: 18px;
+        padding-left: 18px;
+      }
+
+      .topbar {
+        margin: 0 -18px 26px;
+        padding: 18px;
+        border-radius: 0 0 18px 18px;
+        background: #536c8f;
+        box-shadow: 0 8px 18px rgba(47, 66, 92, 0.14);
+      }
+
+      .brand-mark {
+        border: 0;
+        color: #536c8f;
+        background: #ffffff;
+        box-shadow: none;
+      }
+
+      .brand-name {
+        color: #ffffff;
+        font-size: 16px;
+        letter-spacing: 0.02em;
+      }
+
+      .brand-subtitle {
+        color: #d9e3ef;
+      }
+
+      .hero {
+        padding: 0 2px;
+      }
+
+      .eyebrow {
+        color: #536c8f;
+      }
+
+      h1 {
+        color: #27384d;
+      }
+
+      .intro {
+        color: #718196;
+      }
+
+      .vehicle-card {
+        min-height: 148px;
+        border-color: #d7dee7;
+        background: #ffffff;
+        box-shadow: 0 6px 16px rgba(43, 60, 82, 0.08);
+      }
+
+      .vehicle-card::after {
+        display: none;
+      }
+
+      .vehicle-label {
+        color: #8290a2;
+      }
+
+      .vehicle-management-toggle {
+        display: grid;
+        place-items: center;
+        border-color: #d5dde6;
+        color: #53677d;
+        background: #f8fafb;
+      }
+
+      .vehicle-management-toggle:hover,
+      .vehicle-management-toggle:focus-visible {
+        border-color: #9eafc3;
+      }
+
+      .vehicle-name {
+        color: #27384d;
+      }
+
+      .vehicle-meta {
+        color: #718196;
+      }
+
+      .vehicle-status {
+        border-color: #c7eadb;
+        color: #2f926b;
+        background: #effaf5;
+      }
+
+      .section-heading h2 {
+        color: #2b3c52;
+      }
+
+      .section-heading span {
+        color: #8090a5;
+      }
+
+      .menu-card {
+        min-height: 148px;
+        border-color: #d5dde6;
+        border-radius: 15px;
+        color: #2b3c52;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .menu-card:hover,
+      .menu-card:focus-visible {
+        border-color: #9eafc3;
+        box-shadow: 0 10px 20px rgba(43, 60, 82, 0.13);
+      }
+
+      .menu-card.is-disabled {
+        border-color: #e1e6eb;
+        color: #a8b2bd;
+        background: #f3f5f7;
+        box-shadow: none;
+        cursor: not-allowed;
+        filter: grayscale(0.55);
+        opacity: 0.72;
+      }
+
+      .menu-card.is-disabled:hover,
+      .menu-card.is-disabled:focus-visible {
+        border-color: #e1e6eb;
+        box-shadow: none;
+        outline: none;
+        transform: none;
+      }
+
+      .menu-card.is-disabled .icon-badge {
+        color: #a8b2bd;
+        background: #e8ecf0;
+      }
+
+      .dashboard-vehicle-label {
+        display: block;
+        margin-top: 10px;
+        color: #8090a5;
+        font-size: 10px;
+        font-weight: 750;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+
+      .dashboard-vehicle-select {
+        width: 100%;
+        min-height: 34px;
+        margin-top: 5px;
+        padding: 7px 28px 7px 9px;
+        border: 1px solid #d5dde6;
+        border-radius: 9px;
+        color: #2b3c52;
+        background-color: #f8fafb;
+        cursor: pointer;
+        font-size: 11px;
+        font-weight: 700;
+      }
+
+      .dashboard-vehicle-select:focus-visible {
+        border-color: #9eafc3;
+        outline: 2px solid rgba(83, 108, 143, 0.22);
+        outline-offset: 1px;
+      }
+
+      .dashboard-vehicle-select:disabled {
+        color: #a8b2bd;
+        background-color: #eef1f4;
+        cursor: not-allowed;
+      }
+
+      .smart-advice-panel {
+        margin-bottom: 22px;
+        padding: 16px;
+        border: 1px solid #d7dee7;
+        border-radius: 16px;
+        background: #f8fafb;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.06);
+      }
+
+      .smart-advice-heading {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        margin-bottom: 11px;
+      }
+
+      .smart-advice-heading-icon {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        place-items: center;
+        border-radius: 9px;
+        color: #536c8f;
+        background: #e7eff5;
+        font-size: 16px;
+      }
+
+      .smart-advice-heading h2 {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+      }
+
+      .smart-advice-heading p {
+        margin: 2px 0 0;
+        color: #8090a5;
+        font-size: 11px;
+      }
+
+      .smart-advice-list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .smart-advice-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid #dce4eb;
+        border-radius: 11px;
+        background: #ffffff;
+      }
+
+      .smart-advice-item.is-critical {
+        border-color: #efcaca;
+        background: #fff7f7;
+      }
+
+      .smart-advice-item.is-warning {
+        border-color: #efdcb5;
+        background: #fffaf0;
+      }
+
+      .smart-advice-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .smart-advice-copy strong,
+      .smart-advice-copy span {
+        display: block;
+      }
+
+      .smart-advice-copy strong {
+        color: #2b3c52;
+        font-size: 12px;
+      }
+
+      .smart-advice-copy span {
+        margin-top: 2px;
+        color: #718196;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .smart-advice-action {
+        flex: 0 0 auto;
+        padding: 7px 9px;
+        border: 1px solid #cbd7e2;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #f8fafb;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .smart-advice-action:hover,
+      .smart-advice-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        background: #eef3f7;
+      }
+
+      .alert-item-advice {
+        margin: 5px 0 0;
+        color: #536c8f;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .documents-guidance,
+      .history-insight {
+        margin: 12px 0 0;
+        padding: 10px 12px;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #eef3f7;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .repair-list {
+        display: grid;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      .repair-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .repair-item-copy {
+        min-width: 0;
+      }
+
+      .repair-item-copy strong,
+      .repair-item-copy small {
+        display: block;
+      }
+
+      .repair-item-copy strong {
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .repair-item-copy small {
+        margin-top: 4px;
+        color: #76869a;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .remove-repair-button {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border: 1px solid #e7c9ce;
+        border-radius: 8px;
+        color: #b44d59;
+        background: #fff7f8;
+        cursor: pointer;
+        font-size: 18px;
+        line-height: 1;
+      }
+
+      .icon-badge,
+      .card-info .icon-badge,
+      .card-vehicle .icon-badge,
+      .card-documents .icon-badge,
+      .card-reminders .icon-badge,
+      .card-alerts .icon-badge,
+      .card-help .icon-badge {
+        color: #40546b;
+        background: #eef3f7;
+      }
+
+      .menu-card h3 {
+        color: #2b3c52;
+      }
+
+      .menu-card p {
+        color: #76869a;
+      }
+
+      .card-footer {
+        color: #53677d;
+      }
+
+      .arrow {
+        color: #53677d;
+        background: #eef3f7;
+      }
+
+      .footnote {
+        color: #7d8da1;
+      }
+
+      .footnote svg {
+        color: #4bab7f;
+      }
+
+      .screen.is-hidden {
+        display: none;
+      }
+
+      .detail-header {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        margin: 2px 0 24px;
+      }
+
+      .back-button {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        margin-top: 3px;
+        border: 1px solid #d5dde6;
+        border-radius: 12px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(43, 60, 82, 0.06);
+        transition: transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .back-button:hover,
+      .back-button:focus-visible {
+        outline: none;
+        transform: translateX(-2px);
+        box-shadow: 0 7px 15px rgba(43, 60, 82, 0.12);
+      }
+
+      .detail-kicker {
+        margin: 0 0 6px;
+        color: #536c8f;
+        font-size: 12px;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .detail-title {
+        margin: 0;
+        color: #27384d;
+        font-size: clamp(28px, 7vw, 38px);
+        line-height: 1.05;
+        letter-spacing: -0.05em;
+      }
+
+      .detail-intro {
+        max-width: 400px;
+        margin: 9px 0 0;
+        color: #718196;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+
+      .detail-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .vehicle-documents-panel {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .documents-upload-panel {
+        display: grid;
+        gap: 12px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .documents-panel-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 16px;
+        font-weight: 800;
+      }
+
+      .documents-upload-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .document-upload-card {
+        display: flex;
+        min-width: 0;
+        align-items: center;
+        gap: 11px;
+        padding: 11px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .document-upload-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        background: #eaf1f6;
+        font-size: 18px;
+      }
+
+      .document-upload-copy {
+        display: grid;
+        min-width: 0;
+        flex: 1;
+        gap: 3px;
+      }
+
+      .document-upload-copy strong {
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .document-upload-copy small {
+        overflow: hidden;
+        color: #76869a;
+        font-size: 11px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .document-upload-copy small.has-file {
+        color: #318a65;
+        font-weight: 750;
+      }
+
+      .document-upload-button {
+        position: relative;
+        display: inline-flex;
+        min-height: 34px;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        padding: 0 10px;
+        border: 1px solid #c5d2df;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .document-upload-button:hover,
+      .document-upload-button:focus-within {
+        border-color: #536c8f;
+        background: #f2f6f9;
+        outline: none;
+      }
+
+      .document-upload-button input {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .documents-upload-note {
+        margin: 0;
+        color: #8a98a8;
+        font-size: 11px;
+      }
+
+      .vehicle-documents-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+      }
+
+      .vehicle-documents-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 20px;
+      }
+
+      .add-vehicle-button {
+        display: inline-flex;
+        min-height: 40px;
+        align-items: center;
+        gap: 6px;
+        padding: 0 12px;
+        border: 1px solid #c5d2df;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #f3f7fa;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .add-vehicle-button:hover,
+      .add-vehicle-button:focus-visible {
+        border-color: #536c8f;
+        outline: none;
+        background: #eaf1f6;
+      }
+
+      .add-vehicle-button span {
+        font-size: 21px;
+        line-height: 1;
+      }
+
+      .vehicle-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .vehicle-list-empty,
+      .empty-state {
+        padding: 18px;
+        border: 1px dashed #c8d3df;
+        border-radius: 12px;
+        color: #76869a;
+        text-align: center;
+        background: #f8fafb;
+      }
+
+      .vehicle-list-empty p,
+      .empty-state p {
+        margin: 5px 0 0;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .vehicle-list-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border: 1px solid #dce4eb;
+        border-radius: 12px;
+        background: #fbfcfd;
+      }
+
+      .vehicle-list-item.is-primary {
+        border-color: #b9d8cb;
+        background: #f3fbf7;
+      }
+
+      .vehicle-list-main {
+        display: flex;
+        min-width: 0;
+        flex: 1;
+        align-items: center;
+        gap: 10px;
+        padding: 0;
+        border: 0;
+        color: #2b3c52;
+        background: transparent;
+        cursor: pointer;
+        font: inherit;
+        text-align: left;
+      }
+
+      .vehicle-list-main:focus-visible {
+        outline: 2px solid #9eafc3;
+        outline-offset: 3px;
+      }
+
+      .vehicle-list-icon {
+        display: grid;
+        width: 38px;
+        height: 38px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 10px;
+        color: #536c8f;
+        background: #eaf1f6;
+        font-size: 19px;
+      }
+
+      .vehicle-list-copy {
+        display: grid;
+        min-width: 0;
+        gap: 3px;
+      }
+
+      .vehicle-list-copy strong,
+      .vehicle-list-copy small {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .vehicle-list-copy strong {
+        font-size: 13px;
+      }
+
+      .vehicle-list-copy small {
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .vehicle-list-actions {
+        position: relative;
+        display: flex;
+        flex: 0 0 auto;
+        gap: 5px;
+      }
+
+      .vehicle-list-menu-toggle {
+        display: grid;
+        width: 34px;
+        height: 32px;
+        place-items: center;
+        border: 1px solid #d5dde6;
+        border-radius: 8px;
+        color: #53677d;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 800;
+        letter-spacing: 2px;
+      }
+
+      .vehicle-list-menu-toggle:hover,
+      .vehicle-list-menu-toggle:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .vehicle-list-menu {
+        position: absolute;
+        z-index: 5;
+        top: 38px;
+        right: 0;
+        display: grid;
+        min-width: 162px;
+        padding: 5px;
+        border: 1px solid #d5dde6;
+        border-radius: 10px;
+        background: #ffffff;
+        box-shadow: 0 10px 22px rgba(43, 60, 82, 0.14);
+      }
+
+      .vehicle-list-menu[hidden] {
+        display: none;
+      }
+
+      .vehicle-list-action {
+        min-height: 32px;
+        padding: 0 8px;
+        border: 1px solid #d5dde6;
+        border-radius: 8px;
+        color: #53677d;
+        background: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 750;
+      }
+
+      .vehicle-list-menu .vehicle-list-action {
+        width: 100%;
+        border: 0;
+        border-radius: 7px;
+        text-align: left;
+      }
+
+      .vehicle-list-menu .vehicle-list-action:hover,
+      .vehicle-list-menu .vehicle-list-action:focus-visible {
+        background: #f2f6f9;
+      }
+
+      .vehicle-list-action:hover,
+      .vehicle-list-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .vehicle-list-action.is-danger {
+        color: #b44d59;
+      }
+
+      .empty-state {
+        margin-top: 14px;
+      }
+
+      .empty-state-icon {
+        font-size: 30px;
+      }
+
+      .empty-state h2 {
+        margin: 9px 0 0;
+        color: #2b3c52;
+        font-size: 17px;
+      }
+
+      .detail-card {
+        display: flex;
+        min-height: 210px;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        color: #2b3c52;
+        text-align: left;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+        cursor: pointer;
+        transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      }
+
+      .detail-card:hover,
+      .detail-card:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(43, 60, 82, 0.13);
+      }
+
+      .detail-card .icon-badge {
+        width: 48px;
+        height: 48px;
+        border-radius: 13px;
+        color: #40546b;
+        background: #eef3f7;
+      }
+
+      .detail-card h3 {
+        margin: 20px 0 7px;
+        color: #2b3c52;
+        font-size: 19px;
+        letter-spacing: -0.03em;
+      }
+
+      .detail-card p {
+        margin: 0;
+        color: #76869a;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .personal-form {
+        display: grid;
+        gap: 14px;
+        padding: 18px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .form-field {
+        display: grid;
+        gap: 7px;
+      }
+
+      .form-field.full-width {
+        grid-column: 1 / -1;
+      }
+
+      .form-field label {
+        color: #53677d;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .field-optional {
+        color: #91a0b0;
+        font-size: 10px;
+        font-weight: 600;
+      }
+
+      .form-field input,
+      .form-field select {
+        width: 100%;
+        min-height: 46px;
+        padding: 0 13px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      }
+
+      .form-field input:focus,
+      .form-field select:focus {
+        border-color: #7f97b5;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(83, 108, 143, 0.12);
+      }
+
+      .form-field input::placeholder {
+        color: #a3afbd;
+      }
+
+      .form-field input[type="file"] {
+        min-height: auto;
+        padding: 10px 12px;
+      }
+
+      .form-field input[type="file"]::file-selector-button {
+        margin-right: 10px;
+        padding: 8px 11px;
+        border: 0;
+        border-radius: 8px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .form-field textarea {
+        width: 100%;
+        min-height: 118px;
+        padding: 12px 13px;
+        border: 1px solid #d5dde6;
+        border-radius: 11px;
+        resize: vertical;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 13px;
+        line-height: 1.5;
+        outline: none;
+        transition: border-color 160ms ease, box-shadow 160ms ease, background 160ms ease;
+      }
+
+      .form-field textarea:focus {
+        border-color: #7f97b5;
+        background: #ffffff;
+        box-shadow: 0 0 0 3px rgba(83, 108, 143, 0.12);
+      }
+
+      .form-field textarea::placeholder {
+        color: #a3afbd;
+      }
+
+      .save-button {
+        display: inline-flex;
+        min-height: 46px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        border: 0;
+        border-radius: 11px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 750;
+        transition: background 160ms ease, transform 160ms ease;
+      }
+
+      .save-button:hover,
+      .save-button:focus-visible {
+        background: #435b7e;
+        outline: none;
+        transform: translateY(-1px);
+      }
+
+      .alert-summary {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        margin-bottom: 16px;
+        padding: 18px;
+        border: 1px solid #f0c5c5;
+        border-radius: 15px;
+        background: linear-gradient(135deg, #fff7f7, #ffffff);
+        box-shadow: 0 5px 14px rgba(164, 66, 66, 0.08);
+      }
+
+      .alert-summary.is-clear {
+        border-color: #c9e6d7;
+        background: linear-gradient(135deg, #f5fcf8, #ffffff);
+      }
+
+      .alert-summary-icon {
+        display: grid;
+        width: 68px;
+        height: 68px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 18px;
+        color: #c84747;
+        background: #ffe2e2;
+      }
+
+      .alert-summary.is-clear .alert-summary-icon {
+        color: #318a65;
+        background: #dcf5e8;
+      }
+
+      .alert-summary-label {
+        display: block;
+        margin-bottom: 3px;
+        color: #8c6b6b;
+        font-size: 11px;
+        font-weight: 750;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .alert-summary.is-clear .alert-summary-label {
+        color: #5d8b73;
+      }
+
+      .alert-count {
+        display: block;
+        color: #bf3e3e;
+        font-size: 42px;
+        font-weight: 800;
+        line-height: 0.95;
+        letter-spacing: -0.08em;
+      }
+
+      .alert-summary.is-clear .alert-count {
+        color: #318a65;
+      }
+
+      .alert-summary-copy {
+        margin: 8px 0 0;
+        color: #705d5d;
+        font-size: 13px;
+        line-height: 1.45;
+      }
+
+      .alert-summary.is-clear .alert-summary-copy {
+        color: #61806f;
+      }
+
+      .notification-panel {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 16px;
+        padding: 15px 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 14px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .notification-panel-icon {
+        display: grid;
+        width: 42px;
+        height: 42px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 12px;
+        color: #536c8f;
+        background: #eef3f7;
+        font-size: 20px;
+      }
+
+      .notification-panel-copy {
+        min-width: 0;
+        flex: 1;
+      }
+
+      .notification-panel-copy h2 {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+      }
+
+      .notification-panel-copy p {
+        margin: 4px 0 0;
+        color: #718196;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .notification-panel-note {
+        margin: 8px 0 0;
+        color: #8a98a8;
+        font-size: 10px;
+        line-height: 1.4;
+      }
+
+      .notification-button {
+        min-height: 36px;
+        flex: 0 0 auto;
+        padding: 0 11px;
+        border: 1px solid #536c8f;
+        border-radius: 9px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .notification-button:hover,
+      .notification-button:focus-visible {
+        border-color: #2b3c52;
+        outline: none;
+        background: #2b3c52;
+      }
+
+      .notification-button:disabled {
+        border-color: #d5dde6;
+        color: #718196;
+        background: #eef3f7;
+        cursor: default;
+      }
+
+      .alerts-list {
+        display: grid;
+        gap: 10px;
+      }
+
+      .alert-item {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 15px 16px;
+        border: 1px solid #d5dde6;
+        border-left: 5px solid #aab8c8;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .alert-item.is-safe {
+        border-color: #c9e6d7;
+        border-left-color: #4ca875;
+        background: #f5fcf8;
+      }
+
+      .alert-item.is-warning {
+        border-color: #f0d49e;
+        border-left-color: #d9952f;
+        background: #fffaf1;
+      }
+
+      .alert-item.is-critical,
+      .alert-item.is-expired {
+        border-color: #e4b2b2;
+        border-left-color: #a92f2f;
+        background: #fff1f1;
+      }
+
+      .alert-item-copy {
+        min-width: 0;
+      }
+
+      .alert-item-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .alert-item-date {
+        margin: 5px 0 0;
+        color: #718196;
+        font-size: 12px;
+      }
+
+      .alert-item-status {
+        flex: 0 0 auto;
+        padding: 7px 9px;
+        border-radius: 999px;
+        color: #65768a;
+        background: #eef3f7;
+        font-size: 11px;
+        font-weight: 750;
+        text-align: center;
+      }
+
+      .alert-item.is-safe .alert-item-status {
+        color: #318a65;
+        background: #dcf5e8;
+      }
+
+      .alert-item.is-warning .alert-item-status {
+        color: #a76b16;
+        background: #ffedc5;
+      }
+
+      .alert-item.is-critical .alert-item-status,
+      .alert-item.is-expired .alert-item-status {
+        color: #b13d3d;
+        background: #ffe1e1;
+      }
+
+      .alert-item.is-done,
+      .alert-item.is-snoozed {
+        border-color: #d4dde6;
+        border-left-color: #8b9bad;
+        background: #f7f9fb;
+      }
+
+      .alert-item.is-done .alert-item-status,
+      .alert-item.is-snoozed .alert-item-status {
+        color: #607286;
+        background: #e8eef3;
+      }
+
+      .alert-item-actions {
+        display: flex;
+        flex: 0 0 100%;
+        justify-content: flex-end;
+        gap: 7px;
+      }
+
+      .alert-item-actions button {
+        min-height: 30px;
+        padding: 0 9px;
+        border: 1px solid #c7d2de;
+        border-radius: 8px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-size: 10px;
+        font-weight: 800;
+      }
+
+      .alert-item-actions button:hover,
+      .alert-item-actions button:focus-visible {
+        border-color: #7f97b5;
+        outline: none;
+        background: #f2f6f9;
+      }
+
+      .alert-stages {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 14px;
+        margin: 0 0 16px;
+        padding: 12px 14px;
+        border: 1px solid #dbe3eb;
+        border-radius: 13px;
+        background: #f8fafc;
+        color: #66778b;
+        font-size: 11px;
+        line-height: 1.4;
+      }
+
+      .alert-stage {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .alert-stage-dot {
+        width: 9px;
+        height: 9px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+      }
+
+      .alert-stage-dot.is-safe {
+        background: #4ca875;
+      }
+
+      .alert-stage-dot.is-warning {
+        background: #d9952f;
+      }
+
+      .alert-stage-dot.is-critical {
+        background: #c84747;
+      }
+
+      .alerts-empty {
+        padding: 20px 16px;
+        border: 1px dashed #cbd5df;
+        border-radius: 13px;
+        color: #7a899b;
+        background: rgba(255, 255, 255, 0.62);
+        font-size: 13px;
+        line-height: 1.5;
+        text-align: center;
+      }
+
+      .sound-button {
+        display: inline-flex;
+        min-height: 44px;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        margin-top: 16px;
+        border: 1px solid #b6c3d0;
+        border-radius: 11px;
+        color: #536c8f;
+        background: #ffffff;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 750;
+        transition: border-color 160ms ease, background 160ms ease;
+      }
+
+      .sound-button:hover,
+      .sound-button:focus-visible {
+        border-color: #7f97b5;
+        background: #f7fafc;
+        outline: none;
+      }
+
+      .reminder-section {
+        display: grid;
+        gap: 12px;
+        margin-top: 18px;
+      }
+
+      .reminder-section-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 17px;
+      }
+
+      .reminder-section-intro {
+        margin: 0;
+        color: #76869a;
+        font-size: 12px;
+        line-height: 1.45;
+      }
+
+      .reminder-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 7px;
+      }
+
+      .reminder-tag {
+        padding: 7px 9px;
+        border-radius: 999px;
+        color: #536c8f;
+        background: #eef3f7;
+        font-size: 11px;
+        font-weight: 750;
+      }
+
+      .custom-reminder-form {
+        margin-top: 2px;
+      }
+
+      .custom-reminder-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .custom-reminder-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .custom-reminder-copy {
+        min-width: 0;
+      }
+
+      .custom-reminder-copy strong {
+        display: block;
+        color: #2b3c52;
+        font-size: 13px;
+      }
+
+      .custom-reminder-copy small {
+        display: block;
+        margin-top: 4px;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .remove-reminder-button {
+        display: grid;
+        width: 30px;
+        height: 30px;
+        flex: 0 0 auto;
+        place-items: center;
+        border: 1px solid #e5c5c8;
+        border-radius: 9px;
+        color: #b44d59;
+        background: #fff7f7;
+        cursor: pointer;
+        font-size: 17px;
+      }
+
+      .remove-reminder-button:hover,
+      .remove-reminder-button:focus-visible {
+        border-color: #c98b91;
+        outline: none;
+      }
+
+      .expense-summary {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        margin-bottom: 14px;
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .expense-summary-label {
+        color: #76869a;
+        font-size: 12px;
+      }
+
+      .expense-summary-total {
+        display: block;
+        margin-top: 4px;
+        color: #2b3c52;
+        font-size: 24px;
+        letter-spacing: -0.04em;
+      }
+
+      .expense-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .expense-item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 14px 15px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .expense-item-category {
+        margin: 0 0 4px;
+        color: #536c8f;
+        font-size: 11px;
+        font-weight: 750;
+        text-transform: uppercase;
+      }
+
+      .expense-item-title {
+        margin: 0;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+      }
+
+      .expense-item-date {
+        margin: 5px 0 0;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .expense-item-amount {
+        align-self: center;
+        color: #2b3c52;
+        font-size: 14px;
+        font-weight: 800;
+        white-space: nowrap;
+      }
+
+      .report-summary-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 18px;
+      }
+
+      .report-stat {
+        padding: 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 13px;
+        background: #ffffff;
+        box-shadow: 0 4px 12px rgba(43, 60, 82, 0.06);
+      }
+
+      .report-stat-label {
+        display: block;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .report-stat-value {
+        display: block;
+        margin-top: 6px;
+        color: #2b3c52;
+        font-size: 21px;
+        letter-spacing: -0.04em;
+      }
+
+      .report-panel {
+        margin-bottom: 14px;
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .report-panel-title {
+        margin: 0 0 14px;
+        color: #2b3c52;
+        font-size: 16px;
+      }
+
+      .report-bars {
+        display: grid;
+        gap: 12px;
+      }
+
+      .report-bar-row {
+        display: grid;
+        gap: 6px;
+      }
+
+      .report-bar-heading {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        color: #53677d;
+        font-size: 12px;
+      }
+
+      .report-bar-track {
+        height: 8px;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #eef3f7;
+      }
+
+      .report-bar-fill {
+        height: 100%;
+        min-width: 5px;
+        border-radius: inherit;
+        background: #536c8f;
+      }
+
+      .report-recent-list {
+        display: grid;
+        gap: 9px;
+      }
+
+      .report-recent-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding-bottom: 9px;
+        border-bottom: 1px solid #edf1f5;
+      }
+
+      .report-recent-item:last-child {
+        padding-bottom: 0;
+        border-bottom: 0;
+      }
+
+      .report-recent-copy {
+        min-width: 0;
+      }
+
+      .report-recent-copy strong {
+        display: block;
+        overflow: hidden;
+        color: #2b3c52;
+        font-size: 12px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .report-recent-copy small {
+        display: block;
+        margin-top: 3px;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      .report-recent-amount {
+        flex: 0 0 auto;
+        color: #2b3c52;
+        font-size: 12px;
+        font-weight: 800;
+      }
+
+      .help-actions {
+        display: grid;
+        gap: 12px;
+      }
+
+      .breakdown-reasons {
+        padding: 16px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .breakdown-reasons h2 {
+        margin: 0 0 12px;
+        color: #2b3c52;
+        font-size: 16px;
+      }
+
+      .breakdown-reason-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 9px;
+      }
+
+      .breakdown-reason {
+        display: flex;
+        min-height: 48px;
+        align-items: center;
+        gap: 9px;
+        padding: 9px 10px;
+        border: 1px solid #e0e6ed;
+        border-radius: 11px;
+        color: #53677d;
+        background: #f8fafb;
+        cursor: pointer;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 750;
+        text-align: left;
+        transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+      }
+
+      .breakdown-reason span:first-child {
+        font-size: 20px;
+        line-height: 1;
+      }
+
+      .breakdown-reason:hover,
+      .breakdown-reason:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+      }
+
+      .breakdown-reason.is-selected {
+        border-color: #536c8f;
+        color: #2b3c52;
+        background: #eef3f7;
+        box-shadow: 0 0 0 2px rgba(83, 108, 143, 0.12);
+      }
+
+      .help-action {
+        display: flex;
+        min-height: 78px;
+        align-items: center;
+        gap: 13px;
+        width: 100%;
+        padding: 14px;
+        border: 1px solid #d5dde6;
+        border-radius: 15px;
+        color: #2b3c52;
+        text-align: left;
+        text-decoration: none;
+        background: #ffffff;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+        cursor: pointer;
+        font: inherit;
+        transition: border-color 160ms ease, transform 160ms ease, box-shadow 160ms ease;
+      }
+
+      .help-action:disabled {
+        color: #91a0b0;
+        background: #f4f7f9;
+        cursor: not-allowed;
+        opacity: 0.8;
+      }
+
+      .help-action:disabled .help-action-icon {
+        color: #91a0b0;
+        background: #e9eef3;
+      }
+
+      .help-action:disabled:hover {
+        border-color: #d5dde6;
+        transform: none;
+        box-shadow: 0 5px 14px rgba(43, 60, 82, 0.08);
+      }
+
+      .help-action:hover,
+      .help-action:focus-visible {
+        border-color: #9eafc3;
+        outline: none;
+        transform: translateY(-2px);
+        box-shadow: 0 9px 18px rgba(43, 60, 82, 0.12);
+      }
+
+      .help-action-icon {
+        display: grid;
+        width: 46px;
+        height: 46px;
+        flex: 0 0 auto;
+        place-items: center;
+        border-radius: 14px;
+        color: #536c8f;
+        background: #eef3f7;
+      }
+
+      .help-action-copy {
+        display: grid;
+        flex: 1;
+        gap: 4px;
+      }
+
+      .help-action-copy strong {
+        font-size: 15px;
+      }
+
+      .help-action-copy small {
+        color: #76869a;
+        font-size: 12px;
+        line-height: 1.35;
+      }
+
+      .help-action-chevron {
+        color: #536c77;
+        font-size: 18px;
+      }
+
+      .help-action.emergency {
+        border-color: #efc8cc;
+      }
+
+      .help-action.emergency .help-action-icon {
+        color: #b44d59;
+        background: #fff1f2;
+      }
+
+      .help-action-result {
+        margin: -3px 4px 2px;
+        color: #536c8f;
+        font-size: 12px;
+      }
+
+      .help-action-result[hidden] {
+        display: none;
+      }
+
+      .help-action-result a {
+        color: inherit;
+        font-weight: 750;
+      }
+
+      .location-share-controls {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+        padding-top: 12px;
+        border-top: 1px solid #e5ebf1;
+      }
+
+      .location-share-controls label {
+        color: #53677d;
+        font-size: 11px;
+        font-weight: 750;
+      }
+
+      .location-share-controls select {
+        width: 100%;
+        min-height: 42px;
+        padding: 0 11px;
+        border: 1px solid #d5dde6;
+        border-radius: 10px;
+        color: #2b3c52;
+        background: #f8fafb;
+        font: inherit;
+        font-size: 12px;
+      }
+
+      .share-location-button {
+        min-height: 42px;
+        border: 0;
+        border-radius: 10px;
+        color: #ffffff;
+        background: #536c8f;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: 750;
+      }
+
+      .share-location-button:hover,
+      .share-location-button:focus-visible {
+        background: #435b7e;
+        outline: none;
+      }
+
+      .location-share-status {
+        margin: 0;
+        color: #76869a;
+        font-size: 11px;
+      }
+
+      #home-screen .menu-card {
+        min-height: 132px;
+      }
+
+      #home-screen .menu-card h3 {
+        margin-bottom: 0;
+      }
+
+      #home-screen .menu-card p {
+        display: none;
+      }
+
+      #home-screen .menu-card .card-footer {
+        justify-content: flex-end;
+        margin-top: 18px;
+        font-size: 0;
+      }
+
+      #home-screen .menu-card .card-footer .arrow {
+        font-size: 13px;
+      }
+
+      @media (max-width: 430px) {
+        .vehicle-card {
+          align-items: flex-start;
+          gap: 12px;
+        }
+
+        .vehicle-copy {
+          min-width: 0;
+          flex: 1 1 auto;
+        }
+
+        .vehicle-status {
+          max-width: 44%;
+          white-space: normal;
+          text-align: center;
+        }
+
+        .vehicle-management {
+          position: static;
+        }
+
+        .vehicle-management-menu {
+          top: 54px;
+          right: 0;
+          width: min(214px, calc(100vw - 52px));
+          min-width: 0;
+        }
+
+        .breakdown-reason-list {
+          grid-template-columns: 1fr;
+        }
+
+        .detail-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .detail-card {
+          min-height: 176px;
+        }
+
+        .form-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .form-field.full-width {
+          grid-column: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark" aria-hidden="true">
+            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+              <path d="M7 9.35 8.3 6h7.4L17 9.35" />
+              <path d="M7 17v2M17 17v2M5 13h14" />
+            </svg>
+          </div>
+          <div>
+            <p class="brand-name">SIYARATI</p>
+            <p class="brand-subtitle">Votre voiture, simplement.</p>
+          </div>
+        </div>
+      </header>
+
+      <section id="home-screen" class="screen" aria-labelledby="page-title">
+      <section class="hero" aria-labelledby="page-title">
+        <p class="eyebrow">Tableau de bord</p>
+        <h1 id="page-title">Bonjour, prêt à prendre la route&nbsp;?</h1>
+        <p class="intro">Retrouvez rapidement toutes les informations importantes pour votre véhicule.</p>
+      </section>
+
+       <section class="vehicle-card" aria-label="Véhicule principal">
+        <div class="vehicle-copy">
+          <div class="vehicle-label-row">
+            <p class="vehicle-label">Véhicule principal</p>
+            <div class="vehicle-management">
+              <button class="vehicle-management-toggle" id="vehicle-management-toggle" type="button" aria-label="Ouvrir le menu du véhicule" title="Options du véhicule" aria-expanded="false" aria-controls="vehicle-management-menu">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <circle cx="5" cy="12" r="1.7" />
+                  <circle cx="12" cy="12" r="1.7" />
+                  <circle cx="19" cy="12" r="1.7" />
+                </svg>
+              </button>
+              <div class="vehicle-management-menu" id="vehicle-management-menu" hidden>
+                <button type="button" data-vehicle-action="add">1. Ajouter véhicule secondaire</button>
+                <button type="button" data-vehicle-action="delete">2. Supprimer véhicule principal</button>
+                <button type="button" data-vehicle-action="edit">3. Modifier véhicule principal</button>
+              </div>
+            </div>
+          </div>
+          <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
+          <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
+        </div>
+        <button class="vehicle-status" id="vehicle-alert-status" type="button" data-screen="alerts" data-requires-vehicle aria-label="Ouvrir les notifications des alertes">
+          <span class="status-dot"></span>
+          <span id="vehicle-alert-status-text">Notifications des alertes · 0</span>
+        </button>
+      </section>
+
+       <section class="smart-advice-panel" aria-labelledby="smart-advice-title">
+         <div class="smart-advice-heading">
+           <span class="smart-advice-heading-icon" aria-hidden="true">✦</span>
+           <div>
+             <h2 id="smart-advice-title">À faire pour votre voiture</h2>
+             <p>SIYARATI surveille les prochaines échéances</p>
+           </div>
+         </div>
+         <div class="smart-advice-list" id="smart-advice-list" aria-live="polite"></div>
+       </section>
+
+      <section aria-labelledby="services-title">
+        <div class="section-heading">
+          <h2 id="services-title">Que souhaitez-vous consulter&nbsp;?</h2>
+            <span>6 services</span>
+        </div>
+
+        <div class="menu-grid">
+          <article class="menu-card card-vehicle" data-screen="vehicle-info" role="button" tabindex="0">
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 17h14l1.2-5.2a2 2 0 0 0-1.95-2.45H5.75A2 2 0 0 0 3.8 11.8L5 17Z" />
+                  <path d="M7 9.35 8.3 6h7.4L17 9.35M7 17v2M17 17v2M5 13h14" />
+                </svg>
+              </div>
+              <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Tableau de bord</label>
+              <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
+                <option value="">Aucun véhicule enregistré</option>
+              </select>
+              <h3>Véhicule</h3>
+              <p>Gérez votre véhicule principal et vos véhicules secondaires.</p>
+            </div>
+            <span class="card-footer">Voir mes véhicules <span class="arrow">↗</span></span>
+          </article>
+
+          <button class="menu-card card-documents" type="button" data-screen="documents" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 3.8h8l4 4V20H6a2 2 0 0 1-2-2V5.8a2 2 0 0 1 2-2Z" />
+                  <path d="M14 3.8V8h4M8 12h8M8 15.5h6" />
+                </svg>
+              </div>
+              <h3>Documents</h3>
+              <p>Ajoutez la photo et les documents importants du véhicule.</p>
+            </div>
+            <span class="card-footer">Gérer les documents <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-reminders" type="button" data-screen="reminders" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M18 9a6 6 0 0 0-12 0c0 7-2.5 7.2-2.5 8.5h17C20.5 16.2 18 16 18 9Z" />
+                  <path d="M10 20h4" />
+                </svg>
+              </div>
+              <h3>Rappels</h3>
+              <p>Entretiens, contrôles et échéances à ne pas oublier.</p>
+            </div>
+            <span class="card-footer">Gérer les rappels <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-history" type="button" data-screen="expenses" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 6.5h16M4 12h16M4 17.5h10" />
+                  <path d="m17 15 2 2 3-3" />
+                </svg>
+              </div>
+              <h3>Historique</h3>
+              <p>Retrouvez les dépenses et les opérations enregistrées.</p>
+            </div>
+            <span class="card-footer">Voir l’historique <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-help" type="button" data-screen="troubleshooting" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                  <path d="m15.5 15.5 3.8 3.8M18.3 14.2l1.5-1.5" />
+                </svg>
+              </div>
+              <h3>Dépannage</h3>
+              <p>Obtenez de l’aide rapidement en cas de problème.</p>
+            </div>
+            <span class="card-footer">Besoin d’aide <span class="arrow">↗</span></span>
+          </button>
+
+          <button class="menu-card card-repair" type="button" data-screen="repair" data-requires-vehicle>
+            <div>
+              <div class="icon-badge" aria-hidden="true">
+                <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                  <path d="m15.5 15.5 3.8 3.8" />
+                </svg>
+              </div>
+              <h3>Réparation</h3>
+              <p>Suivez les réparations à prévoir pour votre véhicule.</p>
+            </div>
+            <span class="card-footer">Voir les réparations <span class="arrow">↗</span></span>
+          </button>
+        </div>
+      </section>
+
+      <p class="footnote">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+          <path d="m9 12 2 2 4-4" />
+        </svg>
+        Vos données sont protégées
+      </p>
+      </section>
+
+      <section id="vehicle-info-screen" class="screen is-hidden" aria-labelledby="vehicle-info-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon espace</p>
+            <h1 class="detail-title" id="vehicle-info-title">Véhicule</h1>
+            <p class="detail-intro">Gérez vos véhicules et choisissez le véhicule principal.</p>
+          </div>
+        </div>
+
+        <div class="vehicle-documents-panel">
+          <div class="vehicle-documents-heading">
+            <div>
+              <p class="detail-kicker">Véhicules</p>
+              <h2 class="vehicle-documents-title">Mes véhicules</h2>
+            </div>
+            <button class="add-vehicle-button" id="add-secondary-vehicle-button" type="button" aria-label="Ajouter un véhicule secondaire">
+              <span aria-hidden="true">+</span>
+              Ajouter
+            </button>
+          </div>
+          <div class="vehicle-list" id="vehicle-list" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="documents-screen" class="screen is-hidden" aria-labelledby="documents-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon espace</p>
+            <h1 class="detail-title" id="documents-title">Documents</h1>
+            <p class="detail-intro">Téléchargez les documents importants de votre véhicule principal.</p>
+          </div>
+        </div>
+
+        <div class="documents-upload-panel">
+          <p class="documents-panel-title">Télécharger un document</p>
+          <div class="documents-upload-list">
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">📷</div>
+              <div class="document-upload-copy">
+                <strong>Photo du véhicule</strong>
+                <small data-document-status="photo">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*" data-document-upload="photo" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🪪</div>
+              <div class="document-upload-copy">
+                <strong>Carte grise</strong>
+                <small data-document-status="carte-grise">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="carte-grise" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🪪</div>
+              <div class="document-upload-copy">
+                <strong>Permis de conduire</strong>
+                <small data-document-status="permis">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="permis" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🏷️</div>
+              <div class="document-upload-copy">
+                <strong>Vignette</strong>
+                <small data-document-status="vignette">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="vignette" />
+              </label>
+            </article>
+
+            <article class="document-upload-card">
+              <div class="document-upload-icon" aria-hidden="true">🛡️</div>
+              <div class="document-upload-copy">
+                <strong>Assurance</strong>
+                <small data-document-status="assurance">Aucun fichier téléchargé</small>
+              </div>
+              <label class="document-upload-button">
+                <span>Télécharger</span>
+                <input type="file" accept="image/*,.pdf" data-document-upload="assurance" />
+              </label>
+            </article>
+          </div>
+          <p class="documents-upload-note">Formats acceptés : images et PDF.</p>
+          <p class="documents-guidance" id="documents-guidance" aria-live="polite"></p>
+        </div>
+      </section>
+
+      <section id="expenses-screen" class="screen is-hidden" aria-labelledby="expenses-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour à Documents">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Documents</p>
+            <h1 class="detail-title" id="expenses-title">Historique</h1>
+            <p class="detail-intro">Retrouvez les dépenses et les opérations enregistrées pour votre véhicule.</p>
+          </div>
+        </div>
+
+        <div class="expense-summary">
+          <div>
+            <span class="expense-summary-label">Total des montants enregistrés</span>
+            <strong class="expense-summary-total" id="expense-total">0 DA</strong>
+          </div>
+          <span class="expense-summary-label" id="expense-count">0 rappel</span>
+        </div>
+
+        <div class="expense-list" id="expense-list" aria-live="polite"></div>
+
+        <div class="report-summary-grid">
+          <div class="report-stat">
+            <span class="report-stat-label">Total enregistré</span>
+            <strong class="report-stat-value" id="report-total">0 DA</strong>
+          </div>
+          <div class="report-stat">
+            <span class="report-stat-label">Opérations avec montant</span>
+            <strong class="report-stat-value" id="report-count">0</strong>
+          </div>
+        </div>
+
+        <section class="report-panel" aria-labelledby="report-category-title">
+          <h2 class="report-panel-title" id="report-category-title">Répartition par catégorie</h2>
+          <div class="report-bars" id="report-bars" aria-live="polite"></div>
+        </section>
+
+        <section class="report-panel" aria-labelledby="report-recent-title">
+          <h2 class="report-panel-title" id="report-recent-title">Dernières opérations enregistrées</h2>
+          <div class="report-recent-list" id="report-recent-list" aria-live="polite"></div>
+          <p class="history-insight" id="history-insight" aria-live="polite"></p>
+        </section>
+      </section>
+
+      <section id="vehicle-details-screen" class="screen is-hidden" aria-labelledby="vehicle-details-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="vehicle-info" aria-label="Retour aux informations">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Mon véhicule</p>
+            <h1 class="detail-title" id="vehicle-details-title">Infos véhicule</h1>
+            <p class="detail-intro">Ajoutez les informations principales de votre véhicule.</p>
+          </div>
+        </div>
+
+        <form class="personal-form" id="vehicle-details-form">
+          <div class="form-grid">
+            <div class="form-field full-width">
+              <label for="vehicle-category">Marques</label>
+              <select id="vehicle-category" name="vehicle-category" required>
+                <option value="" selected disabled>Choisir une marque</option>
+                <option value="Audi">Audi</option>
+                <option value="BMW">BMW</option>
+                <option value="Chery">Chery</option>
+                <option value="Chevrolet">Chevrolet</option>
+                <option value="Citroën">Citroën</option>
+                <option value="Dacia">Dacia</option>
+                <option value="DFSK">DFSK</option>
+                <option value="Dongfeng">Dongfeng</option>
+                <option value="Fiat">Fiat</option>
+                <option value="Ford">Ford</option>
+                <option value="Geely">Geely</option>
+                <option value="Great Wall">Great Wall</option>
+                <option value="Haval">Haval</option>
+                <option value="Hyundai">Hyundai</option>
+                <option value="Isuzu">Isuzu</option>
+                <option value="JAC">JAC</option>
+                <option value="JMC">JMC</option>
+                <option value="Kia">Kia</option>
+                <option value="Mahindra">Mahindra</option>
+                <option value="Mercedes-Benz">Mercedes-Benz</option>
+                <option value="Mitsubishi">Mitsubishi</option>
+                <option value="Nissan">Nissan</option>
+                <option value="Opel">Opel</option>
+                <option value="Peugeot">Peugeot</option>
+                <option value="Renault">Renault</option>
+                <option value="Seat">Seat</option>
+                <option value="Skoda">Skoda</option>
+                <option value="Suzuki">Suzuki</option>
+                <option value="Toyota">Toyota</option>
+                <option value="Volkswagen">Volkswagen</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="vehicle-model">Modèle</label>
+              <select id="vehicle-model" name="vehicle-model" required disabled>
+                <option value="" selected>Choisir d’abord une marque</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="vehicle-year">Année</label>
+              <input id="vehicle-year" name="vehicle-year" type="number" min="1950" max="2030" step="1" placeholder="Ex. 2021" required />
+            </div>
+
+            <div class="form-field">
+              <label for="engine-type">Motorisation</label>
+              <select id="engine-type" name="engine-type" required>
+                <option value="" selected disabled>Choisir</option>
+                <option value="Essence">Essence</option>
+                <option value="Diesel">Diesel</option>
+                <option value="Hybride">Hybride</option>
+                <option value="Électrique">Électrique</option>
+                <option value="GPL">GPL</option>
+              </select>
+            </div>
+
+            <div class="form-field full-width">
+              <label for="engine-details">Précision du moteur <span class="field-optional">(facultatif)</span></label>
+              <input id="engine-details" name="engine-details" type="text" placeholder="Ex. 1.5 dCi, 1.2 PureTech, 2.0 TDI…" />
+            </div>
+
+            <div class="form-field">
+              <label for="vehicle-registration">Matricule</label>
+              <input id="vehicle-registration" name="vehicle-registration" type="text" placeholder="Ex. 123456-16-00" required />
+            </div>
+
+            <div class="form-field full-width">
+              <label for="current-mileage">Kilométrage actuel</label>
+              <input id="current-mileage" name="current-mileage" type="number" min="0" step="1" placeholder="Ex. 48260" required />
+            </div>
+
+            <div class="form-field full-width">
+              <label for="last-oil-change-mileage">Kilométrage de la dernière vidange <span class="field-optional">(facultatif)</span></label>
+              <input id="last-oil-change-mileage" name="last-oil-change-mileage" type="number" min="0" step="1" placeholder="Ex. 35000" />
+            </div>
+
+          </div>
+
+          <button class="save-button" type="submit">Enregistrer mon véhicule</button>
+        </form>
+      </section>
+
+      <section id="reminders-screen" class="screen is-hidden" aria-labelledby="reminders-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Suivi du véhicule</p>
+            <h1 class="detail-title" id="reminders-title">Rappels</h1>
+            <p class="detail-intro">Consultez vos échéances d’entretien et les rappels enregistrés pour votre véhicule.</p>
+          </div>
+        </div>
+
+        <section class="reminder-section" aria-label="Ajouter un rappel">
+          <form class="personal-form custom-reminder-form" id="custom-reminder-form">
+            <div class="form-grid">
+              <div class="form-field">
+                <label for="custom-reminder-category">Catégorie</label>
+                <select id="custom-reminder-category" name="category" required>
+                  <option value="" selected disabled>Choisir</option>
+                  <option value="Contrôle">Contrôle</option>
+                  <option value="Assurance">Assurance</option>
+                  <option value="Vignette">Vignette</option>
+                  <option value="Entretien">Entretien</option>
+                  <option value="Révision">Révision</option>
+                  <option value="Pneus">Pneus</option>
+                  <option value="Freins">Freins</option>
+                  <option value="Batterie">Batterie</option>
+                  <option value="Filtres">Filtres</option>
+                  <option value="Autre">Autre</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-title">Rappel</label>
+                <input id="custom-reminder-title" name="title" type="text" placeholder="Ex. Remplacer les plaquettes" required />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-date">Date d’échéance</label>
+                <input id="custom-reminder-date" name="date" type="date" />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-mileage">Kilométrage cible</label>
+                <input id="custom-reminder-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 60000" />
+              </div>
+
+              <div class="form-field">
+                <label for="custom-reminder-amount">Montant</label>
+                <input id="custom-reminder-amount" name="amount" type="number" min="0" step="0.01" placeholder="Ex. 7500 DA" />
+              </div>
+
+              <div class="form-field full-width">
+                <label for="custom-reminder-notes">Notes</label>
+                <textarea id="custom-reminder-notes" name="notes" placeholder="Ajoutez une pièce ou une remarque utile."></textarea>
+              </div>
+            </div>
+
+            <button class="save-button" type="submit">Ajouter ce rappel</button>
+          </form>
+
+          <div class="custom-reminder-list" id="custom-reminder-list" aria-live="polite"></div>
+          <p class="reminder-section-intro manufacturer-note">Les alertes d’entretien constructeur apparaissent automatiquement dans Alertes après l’enregistrement de la marque, du modèle, de l’année, de la motorisation et du kilométrage.</p>
+        </section>
+      </section>
+
+      <section id="alerts-screen" class="screen is-hidden" aria-labelledby="alerts-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Surveillance</p>
+            <h1 class="detail-title" id="alerts-title">Alertes</h1>
+          </div>
+        </div>
+
+        <div class="alert-summary is-clear" id="alert-summary">
+          <div class="alert-summary-icon" aria-hidden="true">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m10.3 4.1-7 12.2A1.8 1.8 0 0 0 4.86 19h14.28a1.8 1.8 0 0 0 1.56-2.7l-7-12.2a1.8 1.8 0 0 0-3.12 0Z" />
+              <path d="M12 9v4.2M12 16.3h.01" />
+            </svg>
+          </div>
+          <div>
+            <span class="alert-summary-label">Notifications actives</span>
+            <strong class="alert-count" id="alert-count">0</strong>
+            <p class="alert-summary-copy" id="alert-summary-copy">Aucune échéance dans les prochaines 24 heures.</p>
+          </div>
+        </div>
+
+        <div class="alerts-list" id="alerts-list" aria-live="polite"></div>
+
+        <section class="notification-panel" aria-labelledby="notification-title">
+          <div class="notification-panel-icon" aria-hidden="true">🔔</div>
+          <div class="notification-panel-copy">
+            <h2 id="notification-title">Recevoir les alertes sans ouvrir SIYARATI</h2>
+            <p id="notification-status">Activez les notifications pour être prévenu des échéances et entretiens du véhicule principal.</p>
+            <p class="notification-panel-note">Stratégie choisie : notifications système via le navigateur, avec vérification en arrière-plan sur les appareils compatibles.</p>
+          </div>
+          <button class="notification-button" id="enable-notifications-button" type="button">Activer</button>
+        </section>
+
+      </section>
+
+      <section id="troubleshooting-screen" class="screen is-hidden" aria-labelledby="troubleshooting-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">🚨 JE SUIS EN PANNE</p>
+            <h1 class="detail-title" id="troubleshooting-title">Quel est le problème ?</h1>
+            <p class="detail-intro">Choisissez le motif, puis partagez votre position pour recevoir de l’aide.</p>
+          </div>
+        </div>
+
+        <div class="help-actions" aria-label="Actions de dépannage">
+          <section class="breakdown-reasons" aria-labelledby="breakdown-reasons-title">
+            <h2 id="breakdown-reasons-title">Quel est le problème ?</h2>
+            <div class="breakdown-reason-list" role="radiogroup" aria-label="Motif de la panne">
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Batterie">
+                <span aria-hidden="true">🔋</span>
+                <span>Batterie</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Crevaison">
+                <span aria-hidden="true">🛞</span>
+                <span>Crevaison</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Carburant">
+                <span aria-hidden="true">⛽</span>
+                <span>Carburant</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Surchauffe">
+                <span aria-hidden="true">🌡️</span>
+                <span>Surchauffe</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Panne moteur">
+                <span aria-hidden="true">🔧</span>
+                <span>Panne moteur</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Accident">
+                <span aria-hidden="true">🚗</span>
+                <span>Accident</span>
+              </button>
+              <button class="breakdown-reason" type="button" role="radio" aria-checked="false" data-reason="Je ne sais pas">
+                <span aria-hidden="true">❓</span>
+                <span>Je ne sais pas</span>
+              </button>
+            </div>
+          </section>
+
+          <button class="help-action" id="location-action" type="button" disabled>
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z" />
+                <circle cx="12" cy="10" r="2.5" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>📍 Ma position</strong>
+              <small id="location-status">Sélectionnez d’abord le problème</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">↗</span>
+          </button>
+          <div class="help-action-result" id="location-result" hidden>
+            <a id="location-map-link" href="#" target="_blank" rel="noopener">Ouvrir ma position dans Maps</a>
+            <div class="location-share-controls">
+              <label for="location-share-mode">Mode d’envoi</label>
+              <select id="location-share-mode">
+                <option value="whatsapp">WhatsApp</option>
+                <option value="sms">SMS</option>
+                <option value="facebook">Facebook</option>
+              </select>
+              <button class="share-location-button" id="send-location-button" type="button">Envoyer ma position</button>
+              <p class="location-share-status" id="location-share-status"></p>
+            </div>
+          </div>
+
+          <button class="help-action" id="tow-action" type="button">
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14.7 6.2a4.1 4.1 0 0 0-5.4 5.4l-5.2 5.2a1.8 1.8 0 0 0 2.55 2.55l5.2-5.2a4.1 4.1 0 0 0 5.4-5.4l-2.1 2.1-2.3-.6-.6-2.3 2.1-2.1Z" />
+                <path d="m15.5 15.5 3.8 3.8" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>2. Appeler dépanneur</strong>
+              <small id="tow-status">Le numéro sera enregistré au premier appel</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">☎</span>
+          </button>
+
+          <a class="help-action emergency" href="tel:1055" aria-label="Appeler les secours au 1055">
+            <span class="help-action-icon" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 21s7-3.5 7-9.2V5.4L12 3 5 5.4v6.4C5 17.5 12 21 12 21Z" />
+                <path d="M12 8v5M12 16h.01" />
+              </svg>
+            </span>
+            <span class="help-action-copy">
+              <strong>3. Appeler secours</strong>
+              <small>Protection Civile · 1055</small>
+            </span>
+            <span class="help-action-chevron" aria-hidden="true">☎</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="repair-screen" class="screen is-hidden" aria-labelledby="repair-title">
+        <div class="detail-header">
+          <button class="back-button" type="button" data-screen="home" aria-label="Retour à l’accueil">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m15 18-6-6 6-6" />
+            </svg>
+          </button>
+          <div>
+            <p class="detail-kicker">Suivi du véhicule</p>
+            <h1 class="detail-title" id="repair-title">Réparation</h1>
+            <p class="detail-intro">Ajoutez les interventions réalisées ou à prévoir pour ce véhicule.</p>
+          </div>
+        </div>
+        <form class="personal-form" id="repair-form">
+          <div class="form-grid">
+            <div class="form-field">
+              <label for="repair-category">Catégorie</label>
+              <select id="repair-category" name="category" required>
+                <option value="" selected disabled>Choisir</option>
+                <option value="Entretien">Entretien</option>
+                <option value="Moteur">Moteur</option>
+                <option value="Freins">Freins</option>
+                <option value="Pneus">Pneus</option>
+                <option value="Électricité">Électricité</option>
+                <option value="Carrosserie">Carrosserie</option>
+                <option value="Autre">Autre</option>
+              </select>
+            </div>
+            <div class="form-field">
+              <label for="repair-title-input">Intervention</label>
+              <input id="repair-title-input" name="title" type="text" placeholder="Ex. Remplacement des plaquettes" required />
+            </div>
+            <div class="form-field">
+              <label for="repair-date">Date</label>
+              <input id="repair-date" name="date" type="date" required />
+            </div>
+            <div class="form-field">
+              <label for="repair-mileage">Kilométrage</label>
+              <input id="repair-mileage" name="mileage" type="number" min="0" step="1" placeholder="Ex. 48260" />
+            </div>
+            <div class="form-field full-width">
+              <label for="repair-amount">Montant</label>
+              <input id="repair-amount" name="amount" type="number" min="0" step="0.01" placeholder="Ex. 12500 DA" />
+            </div>
+            <div class="form-field full-width">
+              <label for="repair-notes">Notes <span class="field-optional">(facultatif)</span></label>
+              <textarea id="repair-notes" name="notes" placeholder="Pièces remplacées, garage, garantie…"></textarea>
+            </div>
+          </div>
+          <button class="save-button" type="submit">Enregistrer la réparation</button>
+        </form>
+        <div class="repair-list" id="repair-list" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <div class="toast" role="status" aria-live="polite"></div>
+
+    <script>
+      const toast = document.querySelector(".toast");
+      let toastTimer;
+
+      const screens = {
+        home: document.querySelector("#home-screen"),
+        "vehicle-info": document.querySelector("#vehicle-info-screen"),
+        documents: document.querySelector("#documents-screen"),
+        "vehicle-details": document.querySelector("#vehicle-details-screen"),
+        reminders: document.querySelector("#reminders-screen"),
+        alerts: document.querySelector("#alerts-screen"),
+        expenses: document.querySelector("#expenses-screen"),
+        troubleshooting: document.querySelector("#troubleshooting-screen"),
+        repair: document.querySelector("#repair-screen"),
+      };
+
+      const REMINDERS_STORAGE_KEY = "siyarati-reminders";
+      const VEHICLE_STORAGE_KEY = "siyarati-vehicle";
+      const VEHICLES_STORAGE_KEY = "siyarati-vehicles";
+      const PRIMARY_VEHICLE_STORAGE_KEY = "siyarati-primary-vehicle";
+      const TOW_STORAGE_KEY = "siyarati-tow-number";
+      const CUSTOM_REMINDERS_STORAGE_KEY = "siyarati-custom-reminders";
+      const ALERT_ACTIONS_STORAGE_KEY = "siyarati-alert-actions";
+      const DOCUMENTS_STORAGE_KEY = "siyarati-documents";
+      const REPAIRS_STORAGE_KEY = "siyarati-repairs";
+      const NOTIFICATION_PREFERENCES_STORAGE_KEY = "siyarati-notification-preferences";
+      const reminderDefinitions = [
+        { key: "insurance-date", label: "Assurance" },
+        { key: "sticker-date", label: "Vignette" },
+        { key: "technical-inspection-date", label: "Contrôle technique" },
+        { key: "oil-change-date", label: "Dernière vidange" },
+      ];
+      let lastUrgentSignature = "";
+      let soundUnlocked = false;
+      let notificationRegistration = null;
+      const vehicleModels = {
+        Audi: ["A1", "A3", "A4", "A6", "Q2", "Q3", "Q5", "Q7"],
+        BMW: ["Série 1", "Série 2", "Série 3", "Série 5", "X1", "X3", "X5"],
+        Chery: ["Tiggo 2 Pro", "Tiggo 4 Pro", "Tiggo 7 Pro", "Tiggo 8 Pro"],
+        Chevrolet: ["Spark", "Aveo", "Cruze", "Captiva"],
+        "Citroën": ["C3", "C4", "C-Elysée", "Berlingo"],
+        Dacia: ["Sandero", "Logan", "Duster", "Stepway", "Dokker", "Lodgy"],
+        DFSK: ["Glory 500", "Glory 580", "K01"],
+        Dongfeng: ["S50", "SX5", "Rich"],
+        Fiat: ["500", "Panda", "Tipo", "Argo", "Doblo", "Ducato"],
+        Ford: ["Fiesta", "Focus", "Ranger", "Transit", "Kuga", "EcoSport"],
+        Geely: ["Emgrand", "Coolray", "GX3 Pro", "Geometry C"],
+        "Great Wall": ["Wingle 5", "Wingle 7", "Poer", "M4"],
+        Haval: ["Jolion", "H6"],
+        Hyundai: ["i10", "i20", "Accent", "Elantra", "Grand i10", "Creta", "Tucson", "Santa Fe"],
+        Isuzu: ["D-Max", "NPR", "NKR"],
+        JAC: ["JS2", "JS3", "JS4", "J7", "X200", "X250"],
+        JMC: ["Vigus", "Carry", "N720"],
+        Kia: ["Picanto", "Rio", "Cerato", "Carens", "Sportage", "Sorento"],
+        Mahindra: ["KUV100", "Scorpio", "Thar", "Bolero"],
+        "Mercedes-Benz": ["Classe A", "Classe C", "Classe E", "GLA", "GLC", "Sprinter"],
+        Mitsubishi: ["Lancer", "ASX", "Outlander", "L200", "Canter"],
+        Nissan: ["Micra", "Sunny", "Qashqai", "X-Trail", "Navara", "Patrol"],
+        Opel: ["Corsa", "Astra", "Crossland", "Grandland", "Combo"],
+        Peugeot: ["108", "208", "301", "308", "408", "2008", "3008", "5008", "Partner", "Expert"],
+        Renault: ["Clio", "Symbol", "Logan", "Fluence", "Mégane", "Captur", "Arkana", "Kangoo", "Master"],
+        Seat: ["Ibiza", "Leon", "Arona", "Ateca"],
+        Skoda: ["Fabia", "Octavia", "Scala", "Kamiq", "Karoq", "Kodiaq"],
+        Suzuki: ["Alto", "Swift", "Celerio", "Vitara", "Jimny", "Carry"],
+        Toyota: ["Yaris", "Corolla", "Etios", "Aygo", "RAV4", "Hilux", "Land Cruiser", "Proace"],
+        Volkswagen: ["Polo", "Golf", "Passat", "Tiguan", "T-Roc", "Caddy", "Transporter"],
+        Autre: ["Autre modèle"],
+      };
+      const manufacturerMaintenanceProfiles = {
+        Audi: { default: 15000, Électrique: 30000 },
+        BMW: { default: 15000, Électrique: 30000 },
+        Chery: { default: 10000, Électrique: 30000 },
+        Chevrolet: { default: 15000, Électrique: 30000 },
+        "Citroën": { default: 15000, Électrique: 30000 },
+        Dacia: { default: 15000, Électrique: 30000 },
+        DFSK: { default: 10000, Électrique: 30000 },
+        Dongfeng: { default: 10000, Électrique: 30000 },
+        Fiat: { default: 15000, Électrique: 30000 },
+        Ford: { default: 15000, Électrique: 30000 },
+        Geely: { default: 15000, Électrique: 30000 },
+        "Great Wall": { default: 10000, Électrique: 30000 },
+        Haval: { default: 10000, Électrique: 30000 },
+        Hyundai: { default: 15000, Électrique: 30000 },
+        Isuzu: { default: 10000, Électrique: 30000 },
+        JAC: { default: 10000, Électrique: 30000 },
+        JMC: { default: 10000, Électrique: 30000 },
+        Kia: { default: 15000, Électrique: 30000 },
+        Mahindra: { default: 10000, Électrique: 30000 },
+        "Mercedes-Benz": { default: 15000, Électrique: 30000 },
+        Mitsubishi: { default: 15000, Électrique: 30000 },
+        Nissan: { default: 15000, Électrique: 30000 },
+        Opel: { default: 15000, Électrique: 30000 },
+        Peugeot: { default: 15000, Électrique: 30000 },
+        Renault: { default: 15000, Électrique: 30000 },
+        Seat: { default: 15000, Électrique: 30000 },
+        Skoda: { default: 15000, Électrique: 30000 },
+        Suzuki: { default: 10000, Électrique: 30000 },
+        Toyota: { default: 15000, Électrique: 30000 },
+        Volkswagen: { default: 15000, Électrique: 30000 },
+      };
+
+      function populateVehicleModels(brand, selectedModel = "") {
+        const modelField = document.querySelector("#vehicle-model");
+        const models = vehicleModels[brand] || [];
+        modelField.innerHTML = "";
+
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = brand ? "Choisir un modèle" : "Choisir d’abord une marque";
+        placeholder.selected = !selectedModel;
+        placeholder.disabled = true;
+        modelField.appendChild(placeholder);
+
+        models.forEach((model) => {
+          const option = document.createElement("option");
+          option.value = model;
+          option.textContent = model;
+          option.selected = model === selectedModel;
+          modelField.appendChild(option);
+        });
+
+        modelField.disabled = !brand || models.length === 0;
+      }
+
+      function showToast(message) {
+        toast.textContent = message;
+        toast.classList.add("show");
+        window.clearTimeout(toastTimer);
+        toastTimer = window.setTimeout(() => toast.classList.remove("show"), 2600);
+      }
+
+      function showScreen(name) {
+        Object.entries(screens).forEach(([screenName, screen]) => {
+          screen.classList.toggle("is-hidden", screenName !== name);
+        });
+        if (name === "alerts") {
+          checkAlerts({ playSound: true });
+        }
+        if (name === "expenses") {
+          renderExpenses();
+          renderReports();
+        }
+        if (name === "repair") {
+          renderRepairs();
+        }
+        if (name === "documents") {
+          renderDocuments();
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      function getSavedReminders() {
+        try {
+          const vehicleId = getPrimaryVehicleId();
+          const key = vehicleId ? `${REMINDERS_STORAGE_KEY}:${vehicleId}` : REMINDERS_STORAGE_KEY;
+          const scopedValue = localStorage.getItem(key);
+          if (vehicleId && scopedValue === null) {
+            const legacyValue = localStorage.getItem(REMINDERS_STORAGE_KEY);
+            if (legacyValue !== null) {
+              localStorage.setItem(key, legacyValue);
+              localStorage.removeItem(REMINDERS_STORAGE_KEY);
+              return JSON.parse(legacyValue || "{}");
+            }
+          }
+          return JSON.parse(scopedValue || "{}");
+        } catch {
+          return {};
+        }
+      }
+
+      function getSavedVehicles() {
+        try {
+          const savedVehicles = JSON.parse(localStorage.getItem(VEHICLES_STORAGE_KEY) || "null");
+          if (Array.isArray(savedVehicles)) {
+            return savedVehicles.filter((vehicle) => vehicle?.id && vehicle?.data && typeof vehicle.data === "object");
+          }
+
+          const legacyVehicle = JSON.parse(localStorage.getItem(VEHICLE_STORAGE_KEY) || "{}");
+          if (legacyVehicle && typeof legacyVehicle === "object" && Object.keys(legacyVehicle).length) {
+            const migratedVehicle = { id: "vehicle-primary", data: legacyVehicle };
+            localStorage.setItem(VEHICLES_STORAGE_KEY, JSON.stringify([migratedVehicle]));
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, migratedVehicle.id);
+            return [migratedVehicle];
+          }
+          return [];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveVehicles(vehicles) {
+        localStorage.setItem(VEHICLES_STORAGE_KEY, JSON.stringify(vehicles));
+      }
+
+      function getPrimaryVehicleId() {
+        const vehicles = getSavedVehicles();
+        if (!vehicles.length) {
+          return "";
+        }
+
+        const storedPrimaryId = localStorage.getItem(PRIMARY_VEHICLE_STORAGE_KEY);
+        const primaryVehicle = vehicles.find((vehicle) => vehicle.id === storedPrimaryId) || vehicles[0];
+        if (storedPrimaryId !== primaryVehicle.id) {
+          localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, primaryVehicle.id);
+        }
+        return primaryVehicle.id;
+      }
+
+      function getSavedVehicle() {
+        const primaryId = getPrimaryVehicleId();
+        return getSavedVehicles().find((vehicle) => vehicle.id === primaryId)?.data || {};
+      }
+
+      function getVehicleScopedStorageKey(baseKey, vehicleId = getPrimaryVehicleId()) {
+        return vehicleId ? `${baseKey}:${vehicleId}` : baseKey;
+      }
+
+      function getSavedCustomReminders() {
+        try {
+          const key = getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY);
+          let storedValue = localStorage.getItem(key);
+          if (getPrimaryVehicleId() && storedValue === null) {
+            const legacyValue = localStorage.getItem(CUSTOM_REMINDERS_STORAGE_KEY);
+            if (legacyValue !== null) {
+              localStorage.setItem(key, legacyValue);
+              localStorage.removeItem(CUSTOM_REMINDERS_STORAGE_KEY);
+              storedValue = legacyValue;
+            }
+          }
+          const reminders = JSON.parse(storedValue || "[]");
+          return Array.isArray(reminders) ? reminders : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function getSavedAlertActions() {
+        try {
+          const key = getVehicleScopedStorageKey(ALERT_ACTIONS_STORAGE_KEY);
+          const actions = JSON.parse(localStorage.getItem(key) || "{}");
+          return actions && typeof actions === "object" ? actions : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function getSavedNotificationPreferences() {
+        try {
+          const key = getVehicleScopedStorageKey(NOTIFICATION_PREFERENCES_STORAGE_KEY);
+          const preferences = JSON.parse(localStorage.getItem(key) || "{}");
+          return preferences && typeof preferences === "object" ? preferences : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function saveNotificationPreferences(preferences) {
+        const vehicleId = getPrimaryVehicleId();
+        if (!vehicleId) {
+          return;
+        }
+        localStorage.setItem(
+          getVehicleScopedStorageKey(NOTIFICATION_PREFERENCES_STORAGE_KEY, vehicleId),
+          JSON.stringify(preferences),
+        );
+      }
+
+      function updateNotificationControls() {
+        const button = document.querySelector("#enable-notifications-button");
+        const status = document.querySelector("#notification-status");
+        if (!button || !status) {
+          return;
+        }
+
+        const hasVehicle = Boolean(getPrimaryVehicleId());
+        const hasNotificationApi = "Notification" in window;
+        const preferences = getSavedNotificationPreferences();
+        const isEnabled = hasNotificationApi &&
+          Notification.permission === "granted" &&
+          preferences.enabled === true;
+
+        if (!hasVehicle) {
+          status.textContent = "Ajoutez un véhicule principal pour activer ses notifications.";
+          button.textContent = "Ajouter un véhicule";
+          button.disabled = true;
+          return;
+        }
+        if (!hasNotificationApi) {
+          status.textContent = "Les notifications système ne sont pas disponibles dans ce navigateur.";
+          button.textContent = "Indisponible";
+          button.disabled = true;
+          return;
+        }
+        if (Notification.permission === "denied") {
+          status.textContent = "Les notifications sont bloquées. Autorisez-les dans les réglages du navigateur.";
+          button.textContent = "Notifications bloquées";
+          button.disabled = true;
+          return;
+        }
+        if (isEnabled) {
+          status.textContent = preferences.backgroundEnabled
+            ? "Notifications actives pour ce véhicule, y compris lors des vérifications en arrière-plan."
+            : "Notifications actives pour ce véhicule lorsque le navigateur peut effectuer la vérification.";
+          button.textContent = "Notifications activées";
+          button.disabled = true;
+          return;
+        }
+
+        status.textContent = Notification.permission === "granted"
+          ? "Autorisez SIYARATI à prévenir ce véhicule des échéances et entretiens à venir."
+          : "Activez les notifications pour être prévenu des échéances et entretiens du véhicule principal.";
+        button.textContent = "Activer";
+        button.disabled = false;
+      }
+
+      async function registerBackgroundNotificationCheck() {
+        if (!notificationRegistration) {
+          return false;
+        }
+
+        if ("periodicSync" in notificationRegistration) {
+          try {
+            await notificationRegistration.periodicSync.register("siyarati-alert-check", {
+              minInterval: 15 * 60 * 1000,
+            });
+            return true;
+          } catch {
+            // Some browsers expose periodicSync but require an installed PWA.
+          }
+        }
+
+        if ("sync" in notificationRegistration) {
+          try {
+            await notificationRegistration.sync.register("siyarati-alert-check");
+          } catch {
+            // The foreground interval remains the fallback for this browser.
+          }
+        }
+        return false;
+      }
+
+      function getNotificationSnapshot() {
+        const vehicleId = getPrimaryVehicleId();
+        if (!vehicleId) {
+          return null;
+        }
+
+        const vehicle = getSavedVehicle();
+        const currentMileage = getCurrentMileage();
+        return {
+          vehicleId,
+          vehicleName: getVehicleDisplayName(vehicle),
+          currentMileage,
+          entries: getReminderEntries().map((entry) => ({
+            key: entry.key,
+            label: entry.label,
+            value: entry.value,
+            date: entry.date ? entry.value : null,
+            targetMileage: entry.targetMileage ?? null,
+            action: entry.action || null,
+          })),
+          updatedAt: Date.now(),
+        };
+      }
+
+      async function syncNotificationState({ notify = false } = {}) {
+        if (!notificationRegistration?.active || !("Notification" in window) || Notification.permission !== "granted") {
+          return;
+        }
+        const snapshot = getNotificationSnapshot();
+        const preferences = snapshot ? getSavedNotificationPreferences() : {};
+        if (preferences.enabled !== true) {
+          notificationRegistration.active.postMessage({
+            type: "SYNC_ALERTS",
+            activeVehicleId: "",
+            snapshot: null,
+            notify: false,
+          });
+          return;
+        }
+
+        notificationRegistration.active.postMessage({
+          type: "SYNC_ALERTS",
+          activeVehicleId: snapshot?.vehicleId || "",
+          snapshot,
+          notify,
+        });
+      }
+
+      async function initializeNotificationSupport() {
+        updateNotificationControls();
+        if (!("serviceWorker" in navigator)) {
+          return;
+        }
+
+        try {
+          await navigator.serviceWorker.register("./sw.js");
+          notificationRegistration = await navigator.serviceWorker.ready;
+          const preferences = getSavedNotificationPreferences();
+          if ("Notification" in window && Notification.permission === "granted" && preferences.enabled === true) {
+            const backgroundEnabled = await registerBackgroundNotificationCheck();
+            if (preferences.backgroundEnabled !== backgroundEnabled) {
+              saveNotificationPreferences({ ...preferences, backgroundEnabled });
+            }
+            await syncNotificationState({ notify: true });
+          }
+          updateNotificationControls();
+        } catch {
+          updateNotificationControls();
+        }
+      }
+
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.addEventListener("message", (event) => {
+          if (event.data?.type !== "OPEN_ALERTS") {
+            return;
+          }
+          const vehicleId = event.data.vehicleId;
+          if (vehicleId && getSavedVehicles().some((vehicle) => vehicle.id === vehicleId)) {
+            setPrimaryVehicle(vehicleId);
+          }
+          showScreen("alerts");
+        });
+      }
+
+      function getSavedDocuments() {
+        try {
+          const key = getVehicleScopedStorageKey(DOCUMENTS_STORAGE_KEY);
+          const documents = JSON.parse(localStorage.getItem(key) || "{}");
+          return documents && typeof documents === "object" ? documents : {};
+        } catch {
+          return {};
+        }
+      }
+
+      function getSavedRepairs() {
+        try {
+          const key = getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY);
+          const repairs = JSON.parse(localStorage.getItem(key) || "[]");
+          return Array.isArray(repairs) ? repairs : [];
+        } catch {
+          return [];
+        }
+      }
+
+      function formatDocumentSize(size) {
+        const bytes = Number(size);
+        if (!Number.isFinite(bytes) || bytes <= 0) {
+          return "";
+        }
+        if (bytes < 1024 * 1024) {
+          return `${Math.round(bytes / 1024)} Ko`;
+        }
+        return `${(bytes / (1024 * 1024)).toFixed(1)} Mo`;
+      }
+
+      function renderDocuments() {
+        const documents = getSavedDocuments();
+        const guidance = document.querySelector("#documents-guidance");
+        document.querySelectorAll("[data-document-status]").forEach((statusElement) => {
+          const documentFile = documents[statusElement.dataset.documentStatus];
+          statusElement.classList.toggle("has-file", Boolean(documentFile));
+          statusElement.textContent = documentFile
+            ? `${documentFile.name} · ${formatDocumentSize(documentFile.size)}`
+            : "Aucun fichier téléchargé";
+        });
+        if (guidance) {
+          const requiredDocuments = [
+            ["carte-grise", "la carte grise"],
+            ["assurance", "l’assurance"],
+            ["vignette", "la vignette"],
+          ];
+          const missingDocuments = requiredDocuments
+            .filter(([key]) => !documents[key])
+            .map(([, label]) => label);
+          guidance.textContent = missingDocuments.length
+            ? `Pour un dossier complet, ajoutez ${missingDocuments.join(", ")}.`
+            : "Dossier documentaire complet : SIYARATI peut mieux vous rappeler vos échéances.";
+        }
+      }
+
+      function formatMileage(value) {
+        const mileage = Number(value);
+        return Number.isFinite(mileage) && mileage >= 0
+          ? `${new Intl.NumberFormat("fr-FR").format(mileage)} km`
+          : "48 260 km";
+      }
+
+      function formatAmount(value) {
+        const amount = Number(value);
+        return Number.isFinite(amount) && amount >= 0
+          ? `${new Intl.NumberFormat("fr-FR", { maximumFractionDigits: 2 }).format(amount)} DA`
+          : "";
+      }
+
+      function getCurrentMileage() {
+        const mileage = Number(getSavedVehicle()["current-mileage"]);
+        return Number.isFinite(mileage) && mileage >= 0 ? mileage : null;
+      }
+
+      function updateMileageDisplay(value) {
+        const mileageDisplay = document.querySelector("#current-mileage-display");
+        if (mileageDisplay) {
+          mileageDisplay.textContent = formatMileage(value);
+        }
+      }
+
+      function updateVehicleDisplay(vehicle = {}) {
+        const nameDisplay = document.querySelector("#vehicle-name-display");
+        const metaDisplay = document.querySelector("#vehicle-meta-display");
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
+        const model = vehicle["vehicle-model"] || "";
+        const vehicleName = [brand, model].filter(Boolean).join(" ");
+        const details = [];
+
+        if (vehicle["vehicle-registration"]) {
+          details.push(vehicle["vehicle-registration"]);
+        }
+        if (vehicle["vehicle-year"]) {
+          details.push(vehicle["vehicle-year"]);
+        }
+        if (vehicle["engine-type"]) {
+          details.push(vehicle["engine-type"]);
+        }
+        if (vehicle["current-mileage"] !== undefined && vehicle["current-mileage"] !== "") {
+          details.push(formatMileage(vehicle["current-mileage"]));
+        }
+
+        nameDisplay.textContent = vehicleName || "Aucun véhicule enregistré";
+        metaDisplay.textContent = details.length
+          ? details.join(" · ")
+          : "Ajoutez votre véhicule dans Documents";
+      }
+
+      function getVehicleDisplayName(vehicle = {}) {
+        return [vehicle["vehicle-category"] || vehicle["vehicle-brand"], vehicle["vehicle-model"]]
+          .filter(Boolean)
+          .join(" ") || "Véhicule sans nom";
+      }
+
+      function renderDashboardVehicleSelector() {
+        const selector = document.querySelector("#dashboard-vehicle-select");
+        if (!selector) {
+          return;
+        }
+
+        const vehicles = getSavedVehicles();
+        const primaryId = getPrimaryVehicleId();
+        selector.innerHTML = "";
+
+        if (!vehicles.length) {
+          const emptyOption = document.createElement("option");
+          emptyOption.value = "";
+          emptyOption.textContent = "Aucun véhicule enregistré";
+          selector.appendChild(emptyOption);
+          selector.disabled = true;
+          return;
+        }
+
+        vehicles.forEach(({ id, data }) => {
+          const option = document.createElement("option");
+          option.value = id;
+          option.textContent = getVehicleDisplayName(data);
+          option.selected = id === primaryId;
+          selector.appendChild(option);
+        });
+        selector.disabled = false;
+      }
+
+      function createVehicleId() {
+        return `vehicle-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+      }
+
+      function clearVehicleData(vehicleId) {
+        [
+          REMINDERS_STORAGE_KEY,
+          CUSTOM_REMINDERS_STORAGE_KEY,
+          ALERT_ACTIONS_STORAGE_KEY,
+           NOTIFICATION_PREFERENCES_STORAGE_KEY,
+          DOCUMENTS_STORAGE_KEY,
+          REPAIRS_STORAGE_KEY,
+          TOW_STORAGE_KEY,
+        ].forEach((baseKey) => localStorage.removeItem(`${baseKey}:${vehicleId}`));
+      }
+
+      function updateVehicleAvailability() {
+        const hasPrimaryVehicle = Boolean(getPrimaryVehicleId());
+        document.querySelectorAll("[data-requires-vehicle]").forEach((card) => {
+          card.classList.toggle("is-disabled", !hasPrimaryVehicle);
+          card.setAttribute("aria-disabled", String(!hasPrimaryVehicle));
+        });
+      }
+
+      function renderVehicleList() {
+        const vehicleList = document.querySelector("#vehicle-list");
+        if (!vehicleList) {
+          return;
+        }
+
+        const vehicles = getSavedVehicles();
+        const primaryId = getPrimaryVehicleId();
+        if (!vehicles.length) {
+          vehicleList.innerHTML = `
+            <div class="vehicle-list-empty">
+              <strong>Aucun véhicule enregistré</strong>
+              <p>Utilisez le bouton + pour ajouter un véhicule secondaire.</p>
+            </div>
+          `;
+          return;
+        }
+
+        vehicleList.innerHTML = vehicles
+          .map(({ id, data }) => {
+            const isPrimary = id === primaryId;
+            const registration = data["vehicle-registration"] || "Matricule non renseigné";
+            return `
+              <article class="vehicle-list-item${isPrimary ? " is-primary" : ""}">
+                <button class="vehicle-list-main" type="button" data-select-vehicle="${escapeHtml(id)}" aria-label="Sélectionner ${escapeHtml(getVehicleDisplayName(data))}">
+                  <span class="vehicle-list-icon" aria-hidden="true">🚗</span>
+                  <span class="vehicle-list-copy">
+                    <strong>${escapeHtml(getVehicleDisplayName(data))}</strong>
+                    <small>${isPrimary ? "Véhicule principal" : "Véhicule secondaire"} · ${escapeHtml(registration)}</small>
+                  </span>
+                </button>
+                <div class="vehicle-list-actions">
+                  <button class="vehicle-list-menu-toggle" type="button" data-vehicle-menu-toggle aria-label="Ouvrir le menu de ${escapeHtml(getVehicleDisplayName(data))}" aria-expanded="false">···</button>
+                  <div class="vehicle-list-menu" data-vehicle-menu hidden>
+                    <button class="vehicle-list-action" type="button" data-vehicle-list-action="primary" data-vehicle-id="${escapeHtml(id)}" ${isPrimary ? "disabled" : ""}>${isPrimary ? "Véhicule principal" : "Définir comme principal"}</button>
+                    <button class="vehicle-list-action" type="button" data-vehicle-list-action="edit" data-vehicle-id="${escapeHtml(id)}">Modifier</button>
+                    <button class="vehicle-list-action is-danger" type="button" data-vehicle-list-action="delete" data-vehicle-id="${escapeHtml(id)}">Supprimer</button>
+                  </div>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function setPrimaryVehicle(vehicleId) {
+        if (!getSavedVehicles().some((vehicle) => vehicle.id === vehicleId)) {
+          return;
+        }
+        localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, vehicleId);
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        renderDashboardVehicleSelector();
+        renderDocuments();
+        updateVehicleAvailability();
+        updateNotificationControls();
+        checkAlerts();
+        showToast("Le véhicule principal a été changé.");
+      }
+
+      function deleteVehicle(vehicleId) {
+        const vehicles = getSavedVehicles();
+        const wasPrimary = getPrimaryVehicleId() === vehicleId;
+        clearVehicleData(vehicleId);
+        const remainingVehicles = vehicles.filter((vehicle) => vehicle.id !== vehicleId);
+        saveVehicles(remainingVehicles);
+
+        if (wasPrimary) {
+          if (remainingVehicles.length) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, remainingVehicles[0].id);
+          } else {
+            localStorage.removeItem(PRIMARY_VEHICLE_STORAGE_KEY);
+          }
+        }
+        localStorage.removeItem(VEHICLE_STORAGE_KEY);
+        prepareVehicleForm();
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        renderDashboardVehicleSelector();
+        renderDocuments();
+        updateVehicleAvailability();
+        updateNotificationControls();
+        checkAlerts();
+      }
+
+      function getAlertStatus(hoursRemaining) {
+        if (hoursRemaining < 0) {
+          return "expired";
+        }
+
+        const daysRemaining = hoursRemaining / 24;
+        if (daysRemaining <= 2) {
+          return "critical";
+        }
+        if (daysRemaining <= 3) {
+          return "warning";
+        }
+        if (daysRemaining <= 7) {
+          return "safe";
+        }
+        return "upcoming";
+      }
+
+      function getMileageAlertStatus(mileageRemaining) {
+        if (mileageRemaining < 0) {
+          return "expired";
+        }
+        if (mileageRemaining <= 100) {
+          return "critical";
+        }
+        if (mileageRemaining <= 200) {
+          return "warning";
+        }
+        if (mileageRemaining <= 300) {
+          return "safe";
+        }
+        return "upcoming";
+      }
+
+      function getMostUrgentAlertStatus(...statuses) {
+        const priority = {
+          upcoming: 0,
+          safe: 1,
+          warning: 2,
+          critical: 3,
+          expired: 4,
+        };
+        return statuses.sort((first, second) => priority[second] - priority[first])[0] || "upcoming";
+      }
+
+      function getManufacturerMaintenanceEntries() {
+        const vehicle = getSavedVehicle();
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"];
+        const model = vehicle["vehicle-model"];
+        const engineType = vehicle["engine-type"];
+        const profile = manufacturerMaintenanceProfiles[brand];
+        const currentMileage = getCurrentMileage();
+
+        if (!brand || !model || !engineType || !profile || currentMileage === null) {
+          return [];
+        }
+
+        const interval = profile[engineType] || profile.default;
+        if (!interval) {
+          return [];
+        }
+
+        const lastServiceMileage = Number(vehicle["last-oil-change-mileage"]);
+        const baselineMileage = Number.isFinite(lastServiceMileage) && lastServiceMileage >= 0
+          ? lastServiceMileage
+          : currentMileage;
+        const targetMileage = baselineMileage + interval;
+        const mileageRemaining = targetMileage - currentMileage;
+        const mileageStatus = getMileageAlertStatus(mileageRemaining);
+
+        return [{
+          key: `manufacturer-service-${brand}-${model}`,
+          label: `Entretien constructeur · ${brand} ${model}`,
+          category: "Constructeur",
+          value: targetMileage,
+          date: null,
+          targetMileage,
+          hoursRemaining: null,
+          mileageRemaining,
+          dateStatus: "upcoming",
+          mileageStatus,
+          status: mileageStatus,
+          isAutomatic: true,
+        }];
+      }
+
+      function getReminderEntries() {
+        const savedReminders = getSavedReminders();
+        const fixedEntries = reminderDefinitions
+          .filter(({ key }) => savedReminders[key])
+          .map(({ key, label }) => {
+            const date = new Date(`${savedReminders[key]}T00:00:00`);
+            const hoursRemaining = (date.getTime() - Date.now()) / (1000 * 60 * 60);
+            const status = getAlertStatus(hoursRemaining);
+
+            return {
+              key,
+              label,
+              value: savedReminders[key],
+              date,
+              hoursRemaining,
+              mileageRemaining: null,
+              dateStatus: status,
+              mileageStatus: "upcoming",
+              status,
+            };
+          });
+
+        const currentMileage = getCurrentMileage();
+        const customEntries = getSavedCustomReminders().map((reminder) => {
+          const date = reminder.date ? new Date(`${reminder.date}T00:00:00`) : null;
+          const targetMileage = reminder.mileage ? Number(reminder.mileage) : null;
+          const hoursRemaining = date ? (date.getTime() - Date.now()) / (1000 * 60 * 60) : null;
+          const mileageRemaining = targetMileage !== null && currentMileage !== null
+            ? targetMileage - currentMileage
+            : null;
+          const dateStatus = date ? getAlertStatus(hoursRemaining) : "upcoming";
+          const mileageStatus = mileageRemaining !== null ? getMileageAlertStatus(mileageRemaining) : "upcoming";
+          const status = getMostUrgentAlertStatus(dateStatus, mileageStatus);
+
+          return {
+            key: `custom-${reminder.id}`,
+            label: reminder.title,
+            category: reminder.category,
+            value: reminder.date || reminder.mileage,
+            date,
+            targetMileage,
+            hoursRemaining,
+            mileageRemaining,
+            dateStatus,
+            mileageStatus,
+            status,
+          };
+        });
+
+        const manufacturerEntries = getManufacturerMaintenanceEntries();
+
+        const actions = getSavedAlertActions();
+        return [...fixedEntries, ...customEntries, ...manufacturerEntries]
+          .sort((first, second) => {
+          const firstTarget = first.date ? first.date.getTime() : first.targetMileage ?? Number.POSITIVE_INFINITY;
+          const secondTarget = second.date ? second.date.getTime() : second.targetMileage ?? Number.POSITIVE_INFINITY;
+          return firstTarget - secondTarget;
+          })
+          .map((entry) => ({ ...entry, action: actions[entry.key] || null }));
+      }
+
+      function formatReminderDate(date) {
+        return new Intl.DateTimeFormat("fr-FR", {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+        }).format(date);
+      }
+
+      function getReminderStatusLabel(entry) {
+        const displayState = getAlertDisplayState(entry);
+        if (displayState.status === "done") {
+          return "Traitée";
+        }
+
+        if (displayState.status === "snoozed" && entry.action?.until) {
+          return `Reportée au ${formatReminderDate(new Date(`${entry.action.until}T00:00:00`))}`;
+        }
+
+        if (entry.status === "expired") {
+          return "Expiré";
+        }
+
+        if (entry.status === "critical" || entry.status === "warning" || entry.status === "safe") {
+          const targets = [];
+          if (entry.hoursRemaining !== null && entry.hoursRemaining !== undefined && entry.dateStatus === entry.status) {
+            const days = Math.max(1, Math.ceil(entry.hoursRemaining / 24));
+            targets.push(`Dans ${days} jour${days > 1 ? "s" : ""}`);
+          }
+          if (entry.mileageRemaining !== null && entry.mileageStatus === entry.status) {
+            targets.push(`Dans ${Math.max(0, Math.ceil(entry.mileageRemaining))} km`);
+          }
+          return targets.join(" · ") || "À venir";
+        }
+
+        return "À venir";
+      }
+
+      function getAlertDisplayState(entry) {
+        if (entry.action?.state === "done") {
+          return { status: "done", active: false };
+        }
+
+        if (entry.action?.state === "snoozed" && entry.action.until) {
+          const snoozeUntil = new Date(`${entry.action.until}T23:59:59`);
+          if (snoozeUntil.getTime() > Date.now()) {
+            return { status: "snoozed", active: false };
+          }
+        }
+
+        return { status: entry.status, active: true };
+      }
+
+      function formatReminderTarget(entry) {
+        const targets = [];
+        if (entry.date) {
+          targets.push(`Échéance : ${formatReminderDate(entry.date)}`);
+        }
+        if (entry.targetMileage !== null) {
+          targets.push(`Objectif : ${formatMileage(entry.targetMileage)}`);
+        }
+        return targets.join(" · ") || "Échéance à définir";
+      }
+
+      function getAlertAdvice(entry) {
+        if (entry.status === "expired") {
+          return "À faire maintenant : régularisez cette échéance.";
+        }
+        if (entry.mileageRemaining !== null && entry.mileageRemaining !== undefined) {
+          if (entry.mileageRemaining <= 300) {
+            return `Prenez rendez-vous avant d’atteindre ${formatMileage(entry.targetMileage)}.`;
+          }
+          return `Anticipez cette intervention avant ${formatMileage(entry.targetMileage)}.`;
+        }
+        if (entry.date) {
+          return `Préparez cette démarche avant le ${formatReminderDate(entry.date)}.`;
+        }
+        return "Ajoutez une date ou un kilométrage pour recevoir une recommandation.";
+      }
+
+      function escapeHtml(value) {
+        return String(value)
+          .replaceAll("&", "&amp;")
+          .replaceAll("<", "&lt;")
+          .replaceAll(">", "&gt;")
+          .replaceAll('"', "&quot;")
+          .replaceAll("'", "&#039;");
+      }
+
+      function formatCustomReminderTarget(reminder) {
+        const targets = [];
+        if (reminder.date) {
+          targets.push(formatReminderDate(new Date(`${reminder.date}T00:00:00`)));
+        }
+        if (reminder.mileage) {
+          targets.push(formatMileage(reminder.mileage));
+        }
+        return targets.join(" · ");
+      }
+
+      function renderCustomReminders() {
+        const list = document.querySelector("#custom-reminder-list");
+        const reminders = getSavedCustomReminders();
+
+        if (!reminders.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucun rappel personnalisé ajouté pour le moment.</p>';
+          return;
+        }
+
+        list.innerHTML = reminders
+          .map((reminder) => `
+            <article class="custom-reminder-item">
+              <div class="custom-reminder-copy">
+                <strong>${escapeHtml(reminder.title)}</strong>
+                <small>${escapeHtml(reminder.category)} · ${escapeHtml(formatCustomReminderTarget(reminder))}${reminder.amount ? ` · ${escapeHtml(formatAmount(reminder.amount))}` : ""}</small>
+              </div>
+              <button class="remove-reminder-button" type="button" data-remove-reminder="${escapeHtml(reminder.id)}" aria-label="Supprimer ${escapeHtml(reminder.title)}">×</button>
+            </article>
+          `)
+          .join("");
+      }
+
+      function renderRepairs() {
+        const list = document.querySelector("#repair-list");
+        if (!list) {
+          return;
+        }
+        const repairs = getSavedRepairs();
+        if (!repairs.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucune réparation enregistrée. Ajoutez une intervention pour construire l’historique réel de votre voiture.</p>';
+          return;
+        }
+
+        list.innerHTML = repairs
+          .slice()
+          .sort((first, second) => String(second.date).localeCompare(String(first.date)))
+          .map((repair) => {
+            const details = [
+              repair.category,
+              repair.date ? formatReminderDate(new Date(`${repair.date}T00:00:00`)) : "",
+              repair.mileage ? formatMileage(repair.mileage) : "",
+              repair.amount !== "" && repair.amount !== undefined ? formatAmount(repair.amount) : "",
+            ].filter(Boolean).join(" · ");
+            return `
+              <article class="repair-item">
+                <div class="repair-item-copy">
+                  <strong>${escapeHtml(repair.title)}</strong>
+                  <small>${escapeHtml(details)}${repair.notes ? ` · ${escapeHtml(repair.notes)}` : ""}</small>
+                </div>
+                <button class="remove-repair-button" type="button" data-remove-repair="${escapeHtml(repair.id)}" aria-label="Supprimer ${escapeHtml(repair.title)}">×</button>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function getHistoryEntries() {
+        const reminderEntries = getSavedCustomReminders()
+          .filter((reminder) => reminder.amount !== "" && Number.isFinite(Number(reminder.amount)) && Number(reminder.amount) >= 0)
+          .map((reminder) => ({ ...reminder, source: "Rappel" }));
+        const repairEntries = getSavedRepairs()
+          .filter((repair) => repair.amount !== "" && Number.isFinite(Number(repair.amount)) && Number(repair.amount) >= 0)
+          .map((repair) => ({ ...repair, source: "Réparation" }));
+        return [...reminderEntries, ...repairEntries];
+      }
+
+      function renderExpenses() {
+        const list = document.querySelector("#expense-list");
+        const total = document.querySelector("#expense-total");
+        const count = document.querySelector("#expense-count");
+        const expenses = getHistoryEntries();
+        const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
+
+        total.textContent = formatAmount(totalAmount);
+        count.textContent = `${expenses.length} rappel${expenses.length > 1 ? "s" : ""}`;
+
+        if (!expenses.length) {
+          list.innerHTML = '<p class="reminder-section-intro">Aucun montant enregistré depuis vos rappels.</p>';
+          return;
+        }
+
+        list.innerHTML = expenses
+          .map((expense) => {
+            const dateLabel = expense.date
+              ? formatReminderDate(new Date(`${expense.date}T00:00:00`))
+              : "Date non renseignée";
+            return `
+              <article class="expense-item">
+                <div>
+                  <p class="expense-item-category">${escapeHtml(expense.category)}</p>
+                  <h3 class="expense-item-title">${escapeHtml(expense.title)}</h3>
+                  <p class="expense-item-date">${escapeHtml(dateLabel)}</p>
+                </div>
+                <strong class="expense-item-amount">${escapeHtml(formatAmount(expense.amount))}</strong>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      function renderReports() {
+        const total = document.querySelector("#report-total");
+        const count = document.querySelector("#report-count");
+        const bars = document.querySelector("#report-bars");
+        const recentList = document.querySelector("#report-recent-list");
+        const expenses = getHistoryEntries();
+        const totalAmount = expenses.reduce((sum, reminder) => sum + Number(reminder.amount), 0);
+        const categoryTotals = expenses.reduce((categories, reminder) => {
+          categories[reminder.category] = (categories[reminder.category] || 0) + Number(reminder.amount);
+          return categories;
+        }, {});
+        const sortedCategories = Object.entries(categoryTotals).sort((first, second) => second[1] - first[1]);
+        const highestCategoryTotal = sortedCategories[0]?.[1] || 0;
+
+        total.textContent = formatAmount(totalAmount);
+        count.textContent = expenses.length;
+
+        if (!expenses.length) {
+          bars.innerHTML = '<p class="reminder-section-intro">Ajoutez un montant dans un rappel pour afficher le rapport.</p>';
+          recentList.innerHTML = '<p class="reminder-section-intro">Aucune donnée disponible pour le moment.</p>';
+          const emptyInsight = document.querySelector("#history-insight");
+          if (emptyInsight) {
+            emptyInsight.textContent = "Analyse automatique : ajoutez vos interventions et leurs montants pour repérer les postes qui coûtent le plus.";
+          }
+          return;
+        }
+
+        bars.innerHTML = sortedCategories
+          .map(([category, amount]) => `
+            <div class="report-bar-row">
+              <div class="report-bar-heading">
+                <span>${escapeHtml(category)}</span>
+                <strong>${escapeHtml(formatAmount(amount))}</strong>
+              </div>
+              <div class="report-bar-track" role="img" aria-label="${escapeHtml(category)} : ${escapeHtml(formatAmount(amount))}">
+                <div class="report-bar-fill" style="width: ${Math.max(5, (amount / highestCategoryTotal) * 100)}%"></div>
+              </div>
+            </div>
+          `)
+          .join("");
+
+        recentList.innerHTML = expenses
+          .slice()
+          .reverse()
+          .slice(0, 5)
+          .map((expense) => {
+            const dateLabel = expense.date
+              ? formatReminderDate(new Date(`${expense.date}T00:00:00`))
+              : "Date non renseignée";
+            return `
+              <div class="report-recent-item">
+                <div class="report-recent-copy">
+                  <strong>${escapeHtml(expense.title)}</strong>
+                  <small>${escapeHtml(expense.category)} · ${escapeHtml(dateLabel)}</small>
+                </div>
+                <span class="report-recent-amount">${escapeHtml(formatAmount(expense.amount))}</span>
+              </div>
+            `;
+          })
+          .join("");
+
+        const insight = document.querySelector("#history-insight");
+        if (insight) {
+          const highestCategory = sortedCategories[0];
+          insight.textContent = highestCategory
+            ? `Analyse automatique : la catégorie la plus coûteuse est ${highestCategory[0]} avec ${formatAmount(highestCategory[1])}. Pensez à vérifier les prochaines échéances liées à cette catégorie.`
+            : "Analyse automatique : ajoutez vos interventions et leurs montants pour repérer les postes qui coûtent le plus.";
+        }
+      }
+
+      function updateVehicleAlertStatus(entries) {
+        const status = document.querySelector("#vehicle-alert-status");
+        const statusText = document.querySelector("#vehicle-alert-status-text");
+        const activeEntries = entries.filter((entry) => entry.status !== "upcoming");
+        const hasCriticalAlert = activeEntries.some((entry) => entry.status === "critical" || entry.status === "expired");
+        const hasWarningAlert = activeEntries.some((entry) => entry.status === "warning");
+
+        status.classList.toggle("is-warning", !hasCriticalAlert && hasWarningAlert);
+        status.classList.toggle("is-critical", hasCriticalAlert);
+        statusText.textContent = `Notifications des alertes · ${activeEntries.length}`;
+      }
+
+      function renderAlerts(entries) {
+        const summary = document.querySelector("#alert-summary");
+        const count = document.querySelector("#alert-count");
+        const summaryCopy = document.querySelector("#alert-summary-copy");
+        const alertsList = document.querySelector("#alerts-list");
+        const activeEntries = entries.filter((entry) => {
+          const displayState = getAlertDisplayState(entry);
+          return displayState.active && entry.status !== "upcoming";
+        });
+        updateVehicleAlertStatus(entries.filter((entry) => getAlertDisplayState(entry).active));
+        summary.classList.toggle("is-clear", activeEntries.length === 0);
+        count.textContent = activeEntries.length;
+
+        if (activeEntries.length === 0) {
+          summaryCopy.textContent = entries.length
+            ? "Aucune échéance dans les 7 prochains jours ou à moins de 300 km."
+            : "Ajoutez vos dates dans Rappels pour activer la surveillance.";
+        } else {
+          summaryCopy.textContent = `${activeEntries.length} échéance${activeEntries.length > 1 ? "s" : ""} à traiter.`;
+        }
+
+        if (!entries.length) {
+          alertsList.innerHTML = '<div class="alerts-empty">Aucune date enregistrée pour le moment. Rendez-vous dans <strong>Rappels</strong> pour ajouter vos échéances.</div>';
+          renderSmartAdvice(entries);
+          return;
+        }
+
+        alertsList.innerHTML = entries
+          .map((entry) => {
+            const displayState = getAlertDisplayState(entry);
+            return `
+            <article class="alert-item is-${displayState.status}">
+              <div class="alert-item-copy">
+                <h3 class="alert-item-title">${escapeHtml(entry.label)}</h3>
+                <p class="alert-item-date">${formatReminderTarget(entry)}</p>
+                <p class="alert-item-advice">${escapeHtml(getAlertAdvice(entry))}</p>
+              </div>
+              <span class="alert-item-status">${getReminderStatusLabel(entry)}</span>
+              <div class="alert-item-actions">
+                ${displayState.active
+                  ? `<button type="button" data-alert-action="done" data-alert-key="${escapeHtml(entry.key)}">Traiter</button>
+                     <button type="button" data-alert-action="snooze" data-alert-key="${escapeHtml(entry.key)}">Reporter</button>`
+                  : `<button type="button" data-alert-action="restore" data-alert-key="${escapeHtml(entry.key)}">Rétablir</button>`}
+              </div>
+            </article>
+          `;
+          })
+          .join("");
+        renderSmartAdvice(entries);
+      }
+
+      function renderSmartAdvice(entries = getReminderEntries()) {
+        const list = document.querySelector("#smart-advice-list");
+        if (!list) {
+          return;
+        }
+
+        if (!getPrimaryVehicleId()) {
+          list.innerHTML = `
+            <article class="smart-advice-item">
+              <div class="smart-advice-copy">
+                <strong>Commencez par enregistrer votre véhicule</strong>
+                <span>SIYARATI pourra ensuite calculer les échéances et les actions prioritaires.</span>
+              </div>
+              <button class="smart-advice-action" type="button" data-advice-screen="vehicle-info">Configurer</button>
+            </article>
+          `;
+          return;
+        }
+
+        const activeEntries = entries
+          .filter((entry) => getAlertDisplayState(entry).active && entry.status !== "upcoming")
+          .sort((first, second) => {
+            const priority = { expired: 4, critical: 3, warning: 2, safe: 1, upcoming: 0 };
+            return priority[second.status] - priority[first.status];
+          });
+        const missingDocuments = ["carte-grise", "assurance", "vignette"]
+          .filter((key) => !getSavedDocuments()[key]);
+        const recommendations = [];
+
+        activeEntries.slice(0, 2).forEach((entry) => {
+          recommendations.push({
+            state: entry.status === "expired" || entry.status === "critical" ? "is-critical" : "is-warning",
+            title: entry.status === "expired" || entry.status === "critical" ? "Action prioritaire" : "À planifier",
+            text: `${entry.label} · ${getAlertAdvice(entry)}`,
+            action: "Voir",
+            screen: "alerts",
+          });
+        });
+
+        if (missingDocuments.length) {
+          recommendations.push({
+            state: "",
+            title: "Complétez le dossier du véhicule",
+            text: `Il manque ${missingDocuments.length} document${missingDocuments.length > 1 ? "s" : ""} important${missingDocuments.length > 1 ? "s" : ""}.`,
+            action: "Documents",
+            screen: "documents",
+          });
+        }
+
+        if (!recommendations.length) {
+          recommendations.push({
+            state: "",
+            title: "Votre voiture est suivie",
+            text: "Aucune action urgente. SIYARATI continuera de surveiller vos dates et votre kilométrage.",
+            action: "Rappels",
+            screen: "reminders",
+          });
+        }
+
+        list.innerHTML = recommendations
+          .slice(0, 3)
+          .map((recommendation) => `
+            <article class="smart-advice-item ${recommendation.state}">
+              <div class="smart-advice-copy">
+                <strong>${escapeHtml(recommendation.title)}</strong>
+                <span>${escapeHtml(recommendation.text)}</span>
+              </div>
+              <button class="smart-advice-action" type="button" data-advice-screen="${recommendation.screen}">${escapeHtml(recommendation.action)}</button>
+            </article>
+          `)
+          .join("");
+      }
+
+      function handleAlertAction(action, alertKey) {
+        const actions = getSavedAlertActions();
+        if (action === "done") {
+          actions[alertKey] = { state: "done" };
+          showToast("Alerte marquée comme traitée.");
+        } else if (action === "snooze") {
+          const defaultDate = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
+          const until = window.prompt("Reporter cette alerte jusqu’au (AAAA-MM-JJ)", defaultDate);
+          if (until === null) {
+            return;
+          }
+          if (!/^\d{4}-\d{2}-\d{2}$/.test(until) || Number.isNaN(new Date(`${until}T00:00:00`).getTime())) {
+            showToast("Date de report invalide.");
+            return;
+          }
+          actions[alertKey] = { state: "snoozed", until };
+          showToast(`Alerte reportée au ${formatReminderDate(new Date(`${until}T00:00:00`))}.`);
+        } else {
+          delete actions[alertKey];
+          showToast("Alerte réactivée.");
+        }
+
+        localStorage.setItem(getVehicleScopedStorageKey(ALERT_ACTIONS_STORAGE_KEY), JSON.stringify(actions));
+        checkAlerts();
+      }
+
+      document.querySelector("#alerts-list").addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-alert-action]");
+        if (!actionButton) {
+          return;
+        }
+        handleAlertAction(actionButton.dataset.alertAction, actionButton.dataset.alertKey);
+      });
+
+      document.querySelector("#enable-notifications-button").addEventListener("click", async () => {
+        if (!getPrimaryVehicleId()) {
+          showToast("Ajoutez d’abord un véhicule principal.");
+          return;
+        }
+        if (!("Notification" in window)) {
+          showToast("Les notifications ne sont pas disponibles dans ce navigateur.");
+          return;
+        }
+        if (Notification.permission === "denied") {
+          showToast("Autorisez les notifications dans les réglages du navigateur.");
+          updateNotificationControls();
+          return;
+        }
+
+        if (!notificationRegistration) {
+          await initializeNotificationSupport();
+        }
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          showToast("Les notifications n’ont pas été activées.");
+          updateNotificationControls();
+          return;
+        }
+
+        const backgroundEnabled = await registerBackgroundNotificationCheck();
+        saveNotificationPreferences({ enabled: true, backgroundEnabled });
+        await syncNotificationState({ notify: true });
+        updateNotificationControls();
+        showToast(backgroundEnabled
+          ? "Notifications activées, y compris en arrière-plan."
+          : "Notifications activées pour les vérifications disponibles.");
+      });
+
+      document.querySelector("#smart-advice-list").addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-advice-screen]");
+        if (!actionButton) {
+          return;
+        }
+        showScreen(actionButton.dataset.adviceScreen);
+      });
+
+      function checkAlerts(options = {}) {
+        const entries = getReminderEntries();
+        const criticalEntries = entries.filter((entry) => entry.status === "critical" || entry.status === "expired");
+        const criticalSignature = criticalEntries.map((entry) => `${entry.key}:${entry.value}`).join("|");
+
+        renderAlerts(entries);
+
+        const shouldPlaySound =
+          criticalEntries.length &&
+          (options.playSound || (soundUnlocked && criticalSignature !== lastUrgentSignature));
+
+        if (shouldPlaySound) {
+          playAlertTone();
+        }
+
+        lastUrgentSignature = criticalSignature;
+        updateNotificationControls();
+        syncNotificationState({ notify: true });
+      }
+
+      function playAlertTone() {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) {
+          return;
+        }
+
+        const audioContext = new AudioContext();
+        const gain = audioContext.createGain();
+        gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.18, audioContext.currentTime + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + 0.75);
+        gain.connect(audioContext.destination);
+
+        [0, 0.2, 0.4].forEach((offset, index) => {
+          const oscillator = audioContext.createOscillator();
+          oscillator.type = "sine";
+          oscillator.frequency.value = index === 2 ? 880 : 660;
+          oscillator.connect(gain);
+          oscillator.start(audioContext.currentTime + offset);
+          oscillator.stop(audioContext.currentTime + offset + 0.16);
+        });
+      }
+
+      document.querySelectorAll("[data-screen]").forEach((control) => {
+        control.addEventListener("click", (event) => {
+          if (control.classList.contains("is-disabled")) {
+            event.preventDefault();
+            showToast("Aucun véhicule n’est enregistré. Ajoutez d’abord un véhicule.");
+            return;
+          }
+          showScreen(control.dataset.screen);
+        });
+        if (control.getAttribute("role") === "button") {
+          control.addEventListener("keydown", (event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              showScreen(control.dataset.screen);
+            }
+          });
+        }
+      });
+
+      document.querySelectorAll(".toast-card, .menu-card:not([data-screen]), .detail-card:not([data-screen])").forEach((card) => {
+        card.addEventListener("click", () => {
+          showToast(`${card.dataset.label} — cette rubrique sera bientôt disponible.`);
+        });
+      });
+
+      const locationAction = document.querySelector("#location-action");
+      const locationStatus = document.querySelector("#location-status");
+      const locationResult = document.querySelector("#location-result");
+      const locationMapLink = document.querySelector("#location-map-link");
+      const locationShareMode = document.querySelector("#location-share-mode");
+      const sendLocationButton = document.querySelector("#send-location-button");
+      const locationShareStatus = document.querySelector("#location-share-status");
+      const breakdownReasonButtons = document.querySelectorAll(".breakdown-reason");
+      const towAction = document.querySelector("#tow-action");
+      const towStatus = document.querySelector("#tow-status");
+      let currentLocationMapUrl = "";
+      let selectedBreakdownReason = "";
+
+      breakdownReasonButtons.forEach((reasonButton) => {
+        reasonButton.addEventListener("click", () => {
+          selectedBreakdownReason = reasonButton.dataset.reason;
+          breakdownReasonButtons.forEach((button) => {
+            const isSelected = button === reasonButton;
+            button.classList.toggle("is-selected", isSelected);
+            button.setAttribute("aria-checked", String(isSelected));
+          });
+          locationAction.disabled = false;
+          locationStatus.textContent = `Motif choisi : ${selectedBreakdownReason} · appuyez pour partager`;
+          locationResult.hidden = true;
+          currentLocationMapUrl = "";
+          locationShareStatus.textContent = "";
+        });
+      });
+
+      locationAction.addEventListener("click", () => {
+        if (!selectedBreakdownReason) {
+          locationStatus.textContent = "Sélectionnez d’abord le problème.";
+          return;
+        }
+
+        if (!navigator.geolocation) {
+          locationStatus.textContent = "La géolocalisation n’est pas disponible sur cet appareil.";
+          return;
+        }
+
+        locationStatus.textContent = "Recherche de votre position…";
+        locationResult.hidden = true;
+        currentLocationMapUrl = "";
+        locationShareStatus.textContent = "";
+        navigator.geolocation.getCurrentPosition(
+          ({ coords }) => {
+            const latitude = coords.latitude.toFixed(5);
+            const longitude = coords.longitude.toFixed(5);
+            locationStatus.textContent = `Position trouvée : ${latitude}, ${longitude}`;
+            currentLocationMapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${latitude},${longitude}`)}`;
+            locationMapLink.href = currentLocationMapUrl;
+            locationResult.hidden = false;
+            showToast("Votre position a été trouvée.");
+          },
+          () => {
+            locationStatus.textContent = "Position inaccessible. Autorisez la localisation puis réessayez.";
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 },
+        );
+      });
+
+      sendLocationButton.addEventListener("click", () => {
+        if (!currentLocationMapUrl) {
+          locationShareStatus.textContent = "Trouvez votre position avant de l’envoyer.";
+          return;
+        }
+
+        const message = `🚨 JE SUIS EN PANNE\n${selectedBreakdownReason}\n📍 Ma position : ${currentLocationMapUrl}`;
+        const shareMode = locationShareMode.value;
+        if (shareMode === "whatsapp") {
+          window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank", "noopener");
+          locationShareStatus.textContent = "WhatsApp a été ouvert.";
+        } else if (shareMode === "sms") {
+          window.location.href = `sms:?body=${encodeURIComponent(message)}`;
+        } else {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(currentLocationMapUrl)}&quote=${encodeURIComponent(message)}`, "_blank", "noopener");
+          locationShareStatus.textContent = "Facebook a été ouvert.";
+        }
+      });
+
+      const towStorageKey = getVehicleScopedStorageKey(TOW_STORAGE_KEY);
+      let savedTowNumber = localStorage.getItem(towStorageKey);
+      if (!savedTowNumber && getPrimaryVehicleId()) {
+        const legacyTowNumber = localStorage.getItem(TOW_STORAGE_KEY);
+        if (legacyTowNumber) {
+          savedTowNumber = legacyTowNumber;
+          localStorage.setItem(towStorageKey, legacyTowNumber);
+          localStorage.removeItem(TOW_STORAGE_KEY);
+        }
+      }
+      if (savedTowNumber) {
+        towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
+      }
+
+      towAction.addEventListener("click", () => {
+        const savedNumber = localStorage.getItem(getVehicleScopedStorageKey(TOW_STORAGE_KEY)) || "";
+        const enteredNumber = window.prompt("Entrez le numéro du dépanneur", savedNumber);
+        if (enteredNumber === null) {
+          return;
+        }
+
+        const phoneNumber = enteredNumber.replace(/[^\d+]/g, "");
+        if (!/^\+?\d{8,15}$/.test(phoneNumber)) {
+          showToast("Numéro de dépanneur invalide.");
+          return;
+        }
+
+        localStorage.setItem(getVehicleScopedStorageKey(TOW_STORAGE_KEY), phoneNumber);
+        towStatus.textContent = "Numéro enregistré · appuyez pour appeler";
+        window.location.href = `tel:${phoneNumber}`;
+      });
+
+      document.querySelector("#documents-screen").addEventListener("change", (event) => {
+        const uploadInput = event.target.closest("[data-document-upload]");
+        const file = uploadInput?.files?.[0];
+        if (!uploadInput || !file) {
+          return;
+        }
+
+        if (!getPrimaryVehicleId()) {
+          uploadInput.value = "";
+          showToast("Ajoutez d’abord un véhicule principal.");
+          return;
+        }
+
+        if (file.size > 5 * 1024 * 1024) {
+          uploadInput.value = "";
+          showToast("Le fichier doit faire 5 Mo maximum.");
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          try {
+            const documents = getSavedDocuments();
+            documents[uploadInput.dataset.documentUpload] = {
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              data: reader.result,
+            };
+            localStorage.setItem(
+              getVehicleScopedStorageKey(DOCUMENTS_STORAGE_KEY),
+              JSON.stringify(documents),
+            );
+            renderDocuments();
+            showToast(`${file.name} a été téléchargé.`);
+            showScreen("home");
+          } catch {
+            showToast("Impossible d’enregistrer ce fichier. Essayez un fichier plus léger.");
+          }
+        });
+        reader.addEventListener("error", () => {
+          showToast("Impossible de lire ce fichier.");
+        });
+        reader.readAsDataURL(file);
+      });
+
+      const vehicleBrandField = document.querySelector("#vehicle-category");
+      const vehicleDetailsForm = document.querySelector("#vehicle-details-form");
+      let vehicleFormMode = "edit-primary";
+      let vehicleFormVehicleId = "";
+      vehicleBrandField.addEventListener("change", (event) => {
+        populateVehicleModels(event.currentTarget.value);
+      });
+
+      vehicleDetailsForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const form = event.currentTarget;
+        const vehicleDetails = Object.fromEntries(new FormData(form).entries());
+        const vehicles = getSavedVehicles();
+        const existingVehicle = vehicles.find((vehicle) => vehicle.id === vehicleFormVehicleId);
+
+        if (vehicleFormMode === "add-secondary") {
+          const newVehicleId = createVehicleId();
+          vehicles.push({ id: newVehicleId, data: vehicleDetails });
+          if (!getPrimaryVehicleId()) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, newVehicleId);
+            vehicleFormMode = "edit-primary";
+          }
+        } else {
+          const targetId = vehicleFormVehicleId || getPrimaryVehicleId() || createVehicleId();
+          const existingIndex = vehicles.findIndex((vehicle) => vehicle.id === targetId);
+          if (existingIndex >= 0) {
+            vehicles[existingIndex] = { id: targetId, data: vehicleDetails };
+          } else {
+            vehicles.push({ id: targetId, data: vehicleDetails });
+          }
+          if (!getPrimaryVehicleId()) {
+            localStorage.setItem(PRIMARY_VEHICLE_STORAGE_KEY, targetId);
+          }
+        }
+
+        saveVehicles(vehicles);
+        localStorage.removeItem(VEHICLE_STORAGE_KEY);
+        updateVehicleDisplay(getSavedVehicle());
+        updateMileageDisplay(getSavedVehicle()["current-mileage"]);
+        renderVehicleList();
+        renderDashboardVehicleSelector();
+        updateVehicleAvailability();
+        checkAlerts();
+        showToast(vehicleFormMode === "add-secondary"
+          ? "Le véhicule secondaire a été ajouté."
+          : "Les informations du véhicule ont été enregistrées.");
+        showScreen("home");
+      });
+
+      function prepareVehicleForm(vehicle = {}, mode = "edit-primary", vehicleId = "") {
+        vehicleFormMode = mode;
+        vehicleFormVehicleId = vehicleId;
+        vehicleDetailsForm.reset();
+        Object.entries(vehicle).forEach(([fieldName, value]) => {
+          const field = vehicleDetailsForm.querySelector(`[name="${fieldName}"]`);
+          if (field && field.type !== "file" && fieldName !== "vehicle-model") {
+            field.value = value;
+          }
+        });
+
+        const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
+        vehicleBrandField.value = brand;
+        populateVehicleModels(brand, vehicle["vehicle-model"] || "");
+      }
+
+      const vehicleManagement = document.querySelector(".vehicle-management");
+      const vehicleManagementToggle = document.querySelector("#vehicle-management-toggle");
+      const vehicleManagementMenu = document.querySelector("#vehicle-management-menu");
+
+      function closeVehicleManagementMenu() {
+        vehicleManagementMenu.hidden = true;
+        vehicleManagementToggle.setAttribute("aria-expanded", "false");
+      }
+
+      vehicleManagementToggle.addEventListener("click", (event) => {
+        event.stopPropagation();
+        const isOpen = !vehicleManagementMenu.hidden;
+        vehicleManagementMenu.hidden = isOpen;
+        vehicleManagementToggle.setAttribute("aria-expanded", String(!isOpen));
+      });
+
+      vehicleManagementMenu.addEventListener("click", (event) => {
+        const actionButton = event.target.closest("[data-vehicle-action]");
+        if (!actionButton) {
+          return;
+        }
+
+        const action = actionButton.dataset.vehicleAction;
+        const savedVehicle = getSavedVehicle();
+        closeVehicleManagementMenu();
+
+        if (action === "add") {
+          prepareVehicleForm({}, "add-secondary");
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "edit") {
+          if (!Object.keys(savedVehicle).length) {
+            showToast("Aucun véhicule enregistré. Choisissez Ajouter véhicule.");
+            return;
+          }
+          prepareVehicleForm(savedVehicle, "edit-primary", getPrimaryVehicleId());
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "delete") {
+          if (!Object.keys(savedVehicle).length) {
+            showToast("Aucun véhicule à supprimer.");
+            return;
+          }
+          if (!window.confirm("Supprimer le véhicule principal et toutes ses données ?")) {
+            return;
+          }
+          deleteVehicle(getPrimaryVehicleId());
+          showToast("Le véhicule a été supprimé.");
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (!vehicleManagement.contains(event.target)) {
+          closeVehicleManagementMenu();
+        }
+      });
+
+      const dashboardVehicleSelector = document.querySelector("#dashboard-vehicle-select");
+      dashboardVehicleSelector.addEventListener("click", (event) => {
+        event.stopPropagation();
+      });
+      dashboardVehicleSelector.addEventListener("change", (event) => {
+        const vehicleId = event.currentTarget.value;
+        if (!vehicleId) {
+          return;
+        }
+        setPrimaryVehicle(vehicleId);
+        showScreen("home");
+      });
+
+      document.querySelector("#add-secondary-vehicle-button").addEventListener("click", () => {
+        prepareVehicleForm({}, "add-secondary");
+        showScreen("vehicle-details");
+      });
+
+      document.querySelector("#vehicle-list").addEventListener("click", (event) => {
+        const menuToggle = event.target.closest("[data-vehicle-menu-toggle]");
+        if (menuToggle) {
+          const menu = menuToggle.parentElement.querySelector("[data-vehicle-menu]");
+          const isOpen = !menu.hidden;
+          document.querySelectorAll("[data-vehicle-menu]").forEach((item) => {
+            item.hidden = true;
+          });
+          document.querySelectorAll("[data-vehicle-menu-toggle]").forEach((item) => {
+            item.setAttribute("aria-expanded", "false");
+          });
+          menu.hidden = isOpen;
+          menuToggle.setAttribute("aria-expanded", String(!isOpen));
+          event.stopPropagation();
+          return;
+        }
+
+        const selectButton = event.target.closest("[data-select-vehicle]");
+        if (selectButton) {
+          setPrimaryVehicle(selectButton.dataset.selectVehicle);
+          return;
+        }
+
+        const actionButton = event.target.closest("[data-vehicle-list-action]");
+        if (!actionButton) {
+          return;
+        }
+
+        const vehicleId = actionButton.dataset.vehicleId;
+        const action = actionButton.dataset.vehicleListAction;
+        const vehicle = getSavedVehicles().find((item) => item.id === vehicleId);
+        if (!vehicle) {
+          return;
+        }
+
+        if (action === "primary") {
+          setPrimaryVehicle(vehicleId);
+          return;
+        }
+
+        if (action === "edit") {
+          prepareVehicleForm(vehicle.data, vehicleId === getPrimaryVehicleId() ? "edit-primary" : "edit-secondary", vehicleId);
+          showScreen("vehicle-details");
+          return;
+        }
+
+        if (action === "delete") {
+          if (!window.confirm(`Supprimer ${getVehicleDisplayName(vehicle.data)} et toutes ses données ?`)) {
+            return;
+          }
+          deleteVehicle(vehicleId);
+          showToast("Le véhicule et ses données ont été supprimés.");
+        }
+      });
+
+      document.addEventListener("click", (event) => {
+        if (event.target.closest("#vehicle-list")) {
+          return;
+        }
+        document.querySelectorAll("[data-vehicle-menu]").forEach((item) => {
+          item.hidden = true;
+        });
+        document.querySelectorAll("[data-vehicle-menu-toggle]").forEach((item) => {
+          item.setAttribute("aria-expanded", "false");
+        });
+      });
+
+      const repairForm = document.querySelector("#repair-form");
+      const repairList = document.querySelector("#repair-list");
+
+      repairForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const repair = Object.fromEntries(new FormData(event.currentTarget).entries());
+        const savedRepairs = getSavedRepairs();
+        savedRepairs.push({
+          id: `${Date.now()}-${savedRepairs.length + 1}`,
+          category: repair.category,
+          title: repair.title.trim(),
+          date: repair.date,
+          mileage: repair.mileage,
+          amount: repair.amount,
+          notes: repair.notes.trim(),
+        });
+        localStorage.setItem(getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY), JSON.stringify(savedRepairs));
+        event.currentTarget.reset();
+        renderRepairs();
+        renderExpenses();
+        renderReports();
+        showToast("La réparation a été enregistrée.");
+        showScreen("home");
+      });
+
+      repairList.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-repair]");
+        if (!removeButton) {
+          return;
+        }
+        const repairId = removeButton.dataset.removeRepair;
+        const remainingRepairs = getSavedRepairs().filter(({ id }) => id !== repairId);
+        localStorage.setItem(getVehicleScopedStorageKey(REPAIRS_STORAGE_KEY), JSON.stringify(remainingRepairs));
+        renderRepairs();
+        renderExpenses();
+        renderReports();
+        showToast("La réparation a été supprimée.");
+      });
+
+      const customReminderForm = document.querySelector("#custom-reminder-form");
+      const customReminderList = document.querySelector("#custom-reminder-list");
+
+      customReminderForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const reminder = Object.fromEntries(new FormData(event.currentTarget).entries());
+
+        if (!reminder.date && !reminder.mileage) {
+          showToast("Ajoutez une date ou un kilométrage cible.");
+          return;
+        }
+
+        const savedReminders = getSavedCustomReminders();
+        savedReminders.push({
+          id: `${Date.now()}-${savedReminders.length + 1}`,
+          category: reminder.category,
+          title: reminder.title.trim(),
+          date: reminder.date,
+          mileage: reminder.mileage,
+          amount: reminder.amount,
+          notes: reminder.notes.trim(),
+        });
+        localStorage.setItem(getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY), JSON.stringify(savedReminders));
+        event.currentTarget.reset();
+        renderCustomReminders();
+        renderExpenses();
+        renderReports();
+        checkAlerts();
+        showToast("Le rappel a été ajouté.");
+        showScreen("home");
+      });
+
+      customReminderList.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("[data-remove-reminder]");
+        if (!removeButton) {
+          return;
+        }
+
+        const reminderId = removeButton.dataset.removeReminder;
+        const remainingReminders = getSavedCustomReminders().filter(({ id }) => id !== reminderId);
+        localStorage.setItem(getVehicleScopedStorageKey(CUSTOM_REMINDERS_STORAGE_KEY), JSON.stringify(remainingReminders));
+        renderCustomReminders();
+        renderExpenses();
+        renderReports();
+        checkAlerts();
+        showToast("Le rappel a été supprimé.");
+      });
+
+      document.addEventListener("pointerdown", () => {
+        soundUnlocked = true;
+      });
+
+      const savedReminders = getSavedReminders();
+      Object.entries(savedReminders).forEach(([fieldName, value]) => {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field) {
+          field.value = value;
+        }
+      });
+
+      const savedVehicle = getSavedVehicle();
+      Object.entries(savedVehicle).forEach(([fieldName, value]) => {
+        const field = document.querySelector(`[name="${fieldName}"]`);
+        if (field && field.type !== "file" && fieldName !== "vehicle-model") {
+          field.value = value;
+        }
+      });
+      const savedBrandIsAvailable = [...vehicleBrandField.options].some((option) => option.value === vehicleBrandField.value);
+      if (!savedBrandIsAvailable && savedVehicle["vehicle-brand"]) {
+        vehicleBrandField.value = savedVehicle["vehicle-brand"];
+      }
+      populateVehicleModels(vehicleBrandField.value, savedVehicle["vehicle-model"]);
+      updateVehicleDisplay(savedVehicle);
+      updateMileageDisplay(savedVehicle["current-mileage"]);
+
+      renderVehicleList();
+      renderDashboardVehicleSelector();
+      updateVehicleAvailability();
+      renderDocuments();
+      renderCustomReminders();
+      renderRepairs();
+      renderExpenses();
+      renderReports();
+      checkAlerts();
+      initializeNotificationSupport();
+      window.setInterval(() => checkAlerts(), 60000);
+    </script>
+  </body>
+</html>
