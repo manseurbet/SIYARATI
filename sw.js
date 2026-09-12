@@ -179,25 +179,26 @@ function formatMileage(value) {
 }
 
 function getNotificationBody(entry, status) {
+  const label = entry.category ? `${entry.category} · ${entry.label}` : entry.label;
   const mileageRemaining = Number.isFinite(entry.targetMileage) && Number.isFinite(entry.currentMileage)
     ? entry.targetMileage - entry.currentMileage
     : null;
   if (status === "expired") {
-    return `Échéance dépassée : ${entry.label}. À traiter maintenant.`;
+    return `Échéance dépassée : ${label}. À traiter maintenant.`;
   }
   if (status === "critical") {
     return entry.date
-      ? `Alerte critique : ${entry.label} arrive le ${formatDate(entry.date)}.`
-      : `Alerte critique : ${entry.label} dans ${Math.max(0, Math.ceil(mileageRemaining))} km.`;
+      ? `Alerte critique : ${label} arrive le ${formatDate(entry.date)}.`
+      : `Alerte critique : ${label} dans ${Math.max(0, Math.ceil(mileageRemaining))} km.`;
   }
   if (status === "warning") {
     return entry.date
-      ? `Échéance proche : ${entry.label} le ${formatDate(entry.date)}.`
-      : `${entry.label} est à prévoir dans ${Math.max(0, Math.ceil(mileageRemaining))} km.`;
+      ? `Échéance proche : ${label} le ${formatDate(entry.date)}.`
+      : `${label} est à prévoir dans ${Math.max(0, Math.ceil(mileageRemaining))} km.`;
   }
   return entry.date
-    ? `${entry.label} approche : échéance le ${formatDate(entry.date)}.`
-    : `${entry.label} approche : objectif à ${formatMileage(entry.targetMileage)}.`;
+    ? `${label} approche : échéance le ${formatDate(entry.date)}.`
+    : `${label} approche : objectif à ${formatMileage(entry.targetMileage)}.`;
 }
 
 function getEvaluatedEntry(entry) {

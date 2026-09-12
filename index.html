@@ -225,6 +225,32 @@
         background: #eef3f7;
       }
 
+      .vehicle-mileage-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 8px;
+        font-size: 13px;
+        color: #536c8f;
+      }
+
+      .vehicle-mileage-row[hidden] {
+        display: none !important;
+      }
+
+      .vehicle-mileage-edit {
+        flex: 0 0 auto;
+        padding: 6px 12px;
+        border: 1px solid #d8e0e9;
+        border-radius: 9px;
+        background: #f8fafb;
+        color: #173f7a;
+        font-size: 12px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
       .vehicle-actions {
         display: flex;
         flex-wrap: wrap;
@@ -3121,7 +3147,15 @@
         <div class="vehicle-copy">
            <p class="vehicle-label">Véhicule principal</p>
           <p class="vehicle-name" id="vehicle-name-display">Aucun véhicule enregistré</p>
-          <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule dans Documents</p>
+          <p class="vehicle-meta" id="vehicle-meta-display">Ajoutez votre véhicule avec le bouton “+ Ajouter”.</p>
+          <p class="vehicle-mileage-row" id="vehicle-mileage-row" hidden>
+            <span>Kilométrage actuel : <strong id="current-mileage-display">—</strong></span>
+            <button type="button" class="vehicle-mileage-edit" id="vehicle-mileage-edit-button">Actualiser</button>
+          </p>
+          <form class="monthly-mileage-inline-form" id="vehicle-mileage-inline-form" hidden>
+            <input type="number" min="0" step="1" class="monthly-mileage-inline-input" id="vehicle-mileage-inline-input" inputmode="numeric" placeholder="Nouveau kilométrage" required />
+            <button type="submit" class="monthly-mileage-inline-submit">Valider</button>
+          </form>
            <label class="dashboard-vehicle-label" for="dashboard-vehicle-select">Véhicule affiché</label>
            <select class="dashboard-vehicle-select" id="dashboard-vehicle-select" aria-label="Choisir le véhicule à afficher">
              <option value="">Aucun véhicule enregistré</option>
@@ -4205,6 +4239,7 @@
           entries: getReminderEntries().map((entry) => ({
             key: entry.key,
             label: entry.label,
+            category: entry.category || null,
             value: entry.value,
             date: entry.date ? entry.value : null,
             targetMileage: entry.targetMileage ?? null,
@@ -4387,7 +4422,7 @@
         const mileage = Number(value);
         return Number.isFinite(mileage) && mileage >= 0
           ? `${new Intl.NumberFormat("fr-FR").format(mileage)} km`
-          : "48 260 km";
+          : "—";
       }
 
       function formatAmount(value) {
@@ -4415,6 +4450,8 @@
         const icon = document.querySelector("#vehicle-card-icon");
         const editButton = document.querySelector('[data-vehicle-action="edit"]');
         const deleteButton = document.querySelector('[data-vehicle-action="delete"]');
+        const mileageRow = document.querySelector("#vehicle-mileage-row");
+        const mileageInlineForm = document.querySelector("#vehicle-mileage-inline-form");
         const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
         const model = vehicle["vehicle-model"] || "";
         const vehicleName = [brand, model].filter(Boolean).join(" ");
@@ -4426,6 +4463,8 @@
         // Modifier/Supprimer n'ont de sens que s'il existe déjà un véhicule.
         if (editButton) editButton.hidden = !hasVehicle;
         if (deleteButton) deleteButton.hidden = !hasVehicle;
+        if (mileageRow) mileageRow.hidden = !hasVehicle;
+        if (mileageInlineForm && !hasVehicle) mileageInlineForm.hidden = true;
 
         if (icon) {
           const photo = getSavedDocuments().photo;
@@ -4672,8 +4711,8 @@
 
         return [{
           key: `manufacturer-service-${brand}-${model}`,
-          label: `Entretien constructeur · ${brand} ${model}`,
-          category: "Constructeur",
+          label: `${brand} ${model}`,
+          category: "Vidange",
           value: targetMileage,
           date: null,
           targetMileage,
@@ -5509,6 +5548,50 @@
           renderReports();
           showToast("Kilométrage actualisé.");
         });
+      });
+
+      // Accès permanent (pas limité à une fois par mois) pour actualiser le
+      // kilométrage depuis la carte véhicule de l'accueil.
+      const vehicleMileageEditButton = document.querySelector("#vehicle-mileage-edit-button");
+      const vehicleMileageInlineForm = document.querySelector("#vehicle-mileage-inline-form");
+      const vehicleMileageInlineInput = document.querySelector("#vehicle-mileage-inline-input");
+      vehicleMileageEditButton?.addEventListener("click", () => {
+        if (!getPrimaryVehicleId() || !vehicleMileageInlineForm) {
+          return;
+        }
+        const isOpening = vehicleMileageInlineForm.hidden;
+        vehicleMileageInlineForm.hidden = !isOpening;
+        if (isOpening && vehicleMileageInlineInput) {
+          const current = getCurrentMileage();
+          vehicleMileageInlineInput.value = current !== null ? current : "";
+          vehicleMileageInlineInput.focus();
+          vehicleMileageInlineInput.select();
+        }
+      });
+      vehicleMileageInlineForm?.addEventListener("submit", (event) => {
+        event.preventDefault();
+        const vehicleId = getPrimaryVehicleId();
+        if (!vehicleId) {
+          return;
+        }
+        const newMileage = Number(vehicleMileageInlineInput?.value);
+        if (!Number.isFinite(newMileage) || newMileage < 0) {
+          showToast("Saisissez un kilométrage valide.");
+          return;
+        }
+        const current = getCurrentMileage();
+        if (current !== null && newMileage < current) {
+          showToast(`Le kilométrage ne peut pas être inférieur à l’actuel (${formatMileage(current)}).`);
+          return;
+        }
+        updateVehicleData(vehicleId, { "current-mileage": String(newMileage) });
+        updateMileageDisplay(getCurrentMileage());
+        markMonthlyMileageUpdated();
+        renderMonthlyMileageAlert();
+        checkAlerts();
+        renderReports();
+        vehicleMileageInlineForm.hidden = true;
+        showToast("Kilométrage actualisé.");
       });
 
       document.querySelectorAll("[data-screen]").forEach((control) => {
