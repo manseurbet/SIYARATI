@@ -3140,7 +3140,7 @@
              <span class="home-section-kicker">SURVEILLANCE</span>
              <h2 id="home-alerts-title">Alertes <span class="home-alert-count" id="home-alert-count">0</span></h2>
            </div>
-           <button class="home-alerts-link" type="button" data-screen="alerts" data-requires-vehicle>Voir tout <span aria-hidden="true">›</span></button>
+           <button class="home-alerts-link" type="button" data-screen="alerts" data-requires-vehicle>Tout voir <span aria-hidden="true">›</span></button>
          </div>
          <div class="home-alerts-list" id="home-alerts-list" aria-live="polite"></div>
         <div class="home-alert-row monthly-mileage-alert" role="button" tabindex="0" data-requires-vehicle>
@@ -5153,22 +5153,21 @@
           return;
         }
 
-        list.innerHTML = activeEntries.slice(0, 3).map((entry) => {
+        list.innerHTML = activeEntries.slice(0, 5).map((entry) => {
           const displayState = entry.isDocumentAlert
             ? { status: "warning", active: true }
             : getAlertDisplayState(entry);
-          const status = entry.isDocumentAlert
-            ? "À compléter"
-            : getReminderStatusLabel(entry);
-          const target = entry.isDocumentAlert
+          // Format compact façon "point coloré + une ligne" : on combine le
+          // libellé et le statut en une seule phrase (ex. "Assurance dans 8
+          // jours") plutôt que deux lignes séparées.
+          const summary = entry.isDocumentAlert
             ? `À télécharger : ${entry.documentNames.join(", ")}`
-            : formatReminderTarget(entry);
+            : `${entry.label} ${getReminderStatusLabel(entry).toLowerCase()}`;
           return `
             <button class="home-alert-row" type="button" data-screen="${entry.isDocumentAlert ? "documents" : "alerts"}" data-requires-vehicle>
               <span class="home-alert-icon is-${displayState.status}" aria-hidden="true"></span>
               <span class="home-alert-copy">
-                <strong>${escapeHtml(entry.category ? `${entry.category} · ${entry.label}` : entry.label)}</strong>
-                <span>${escapeHtml(target)}</span>
+                <strong>${escapeHtml(summary)}</strong>
               </span>
               <span class="home-alert-status">Voir</span>
             </button>
