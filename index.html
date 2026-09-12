@@ -4413,13 +4413,19 @@
         const nameDisplay = document.querySelector("#vehicle-name-display");
         const metaDisplay = document.querySelector("#vehicle-meta-display");
         const icon = document.querySelector("#vehicle-card-icon");
+        const editButton = document.querySelector('[data-vehicle-action="edit"]');
+        const deleteButton = document.querySelector('[data-vehicle-action="delete"]');
         const brand = vehicle["vehicle-category"] || vehicle["vehicle-brand"] || "";
         const model = vehicle["vehicle-model"] || "";
         const vehicleName = [brand, model].filter(Boolean).join(" ");
         const registration = vehicle["vehicle-registration"] || "";
+        const hasVehicle = Object.keys(vehicle).length > 0;
 
         nameDisplay.textContent = vehicleName || "Aucun véhicule enregistré";
-        metaDisplay.textContent = registration || "Ajoutez votre véhicule dans Documents";
+        metaDisplay.textContent = registration || "Ajoutez votre véhicule avec le bouton “+ Ajouter”.";
+        // Modifier/Supprimer n'ont de sens que s'il existe déjà un véhicule.
+        if (editButton) editButton.hidden = !hasVehicle;
+        if (deleteButton) deleteButton.hidden = !hasVehicle;
 
         if (icon) {
           const photo = getSavedDocuments().photo;
@@ -4817,6 +4823,9 @@
           return "À faire maintenant : régularisez cette échéance.";
         }
         if (entry.mileageRemaining !== null && entry.mileageRemaining !== undefined) {
+          if (entry.mileageRemaining <= 0) {
+            return `Kilométrage atteint : prenez rendez-vous dès maintenant (${formatMileage(entry.targetMileage)}).`;
+          }
           if (entry.mileageRemaining <= 300) {
             return `Prenez rendez-vous avant d’atteindre ${formatMileage(entry.targetMileage)}.`;
           }
@@ -5058,20 +5067,16 @@
           alert.setAttribute("aria-disabled", String(!hasVehicle));
 
           // Le rappel disparaît une fois actualisé OU refusé pour le mois en
-          // cours. Il réapparaîtra automatiquement au mois suivant (les deux
-          // vérifications comparent au mois courant).
-          alert.hidden = updated || dismissed;
+          // cours, ou tant qu'aucun véhicule n'est enregistré (rien à
+          // actualiser). Il réapparaîtra automatiquement au mois suivant.
+          alert.hidden = updated || dismissed || !hasVehicle;
           if (updated || dismissed || !hasVehicle) {
             if (inlineForm) inlineForm.hidden = true;
           }
-          if (updated || dismissed) {
+          if (updated || dismissed || !hasVehicle) {
             return;
           }
 
-          if (!hasVehicle) {
-            if (text) text.textContent = "Ajoutez d’abord votre véhicule";
-            return;
-          }
           if (text) text.textContent = `Mise à jour mensuelle · ${getMonthKey()}`;
         });
       }
@@ -5104,11 +5109,14 @@
 
         // Une alerte créée dans Rappels doit apparaître immédiatement sur
         // l'accueil, même si son échéance est encore lointaine.
-        const missingVehicleDocuments = [
-          ["carte-grise", "Carte grise"],
-          ["assurance", "Assurance"],
-          ["vignette", "Vignette"],
-        ].filter(([key]) => !getSavedDocuments()[key]);
+        // Sans véhicule enregistré, aucune alerte n'a de sens.
+        const missingVehicleDocuments = getPrimaryVehicleId()
+          ? [
+              ["carte-grise", "Carte grise"],
+              ["assurance", "Assurance"],
+              ["vignette", "Vignette"],
+            ].filter(([key]) => !getSavedDocuments()[key])
+          : [];
         const displayEntries = [...entries];
         if (missingVehicleDocuments.length) {
           displayEntries.push({
@@ -5137,9 +5145,11 @@
         count.textContent = activeEntries.length;
 
         if (!activeEntries.length) {
-          list.innerHTML = entries.length
-            ? '<div class="home-alert-empty">Aucune alerte active pour le moment.</div>'
-            : '<div class="home-alert-empty">Aucune alerte pour le moment. Ajoutez vos échéances dans <strong>Rappels</strong>.</div>';
+          list.innerHTML = !getPrimaryVehicleId()
+            ? '<div class="home-alert-empty">Ajoutez votre véhicule pour activer le suivi.</div>'
+            : entries.length
+              ? '<div class="home-alert-empty">Aucune alerte active pour le moment.</div>'
+              : '<div class="home-alert-empty">Aucune alerte pour le moment. Ajoutez vos échéances dans <strong>Rappels</strong>.</div>';
           return;
         }
 
@@ -6151,15 +6161,10 @@
       renderMonthlyMileageAlert();
       checkAlerts();
 
-      // Premier affichage : si aucun véhicule n'est enregistré, ouvrir directement
-      // la page "Véhicule" afin que l'utilisateur puisse créer son premier véhicule.
-      if (!getPrimaryVehicleId()) {
-        showScreen("vehicle-info");
-        updateBottomNav("vehicle-info");
-      } else {
-        showScreen("home");
-        updateBottomNav("home");
-      }
+      // Premier affichage : toujours ouvrir l'accueil, où le bouton
+      // "+ Ajouter" permet de créer le premier véhicule.
+      showScreen("home");
+      updateBottomNav("home");
 
       initializeNotificationSupport();
       window.setInterval(() => checkAlerts(), 60000);
