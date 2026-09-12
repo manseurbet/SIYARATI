@@ -900,7 +900,7 @@
       }
 
       .monthly-mileage-alert {
-        grid-template-columns: 16px minmax(0, 1fr) auto auto !important;
+        grid-template-columns: 22px minmax(0, 1fr) auto auto !important;
       }
 
       .monthly-mileage-alert-dismiss {
@@ -913,7 +913,7 @@
       #alerts-screen .home-alert-row {
         width: 100%;
         display: grid;
-        grid-template-columns: 16px minmax(0, 1fr) auto;
+        grid-template-columns: 22px minmax(0, 1fr) auto;
         align-items: center;
         gap: 12px;
         margin-top: 10px;
@@ -932,13 +932,14 @@
 
       #home-screen .home-alert-icon,
       #alerts-screen .home-alert-icon {
-        width: 10px;
-        height: 10px;
+        width: 16px;
+        height: 16px;
         display: block;
-        flex: 0 0 10px;
+        flex: 0 0 16px;
         border-radius: 50%;
         background: #98a2b3;
         font-size: 0;
+        box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.04);
       }
 
       /* Accueil : les lignes restent neutres ; seul le point indique l’urgence. */
@@ -4711,8 +4712,8 @@
 
         return [{
           key: `manufacturer-service-${brand}-${model}`,
-          label: `${brand} ${model}`,
-          category: "Vidange",
+          label: "Vidange",
+          category: "Constructeur",
           value: targetMileage,
           date: null,
           targetMileage,
