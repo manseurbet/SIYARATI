@@ -4653,7 +4653,14 @@
           baselineMileage = currentMileage;
           updateVehicleData(vehicleId, { "last-oil-change-mileage": String(currentMileage) });
         }
-        const targetMileage = baselineMileage + interval;
+        // Si le kilométrage saisi a dépassé l'objectif (vidange non faite à
+        // temps), on avance directement au prochain palier atteignable au
+        // lieu de rester bloqué sur une échéance déjà dépassée : l'alerte
+        // propose toujours un nouvel objectif, pas une impasse.
+        let targetMileage = baselineMileage + interval;
+        while (currentMileage > targetMileage) {
+          targetMileage += interval;
+        }
         const mileageRemaining = targetMileage - currentMileage;
         const mileageStatus = getMileageAlertStatus(mileageRemaining);
 
@@ -4753,6 +4760,14 @@
         }
 
         if (entry.status === "expired") {
+          if (entry.mileageRemaining !== null && entry.mileageRemaining !== undefined && entry.mileageStatus === entry.status) {
+            const overdueKm = Math.abs(Math.ceil(entry.mileageRemaining));
+            return overdueKm > 0 ? `Dépassé de ${overdueKm} km` : "Expiré aujourd’hui";
+          }
+          if (entry.hoursRemaining !== null && entry.hoursRemaining !== undefined && entry.dateStatus === entry.status) {
+            const overdueDays = Math.abs(Math.floor(entry.hoursRemaining / 24));
+            return overdueDays > 0 ? `Dépassé de ${overdueDays} jour${overdueDays > 1 ? "s" : ""}` : "Expiré aujourd’hui";
+          }
           return "Expiré";
         }
 
