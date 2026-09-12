@@ -5162,7 +5162,7 @@
           // jours") plutôt que deux lignes séparées.
           const summary = entry.isDocumentAlert
             ? `À télécharger : ${entry.documentNames.join(", ")}`
-            : `${entry.label} ${getReminderStatusLabel(entry).toLowerCase()}`;
+            : `${entry.category ? `${entry.category} · ${entry.label}` : entry.label} ${getReminderStatusLabel(entry).toLowerCase()}`;
           return `
             <button class="home-alert-row" type="button" data-screen="${entry.isDocumentAlert ? "documents" : "alerts"}" data-requires-vehicle>
               <span class="home-alert-icon is-${displayState.status}" aria-hidden="true"></span>
@@ -5217,7 +5217,7 @@
             return `
             <article class="alert-item is-${displayState.status}">
               <div class="alert-item-copy">
-                <h3 class="alert-item-title">${escapeHtml(entry.label)}</h3>
+                <h3 class="alert-item-title">${escapeHtml(entry.category ? `${entry.category} · ${entry.label}` : entry.label)}</h3>
                 <p class="alert-item-date">${formatReminderTarget(entry)}</p>
                 <p class="alert-item-advice">${escapeHtml(getAlertAdvice(entry))}</p>
               </div>
